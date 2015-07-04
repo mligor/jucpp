@@ -14,14 +14,13 @@ using namespace jucpp::http;
 
 int main()
 {
-	Http http_server;
-	
-	Server server = http_server.createServer([](const Request &req, Response &res)
+	Server server = Http::createServer([](const Request &req, Response &res)
 		 {
 			 //http_server.getInfo();
 												 
 			 res.writeHead(200, "Content-Type: text/plain");
-			 res.end("Hello from WebCpp\n");
+			 res.end("Hello from JuCpp\n");
+			 
 			 printf("Request arrived\n");
 		 });
 	
@@ -29,6 +28,18 @@ int main()
 	
 	printf("Server is running at http://127.0.0.1:8000/\n");
 	
+	Job* pCtrlJob = nullptr;
+	
+	Job ctrlJob = Http::createServer([&serverJob, &pCtrlJob](const Request& req, Response& res)
+					   {
+						   serverJob.stop();
+						   pCtrlJob->stop();
+						   
+					   }).listen(8001);
+	
+	pCtrlJob = &ctrlJob;
+	ctrlJob.wait();
+
 	serverJob.wait();
 	return 0;
 }

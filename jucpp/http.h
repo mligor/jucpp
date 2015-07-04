@@ -4,6 +4,8 @@
 #include <jucpp/jucpp.h>
 
 #include <string>
+#include <functional>
+
 
 namespace jucpp { namespace http {
 
@@ -16,15 +18,17 @@ namespace jucpp { namespace http {
 	public:
 		void writeHead(int code, const char* header) {}
 		void end(std::string text) { m_output += text; }
+		
+		const std::string& getContent() { return m_output; }
 
-	public: //TODO: make it private
+	private: //TODO: make it private
 		std::string m_output;
 	};
 	
 	class Server
 	{
 	public:
-		typedef void (*ServerFn)(const Request &req, Response &res);
+		typedef std::function<void (const Request &req, Response &res)> ServerFn;
 
 		Server(ServerFn fn) : m_fn(fn) {}
 		
@@ -36,6 +40,23 @@ namespace jucpp { namespace http {
 
 		ServerFn m_fn;
 	};
+	
+	class ServerJob : public ThreadJob
+	{
+	public:
+		ServerJob(void* server) : m_server(server), m_bStop(false) {}
+		
+	protected:
+		// Job virtual functions
+		virtual void Execute();
+		virtual void OnFinish();
+		
+		virtual bool stopThread() { m_bStop = true; return true; }
+	
+	private:
+		void* m_server;
+		volatile bool m_bStop;
+	};
 
 	class Http
 	{
@@ -45,7 +66,7 @@ namespace jucpp { namespace http {
 			
 		}
 		
-		Server createServer(Server::ServerFn fn)
+		static Server createServer(Server::ServerFn fn)
 		{
 			Server serv(fn);
 			return serv;

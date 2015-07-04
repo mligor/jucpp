@@ -13,6 +13,9 @@
 #include <string>
 #include <vector>
 
+#include <stdio.h>
+
+
 namespace jucpp { namespace http {
 
 	
@@ -29,7 +32,7 @@ namespace jucpp { namespace http {
 			Request req;
 			Response res;
 			int ret = _this->EventHandler(req, res);
-			mg_printf_data((mg_connection*)conn, "%s", res.m_output.c_str());
+			mg_printf_data((mg_connection*)conn, "%s", res.getContent().c_str());
 			
 			return ret;
 		}
@@ -50,24 +53,36 @@ namespace jucpp { namespace http {
 	{
 		mg_server* server = mg_create_server(this, (mg_handler_t)s_Server_EventHandler);
 		mg_set_option(server, "document_root", ".");
-		mg_set_option(server, "listening_port", "8000"); //TODO: get port from parameter
+		
+		char buffer[33];
+		sprintf(buffer, "%d", port);
+
+		mg_set_option(server, "listening_port", buffer);
 	
+		Job job(new ServerJob(server));
+		job.run();
+		return job;
+	}
+	
+	
+	// ServerJob
+	
+	void ServerJob::Execute()
+	{
+		mg_server* mgserver = (mg_server*)m_server;
+		for (;;)
+		{
+			if (m_bStop)
+				break;
+			mg_poll_server(mgserver, 1000);  // Infinite loop, Ctrl-C to stop
+		}
 		
-		Job serverJob([server]()
-					  {
-						  for (;;)
-						  {
-							  mg_poll_server(server, 1000);  // Infinite loop, Ctrl-C to stop
-						  }
-					  },
-					  [server]()
-					  {
-						  mg_destroy_server(&server);
-					  });
-		
-		serverJob.run();
-		
-		return serverJob;
+	}
+	
+	void ServerJob::OnFinish()
+	{
+		mg_server* mgserver = (mg_server*)m_server;
+		mg_destroy_server(&mgserver);
 	}
 
 }} // namespaces

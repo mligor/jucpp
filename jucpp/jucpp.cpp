@@ -12,20 +12,33 @@
 
 namespace jucpp
 {
+	// ThreadJob
 	
 	void s_Job_ThreadFn(void* p)
 	{
-		
+		ThreadJob* _jobBase = (ThreadJob*)p;
+		_jobBase->Execute();
+		_jobBase->OnFinish();
 	}
 	
-	void Job::run()
+	void ThreadJob::run()
 	{
 		m_thread = new tthread::thread(s_Job_ThreadFn, this);
 	}
 	
-	void Job::wait()
+	void ThreadJob::wait()
 	{
-		
+		tthread::thread* pThread = (tthread::thread*)m_thread;
+		pThread->join();
+	}
+
+	void ThreadJob::stop()
+	{
+		tthread::thread* pThread = (tthread::thread*)m_thread;
+		if (stopThread())
+			wait();
+		else
+			delete pThread; // destroy thread object
 		
 	}
 

@@ -5,24 +5,48 @@
 
 namespace jucpp
 {
+	class JobBase
+	{
+	public:
+		// Virtual methods to implemented
+		virtual void Execute() = 0;
+		virtual void OnFinish() {};
+		
+	protected:
+		friend class Job;
+		virtual void run() = 0;
+		virtual void wait() = 0;
+		virtual void stop() = 0;
+	};
+	
+	class ThreadJob : public JobBase
+	{
+	protected:
+		friend void s_Job_ThreadFn(void* p);
+		
+	protected:
+		virtual void run();
+		virtual void wait();
+		virtual void stop();
+		
+		virtual bool stopThread() { return false; }
+
+	private:
+		void* m_thread;
+	};
+	
 	class Job
 	{
 	public:
-		typedef void (*RunFn)();
-		typedef void (*FinishFn)();
-
-		Job(RunFn fnRun, FinishFn fnFinish = nullptr) : m_run(fnRun), m_finish(fnFinish) {}
-
-		void run();
-		void wait();
+		Job(JobBase* pJob) : m_pJob(pJob) {};
 		
+		void run() { m_pJob->run(); }
+		void wait() { m_pJob->wait(); }
+		void stop() { m_pJob->stop(); }
+
 	private:
-		RunFn m_run;
-		FinishFn m_finish;
-		
-		void* m_thread;
+		JobBase* m_pJob;
 	};
-
 }
 
 #endif // _JUCPP_H_
