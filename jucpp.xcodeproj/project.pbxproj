@@ -1,0 +1,395 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8C6EDF371B47B93900B92258 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF361B47B93900B92258 /* main.cpp */; };
+		8C6EDF591B47C09700B92258 /* jucpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF571B47C09700B92258 /* jucpp.h */; };
+		8C6EDF5A1B47C09700B92258 /* http.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF581B47C09700B92258 /* http.h */; };
+		8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF681B47CA2F00B92258 /* fast_mutex.h */; };
+		8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF691B47CA2F00B92258 /* tinythread.cpp */; };
+		8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF6A1B47CA2F00B92258 /* tinythread.h */; };
+		8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF6F1B47CA5100B92258 /* mongoose.c */; };
+		8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF701B47CA5100B92258 /* mongoose.h */; };
+		8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF731B47CA8A00B92258 /* http.cpp */; };
+		8C6EDF751B47D17700B92258 /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
+		8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF761B47D1AE00B92258 /* jucpp.cpp */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8C6EDF321B47B93900B92258 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		8C6EDF341B47B93900B92258 /* test1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test1; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C6EDF361B47B93900B92258 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8C6EDF4F1B47C02200B92258 /* libjucpp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjucpp.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C6EDF571B47C09700B92258 /* jucpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jucpp.h; path = jucpp/jucpp.h; sourceTree = "<group>"; };
+		8C6EDF581B47C09700B92258 /* http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = http.h; path = jucpp/http.h; sourceTree = "<group>"; };
+		8C6EDF681B47CA2F00B92258 /* fast_mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fast_mutex.h; path = libs/tthread/source/fast_mutex.h; sourceTree = "<group>"; };
+		8C6EDF691B47CA2F00B92258 /* tinythread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinythread.cpp; path = libs/tthread/source/tinythread.cpp; sourceTree = "<group>"; };
+		8C6EDF6A1B47CA2F00B92258 /* tinythread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinythread.h; path = libs/tthread/source/tinythread.h; sourceTree = "<group>"; };
+		8C6EDF6F1B47CA5100B92258 /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mongoose.c; path = libs/mongoose/mongoose.c; sourceTree = "<group>"; };
+		8C6EDF701B47CA5100B92258 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = libs/mongoose/mongoose.h; sourceTree = "<group>"; };
+		8C6EDF731B47CA8A00B92258 /* http.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http.cpp; path = jucpp/http.cpp; sourceTree = "<group>"; };
+		8C6EDF761B47D1AE00B92258 /* jucpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jucpp.cpp; path = jucpp/jucpp.cpp; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8C6EDF311B47B93900B92258 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6EDF751B47D17700B92258 /* libjucpp.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C6EDF4C1B47C02200B92258 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		8C6EDF1D1B47B90A00B92258 = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF5B1B47C09D00B92258 /* jucpp */,
+				8C6EDF351B47B93900B92258 /* test1 */,
+				8C6EDF271B47B90A00B92258 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		8C6EDF271B47B90A00B92258 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF341B47B93900B92258 /* test1 */,
+				8C6EDF4F1B47C02200B92258 /* libjucpp.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8C6EDF351B47B93900B92258 /* test1 */ = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF361B47B93900B92258 /* main.cpp */,
+			);
+			path = test1;
+			sourceTree = "<group>";
+		};
+		8C6EDF481B47BE2900B92258 /* mongoose */ = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF6F1B47CA5100B92258 /* mongoose.c */,
+				8C6EDF701B47CA5100B92258 /* mongoose.h */,
+			);
+			name = mongoose;
+			sourceTree = "<group>";
+		};
+		8C6EDF5B1B47C09D00B92258 /* jucpp */ = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF6E1B47CA3700B92258 /* tthread */,
+				8C6EDF481B47BE2900B92258 /* mongoose */,
+				8C6EDF581B47C09700B92258 /* http.h */,
+				8C6EDF731B47CA8A00B92258 /* http.cpp */,
+				8C6EDF571B47C09700B92258 /* jucpp.h */,
+				8C6EDF761B47D1AE00B92258 /* jucpp.cpp */,
+			);
+			name = jucpp;
+			sourceTree = "<group>";
+		};
+		8C6EDF6E1B47CA3700B92258 /* tthread */ = {
+			isa = PBXGroup;
+			children = (
+				8C6EDF681B47CA2F00B92258 /* fast_mutex.h */,
+				8C6EDF691B47CA2F00B92258 /* tinythread.cpp */,
+				8C6EDF6A1B47CA2F00B92258 /* tinythread.h */,
+			);
+			name = tthread;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		8C6EDF4D1B47C02200B92258 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6EDF5A1B47C09700B92258 /* http.h in Headers */,
+				8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */,
+				8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */,
+				8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */,
+				8C6EDF591B47C09700B92258 /* jucpp.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		8C6EDF331B47B93900B92258 /* test1 */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C6EDF381B47B93900B92258 /* Build configuration list for PBXNativeTarget "test1" */;
+			buildPhases = (
+				8C6EDF301B47B93900B92258 /* Sources */,
+				8C6EDF311B47B93900B92258 /* Frameworks */,
+				8C6EDF321B47B93900B92258 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = test1;
+			productName = test1;
+			productReference = 8C6EDF341B47B93900B92258 /* test1 */;
+			productType = "com.apple.product-type.tool";
+		};
+		8C6EDF4E1B47C02200B92258 /* jucpp */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C6EDF501B47C02200B92258 /* Build configuration list for PBXNativeTarget "jucpp" */;
+			buildPhases = (
+				8C6EDF4B1B47C02200B92258 /* Sources */,
+				8C6EDF4C1B47C02200B92258 /* Frameworks */,
+				8C6EDF4D1B47C02200B92258 /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = jucpp;
+			productName = jucpp;
+			productReference = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		8C6EDF1E1B47B90A00B92258 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "BeanOX UG";
+				TargetAttributes = {
+					8C6EDF331B47B93900B92258 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					8C6EDF4E1B47C02200B92258 = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = 8C6EDF211B47B90A00B92258 /* Build configuration list for PBXProject "jucpp" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 8C6EDF1D1B47B90A00B92258;
+			productRefGroup = 8C6EDF271B47B90A00B92258 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				8C6EDF331B47B93900B92258 /* test1 */,
+				8C6EDF4E1B47C02200B92258 /* jucpp */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8C6EDF301B47B93900B92258 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6EDF371B47B93900B92258 /* main.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C6EDF4B1B47C02200B92258 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */,
+				8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */,
+				8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */,
+				8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		8C6EDF2B1B47B90A00B92258 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+			};
+			name = Debug;
+		};
+		8C6EDF2C1B47B90A00B92258 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					"$(SRCROOT)",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = macosx;
+			};
+			name = Release;
+		};
+		8C6EDF391B47B93900B92258 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8C6EDF3A1B47B93900B92258 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+		8C6EDF511B47C02200B92258 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8C6EDF521B47C02200B92258 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				EXECUTABLE_PREFIX = lib;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		8C6EDF211B47B90A00B92258 /* Build configuration list for PBXProject "jucpp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C6EDF2B1B47B90A00B92258 /* Debug */,
+				8C6EDF2C1B47B90A00B92258 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C6EDF381B47B93900B92258 /* Build configuration list for PBXNativeTarget "test1" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C6EDF391B47B93900B92258 /* Debug */,
+				8C6EDF3A1B47B93900B92258 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8C6EDF501B47C02200B92258 /* Build configuration list for PBXNativeTarget "jucpp" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C6EDF511B47C02200B92258 /* Debug */,
+				8C6EDF521B47C02200B92258 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 8C6EDF1E1B47B90A00B92258 /* Project object */;
+}
