@@ -21,6 +21,13 @@ namespace jucpp
 		_jobBase->OnFinish();
 	}
 	
+	ThreadJob::~ThreadJob()
+	{
+		tthread::thread* pThread = (tthread::thread*)m_thread;
+		delete pThread;
+		m_thread = nullptr;
+	}
+	
 	void ThreadJob::run()
 	{
 		m_thread = new tthread::thread(s_Job_ThreadFn, this);
@@ -38,7 +45,7 @@ namespace jucpp
 		if (stopThread())
 			wait();
 		else
-			delete pThread; // destroy thread object
+			delete pThread, m_thread = nullptr; // destroy thread object
 		
 	}
 

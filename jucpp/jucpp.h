@@ -3,8 +3,18 @@
 
 #include <stdio.h>
 
+#include <map>
+#include <string>
+
+
 namespace jucpp
 {
+	
+	class StringStringMap : public std::map<std::string, std::string>
+	{
+		
+	};
+	
 	class JobBase
 	{
 	public:
@@ -21,6 +31,8 @@ namespace jucpp
 	
 	class ThreadJob : public JobBase
 	{
+	public:
+		~ThreadJob();
 	protected:
 		friend void s_Job_ThreadFn(void* p);
 		

@@ -16,11 +16,9 @@ int main()
 {
 	Server server = Http::createServer([](const Request &req, Response &res)
 		 {
-			 //http_server.getInfo();
-												 
-			 res.writeHead(200, "Content-Type: text/plain");
-			 res.end("Hello from JuCpp\n");
-			 
+			 res.write("Hello from JuCpp ");
+			 res.write(req.Url());
+			 res.write(req.RawHeaders());
 			 printf("Request arrived\n");
 		 });
 	

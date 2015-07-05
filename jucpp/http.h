@@ -11,14 +11,30 @@ namespace jucpp { namespace http {
 
 	class Request
 	{
+	public:
+		Request(void* connection);
+		
+		const char* HttpVersion() const { return m_httpVersion.c_str(); }
+		const char* Headers(const char* name) const;
+		const char* RawHeaders() const { return m_rawHeaders.c_str(); }
+		const char* Method() const { return m_method.c_str(); }
+		const char* Url() const { return m_url.c_str(); }
+		
+	private:
+		StringStringMap m_headers;
+		std::string m_rawHeaders;
+		std::string m_httpVersion;
+		std::string m_method; // GET, POST, PUT, etc..
+		std::string m_url;
 	};
 	
 	class Response
 	{
 	public:
-		void writeHead(int code, const char* header) {}
-		void end(std::string text) { m_output += text; }
+		void writeHead(int code, const StringStringMap& headers) {}
 		
+		void write(const char* text) { m_output += text; }
+
 		const std::string& getContent() { return m_output; }
 
 	private: //TODO: make it private
