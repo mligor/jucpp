@@ -7,6 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDA1B51A2FE00BA589C /* autolink.h */; };
+		8C6E7BEA1B51A2FE00BA589C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDB1B51A2FE00BA589C /* config.h */; };
+		8C6E7BEB1B51A2FE00BA589C /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDC1B51A2FE00BA589C /* features.h */; };
+		8C6E7BEC1B51A2FE00BA589C /* forwards.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDD1B51A2FE00BA589C /* forwards.h */; };
+		8C6E7BED1B51A2FE00BA589C /* json_batchallocator.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDE1B51A2FE00BA589C /* json_batchallocator.h */; };
+		8C6E7BEE1B51A2FE00BA589C /* json_reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E7BE11B51A2FE00BA589C /* json_reader.cpp */; };
+		8C6E7BEF1B51A2FE00BA589C /* json_value.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E7BE21B51A2FE00BA589C /* json_value.cpp */; };
+		8C6E7BF01B51A2FE00BA589C /* json_writer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6E7BE41B51A2FE00BA589C /* json_writer.cpp */; };
+		8C6E7BF11B51A2FE00BA589C /* json.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BE51B51A2FE00BA589C /* json.h */; };
+		8C6E7BF21B51A2FE00BA589C /* reader.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BE61B51A2FE00BA589C /* reader.h */; };
+		8C6E7BF31B51A2FE00BA589C /* value.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BE71B51A2FE00BA589C /* value.h */; };
+		8C6E7BF41B51A2FE00BA589C /* writer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BE81B51A2FE00BA589C /* writer.h */; };
 		8C6EDF371B47B93900B92258 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF361B47B93900B92258 /* main.cpp */; };
 		8C6EDF591B47C09700B92258 /* jucpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF571B47C09700B92258 /* jucpp.h */; };
 		8C6EDF5A1B47C09700B92258 /* http.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF581B47C09700B92258 /* http.h */; };
@@ -33,6 +45,21 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C6E7BDA1B51A2FE00BA589C /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = libs/json/autolink.h; sourceTree = "<group>"; };
+		8C6E7BDB1B51A2FE00BA589C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = libs/json/config.h; sourceTree = "<group>"; };
+		8C6E7BDC1B51A2FE00BA589C /* features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = features.h; path = libs/json/features.h; sourceTree = "<group>"; };
+		8C6E7BDD1B51A2FE00BA589C /* forwards.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = forwards.h; path = libs/json/forwards.h; sourceTree = "<group>"; };
+		8C6E7BDE1B51A2FE00BA589C /* json_batchallocator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json_batchallocator.h; path = libs/json/json_batchallocator.h; sourceTree = "<group>"; };
+		8C6E7BDF1B51A2FE00BA589C /* json_internalarray.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_internalarray.inl; path = libs/json/json_internalarray.inl; sourceTree = "<group>"; };
+		8C6E7BE01B51A2FE00BA589C /* json_internalmap.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_internalmap.inl; path = libs/json/json_internalmap.inl; sourceTree = "<group>"; };
+		8C6E7BE11B51A2FE00BA589C /* json_reader.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_reader.cpp; path = libs/json/json_reader.cpp; sourceTree = "<group>"; };
+		8C6E7BE21B51A2FE00BA589C /* json_value.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_value.cpp; path = libs/json/json_value.cpp; sourceTree = "<group>"; };
+		8C6E7BE31B51A2FE00BA589C /* json_valueiterator.inl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = json_valueiterator.inl; path = libs/json/json_valueiterator.inl; sourceTree = "<group>"; };
+		8C6E7BE41B51A2FE00BA589C /* json_writer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = json_writer.cpp; path = libs/json/json_writer.cpp; sourceTree = "<group>"; };
+		8C6E7BE51B51A2FE00BA589C /* json.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = json.h; path = libs/json/json.h; sourceTree = "<group>"; };
+		8C6E7BE61B51A2FE00BA589C /* reader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = reader.h; path = libs/json/reader.h; sourceTree = "<group>"; };
+		8C6E7BE71B51A2FE00BA589C /* value.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = value.h; path = libs/json/value.h; sourceTree = "<group>"; };
+		8C6E7BE81B51A2FE00BA589C /* writer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = writer.h; path = libs/json/writer.h; sourceTree = "<group>"; };
 		8C6EDF341B47B93900B92258 /* test1 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = test1; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C6EDF361B47B93900B92258 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		8C6EDF4F1B47C02200B92258 /* libjucpp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjucpp.a; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -66,6 +93,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C6E7BBE1B51A28B00BA589C /* json */ = {
+			isa = PBXGroup;
+			children = (
+				8C6E7BDA1B51A2FE00BA589C /* autolink.h */,
+				8C6E7BDB1B51A2FE00BA589C /* config.h */,
+				8C6E7BDC1B51A2FE00BA589C /* features.h */,
+				8C6E7BDD1B51A2FE00BA589C /* forwards.h */,
+				8C6E7BDE1B51A2FE00BA589C /* json_batchallocator.h */,
+				8C6E7BDF1B51A2FE00BA589C /* json_internalarray.inl */,
+				8C6E7BE01B51A2FE00BA589C /* json_internalmap.inl */,
+				8C6E7BE11B51A2FE00BA589C /* json_reader.cpp */,
+				8C6E7BE21B51A2FE00BA589C /* json_value.cpp */,
+				8C6E7BE31B51A2FE00BA589C /* json_valueiterator.inl */,
+				8C6E7BE41B51A2FE00BA589C /* json_writer.cpp */,
+				8C6E7BE51B51A2FE00BA589C /* json.h */,
+				8C6E7BE61B51A2FE00BA589C /* reader.h */,
+				8C6E7BE71B51A2FE00BA589C /* value.h */,
+				8C6E7BE81B51A2FE00BA589C /* writer.h */,
+			);
+			name = json;
+			sourceTree = "<group>";
+		};
 		8C6EDF1D1B47B90A00B92258 = {
 			isa = PBXGroup;
 			children = (
@@ -104,6 +153,7 @@
 		8C6EDF5B1B47C09D00B92258 /* jucpp */ = {
 			isa = PBXGroup;
 			children = (
+				8C6E7BBE1B51A28B00BA589C /* json */,
 				8C6EDF6E1B47CA3700B92258 /* tthread */,
 				8C6EDF481B47BE2900B92258 /* mongoose */,
 				8C6EDF581B47C09700B92258 /* http.h */,
@@ -134,8 +184,17 @@
 				8C6EDF5A1B47C09700B92258 /* http.h in Headers */,
 				8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */,
 				8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */,
+				8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */,
+				8C6E7BEC1B51A2FE00BA589C /* forwards.h in Headers */,
+				8C6E7BF21B51A2FE00BA589C /* reader.h in Headers */,
+				8C6E7BED1B51A2FE00BA589C /* json_batchallocator.h in Headers */,
 				8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */,
+				8C6E7BF31B51A2FE00BA589C /* value.h in Headers */,
+				8C6E7BF41B51A2FE00BA589C /* writer.h in Headers */,
 				8C6EDF591B47C09700B92258 /* jucpp.h in Headers */,
+				8C6E7BF11B51A2FE00BA589C /* json.h in Headers */,
+				8C6E7BEA1B51A2FE00BA589C /* config.h in Headers */,
+				8C6E7BEB1B51A2FE00BA589C /* features.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,10 +283,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8C6E7BEE1B51A2FE00BA589C /* json_reader.cpp in Sources */,
+				8C6E7BEF1B51A2FE00BA589C /* json_value.cpp in Sources */,
 				8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */,
 				8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */,
 				8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */,
 				8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */,
+				8C6E7BF01B51A2FE00BA589C /* json_writer.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -273,6 +335,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)",
+					"$(SRCROOT)/libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -314,6 +377,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)",
+					"$(SRCROOT)/libs",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				MTL_ENABLE_DEBUG_INFO = NO;

@@ -8,6 +8,7 @@
 
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
+#include <unistd.h>
 
 using namespace jucpp;
 using namespace jucpp::http;
@@ -16,10 +17,11 @@ int main()
 {
 	Server server = Http::createServer([](const Request &req, Response &res)
 		 {
+			 //usleep(1000000);
 			 res.write("Hello from JuCpp ");
 			 res.write(req.Url());
-			 res.write(req.RawHeaders());
-			 printf("Request arrived\n");
+			 //res.write(req.RawHeaders());
+			 //printf("Request arrived\n");
 		 });
 	
 	Job serverJob = server.listen(8000);
