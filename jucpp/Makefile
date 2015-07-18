@@ -1,5 +1,5 @@
 CC = g++
-CXXFLAGS = -g -O2 -Wall -std=c++11 -stdlib=libc++ -I$(CURDIR)/.. -I$(CURDIR)/../libs
+CXXFLAGS = -g -O2 -Wall -std=c++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = 
 
 OUT_NAME = $(CURDIR)/../jucpp.a
