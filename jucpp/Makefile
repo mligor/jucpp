@@ -1,6 +1,6 @@
-CC = @CC@
-CXXFLAGS = @CXXFLAGS@ -Wall -std=c++11 -stdlib=libc++ -I$(CURDIR)/.. -I$(CURDIR)/../libs
-LDFLAGS = @LDFLAGS@
+CC = g++
+CXXFLAGS = -g -O2 -Wall -std=c++11 -stdlib=libc++ -I$(CURDIR)/.. -I$(CURDIR)/../libs
+LDFLAGS = 
 
 OUT_NAME = jucpp.a
 BUILD_DIR = $(CURDIR)/../build
