@@ -31,14 +31,19 @@ namespace jucpp { namespace http {
 	class Response
 	{
 	public:
-		void writeHead(int code, const StringStringMap& headers) {}
+		Response() : m_status(200) {}
+		void writeHead(int status, const StringStringMap& headers) { m_headers = headers; m_status = status; }
 		
 		void write(const char* text) { m_output += text; }
 
 		const std::string& getContent() { return m_output; }
+		const int getStatus() const { return m_status; }
+		const StringStringMap& getHeaders() const { return m_headers; }
 
 	private: //TODO: make it private
 		std::string m_output;
+		StringStringMap m_headers;
+		int m_status;
 	};
 	
 	class Server

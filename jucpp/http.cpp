@@ -34,6 +34,11 @@ namespace jucpp { namespace http {
 			Response res;
 			int ret = _this->EventHandler(req, res);
 			
+			mg_send_status((mg_connection*)conn, res.getStatus());
+			
+			const StringStringMap& headers = res.getHeaders();
+			for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
+				mg_send_header((mg_connection*)conn, (*it).first.c_str(), (*it).second.c_str());
 			
 			mg_printf_data((mg_connection*)conn, "%s", res.getContent().c_str());
 			

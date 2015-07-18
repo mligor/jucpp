@@ -10,6 +10,8 @@
 #include <jucpp/http.h>
 #include <unistd.h>
 
+#include <json/json.h>
+
 using namespace jucpp;
 using namespace jucpp::http;
 
@@ -18,10 +20,19 @@ int main()
 	Server server = Http::createServer([](const Request &req, Response &res)
 		 {
 			 //usleep(1000000);
-			 res.write("Hello from JuCpp ");
-			 res.write(req.Url());
-			 //res.write(req.RawHeaders());
-			 //printf("Request arrived\n");
+			 
+			 Json::FastWriter writer;
+			 
+			 Json::Value result;
+			 result["description"] = "Hello from JuCpp";
+			 result["error_code"] = 200;
+			 result["url"] = req.Url();
+
+			 StringStringMap headers;
+			 headers["Content-Type"] = "application/json";
+			 res.writeHead(200, headers);
+			 
+			 res.write(writer.write(result).c_str());
 		 });
 	
 	Job serverJob = server.listen(8000);
