@@ -2,7 +2,7 @@ CC = g++
 CXXFLAGS = -g -O2 -Wall -std=c++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = 
 
-OUT_NAME = $(CURDIR)/../jucpp.a
+OUT_NAME = $(CURDIR)/../libjucpp.a
 BUILD_DIR = $(CURDIR)/../build
 
 JUCPP_FILES := http.cpp jucpp.cpp
@@ -20,7 +20,7 @@ all: $(OUT_NAME)
 
 $(OUT_NAME): $(JUCPP_OBJ_FILES) $(OBJ_FILES)
 	mkdir -p $(dir $@)
-	ar rvs $@ $^
+	ar rcvs $@ $^
 
 $(BUILD_DIR)/json_lib.obj: $(JSON_FILES)
 	mkdir -p $(dir $@)
