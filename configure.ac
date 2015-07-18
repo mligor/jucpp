@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([jucpp], [1.0], [BUG-REPORT-ADDRESS])
+AC_INIT([jucpp], [1.0])
 AC_CONFIG_SRCDIR([jucpp/http.cpp])
 AC_CONFIG_HEADERS([config.h])
 
