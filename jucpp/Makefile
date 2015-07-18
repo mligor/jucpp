@@ -8,13 +8,9 @@ BUILD_DIR = $(CURDIR)/../build
 JUCPP_FILES := http.cpp jucpp.cpp
 JUCPP_OBJ_FILES := $(addprefix $(BUILD_DIR)/, $(patsubst %.cpp, %.obj, $(JUCPP_FILES)))
 
-JSON_FILES := ../libs/json/json_reader.cpp ../libs/json/json_value.cpp ../libs/json/json_writer.cpp 
-MONGOOSE_FILES := ../libs/mongoose/mongoose.c
-TTHREAD_FILES := ../libs/tthread/source/tinythread.cpp
-
 CPP_FILES := $(JUCPP_FILES) 
 
-OBJ_FILES := $(JUCPP_OBJ_FILES) $(BUILD_DIR)/json_lib.obj $(BUILD_DIR)/mongoose_lib.obj $(BUILD_DIR)/tthread_lib.obj
+OBJ_FILES := $(JUCPP_OBJ_FILES) $(BUILD_DIR)/json_lib/json_writer.obj $(BUILD_DIR)/json_lib/json_reader.obj $(BUILD_DIR)/json_lib/json_value.obj $(BUILD_DIR)/mongoose_lib.obj $(BUILD_DIR)/tthread_lib.obj
 
 all: $(OUT_NAME)
 
@@ -22,15 +18,26 @@ $(OUT_NAME): $(JUCPP_OBJ_FILES) $(OBJ_FILES)
 	mkdir -p $(dir $@)
 	ar rcvs $@ $^
 
-$(BUILD_DIR)/json_lib.obj: $(JSON_FILES)
+
+$(BUILD_DIR)/json_lib/json_writer.obj : ../libs/json/json_writer.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/mongoose_lib.obj: $(MONGOOSE_FILES)
+$(BUILD_DIR)/json_lib/json_reader.obj : ../libs/json/json_reader.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/tthread_lib.obj: $(TTHREAD_FILES)
+$(BUILD_DIR)/json_lib/json_value.obj : ../libs/json/json_value.cpp
+	mkdir -p $(dir $@)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+
+
+
+$(BUILD_DIR)/mongoose_lib.obj: ../libs/mongoose/mongoose.c
+	mkdir -p $(dir $@)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+
+$(BUILD_DIR)/tthread_lib.obj: ../libs/tthread/source/tinythread.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 	

@@ -225,3 +225,6 @@ xcuserdata/
 #*.xccheckout
 jucpp.a
 libjucpp.a
+hello_http.dSYM
+hello_http
+
