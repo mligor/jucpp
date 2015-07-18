@@ -4,11 +4,13 @@
 AC_PREREQ([2.69])
 AC_INIT([jucpp], [1.0])
 AC_CONFIG_SRCDIR([jucpp/http.cpp])
-AC_CONFIG_HEADERS([config.h])
+
+AC_SUBST([GLOBAL_CXXFLAGS], ['-Wall'])
 
 # Checks for programs.
+AX_CXX_COMPILE_STDCXX_11
 AC_PROG_CXX
-AC_PROG_CC
+#AC_PROG_CC
 
 # Checks for libraries.
 
