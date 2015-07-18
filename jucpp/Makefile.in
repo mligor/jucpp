@@ -1,0 +1,52 @@
+CC = @CC@
+CXXFLAGS = @CXXFLAGS@ -Wall -std=c++11 -stdlib=libc++ -I$(CURDIR)/.. -I$(CURDIR)/../libs
+LDFLAGS = @LDFLAGS@
+
+OUT_NAME = jucpp.a
+BUILD_DIR = $(CURDIR)/../build
+
+JUCPP_FILES := http.cpp jucpp.cpp
+JUCPP_OBJ_FILES := $(addprefix $(BUILD_DIR)/, $(patsubst %.cpp, %.obj, $(JUCPP_FILES)))
+
+JSON_FILES := ../libs/json/json_reader.cpp ../libs/json/json_value.cpp ../libs/json/json_writer.cpp 
+MONGOOSE_FILES := ../libs/mongoose/mongoose.c
+TTHREAD_FILES := ../libs/tthread/source/tinythread.cpp
+
+
+CPP_FILES := $(JUCPP_FILES) 
+
+OBJ_FILES := $(JUCPP_OBJ_FILES) $(BUILD_DIR)/json_lib.obj $(BUILD_DIR)/mongoose_lib.obj $(BUILD_DIR)/tthread_lib.obj
+
+
+all: $(OUT_NAME)
+
+$(OUT_NAME): $(JUCPP_OBJ_FILES) $(OBJ_FILES)
+	$(CC) $(LDFLAGS) -static -o $@ $^
+
+
+
+$(BUILD_DIR)/json_lib.obj: $(JSON_FILES)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+
+$(BUILD_DIR)/mongoose_lib.obj: $(MONGOOSE_FILES)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+
+$(BUILD_DIR)/tthread_lib.obj: $(TTHREAD_FILES)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+	
+$(BUILD_DIR)/%.obj: %.cpp
+	echo $@
+	mkdir -p $(dir $@)
+	$(CC) $(CXXFLAGS) -c -o $@ $<
+	
+	
+
+clean:
+	rm -f $(OUT_NAME) $(OBJ_FILES)
+	rm -rf $(BUILD_DIR)
+
+distclean:
+	rm -f $(OUT_NAME) $(OBJ_FILES) config.* Makefile
+	rm -rf $(BUILD_DIR)
+
+
