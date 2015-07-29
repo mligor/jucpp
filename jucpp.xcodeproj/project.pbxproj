@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8C1A1DE21B68E9B30083CBA3 /* sqlite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A1DE11B68E9B30083CBA3 /* sqlite.cpp */; };
+		8C1A1DE91B6967DC0083CBA3 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C1A1DE51B6967DC0083CBA3 /* sqlite3.c */; };
+		8C1A1DEA1B6967DC0083CBA3 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C1A1DE61B6967DC0083CBA3 /* sqlite3.h */; };
+		8C1A1DEB1B6967DC0083CBA3 /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C1A1DE71B6967DC0083CBA3 /* sqlite3ext.h */; };
 		8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDA1B51A2FE00BA589C /* autolink.h */; };
 		8C6E7BEA1B51A2FE00BA589C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDB1B51A2FE00BA589C /* config.h */; };
 		8C6E7BEB1B51A2FE00BA589C /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDC1B51A2FE00BA589C /* features.h */; };
@@ -45,6 +49,11 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		8C1A1DE01B68E7380083CBA3 /* sqlite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = sqlite.h; path = jucpp/sqlite.h; sourceTree = "<group>"; };
+		8C1A1DE11B68E9B30083CBA3 /* sqlite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = sqlite.cpp; path = jucpp/sqlite.cpp; sourceTree = "<group>"; };
+		8C1A1DE51B6967DC0083CBA3 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
+		8C1A1DE61B6967DC0083CBA3 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
+		8C1A1DE71B6967DC0083CBA3 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
 		8C6E7BDA1B51A2FE00BA589C /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = libs/json/autolink.h; sourceTree = "<group>"; };
 		8C6E7BDB1B51A2FE00BA589C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = libs/json/config.h; sourceTree = "<group>"; };
 		8C6E7BDC1B51A2FE00BA589C /* features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = features.h; path = libs/json/features.h; sourceTree = "<group>"; };
@@ -72,6 +81,7 @@
 		8C6EDF701B47CA5100B92258 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = libs/mongoose/mongoose.h; sourceTree = "<group>"; };
 		8C6EDF731B47CA8A00B92258 /* http.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http.cpp; path = jucpp/http.cpp; sourceTree = "<group>"; };
 		8C6EDF761B47D1AE00B92258 /* jucpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jucpp.cpp; path = jucpp/jucpp.cpp; sourceTree = "<group>"; };
+		8CFBDAF41B68C44A008FB438 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = TODO.md; path = jucpp/TODO.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +103,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		8C1A1DE31B6967DC0083CBA3 /* sqlite */ = {
+			isa = PBXGroup;
+			children = (
+				8C1A1DE51B6967DC0083CBA3 /* sqlite3.c */,
+				8C1A1DE61B6967DC0083CBA3 /* sqlite3.h */,
+				8C1A1DE71B6967DC0083CBA3 /* sqlite3ext.h */,
+			);
+			name = sqlite;
+			path = libs/sqlite;
+			sourceTree = "<group>";
+		};
 		8C6E7BBE1B51A28B00BA589C /* json */ = {
 			isa = PBXGroup;
 			children = (
@@ -153,6 +174,7 @@
 		8C6EDF5B1B47C09D00B92258 /* jucpp */ = {
 			isa = PBXGroup;
 			children = (
+				8C1A1DE31B6967DC0083CBA3 /* sqlite */,
 				8C6E7BBE1B51A28B00BA589C /* json */,
 				8C6EDF6E1B47CA3700B92258 /* tthread */,
 				8C6EDF481B47BE2900B92258 /* mongoose */,
@@ -160,6 +182,9 @@
 				8C6EDF731B47CA8A00B92258 /* http.cpp */,
 				8C6EDF571B47C09700B92258 /* jucpp.h */,
 				8C6EDF761B47D1AE00B92258 /* jucpp.cpp */,
+				8C1A1DE01B68E7380083CBA3 /* sqlite.h */,
+				8C1A1DE11B68E9B30083CBA3 /* sqlite.cpp */,
+				8CFBDAF41B68C44A008FB438 /* TODO.md */,
 			);
 			name = jucpp;
 			sourceTree = "<group>";
@@ -185,9 +210,11 @@
 				8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */,
 				8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */,
 				8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */,
+				8C1A1DEA1B6967DC0083CBA3 /* sqlite3.h in Headers */,
 				8C6E7BEC1B51A2FE00BA589C /* forwards.h in Headers */,
 				8C6E7BF21B51A2FE00BA589C /* reader.h in Headers */,
 				8C6E7BED1B51A2FE00BA589C /* json_batchallocator.h in Headers */,
+				8C1A1DEB1B6967DC0083CBA3 /* sqlite3ext.h in Headers */,
 				8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */,
 				8C6E7BF31B51A2FE00BA589C /* value.h in Headers */,
 				8C6E7BF41B51A2FE00BA589C /* writer.h in Headers */,
@@ -288,8 +315,10 @@
 				8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */,
 				8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */,
 				8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */,
+				8C1A1DE21B68E9B30083CBA3 /* sqlite.cpp in Sources */,
 				8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */,
 				8C6E7BF01B51A2FE00BA589C /* json_writer.cpp in Sources */,
+				8C1A1DE91B6967DC0083CBA3 /* sqlite3.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

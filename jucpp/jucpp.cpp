@@ -12,6 +12,11 @@
 
 namespace jucpp
 {
+	// String
+	
+	const String String::EmptyString = {};
+	const Variant EmptyVariant = {};
+	
 	// ThreadJob
 	
 	void s_Job_ThreadFn(void* p)
