@@ -6,11 +6,46 @@
 #include <map>
 #include <string>
 
+#include <json/json.h>
+
 
 namespace jucpp
 {
 	
-	class StringStringMap : public std::map<std::string, std::string>
+	class String : public std::string
+	{
+	public:
+		String() {}
+		String(const char* chrValue, size_type len) : std::string(chrValue, len) {}
+		String(const char* chrVal) : std::string(chrVal) {}
+		
+		static const String EmptyString;
+	};
+	
+	using Variant = Json::Value;
+	
+	extern const Variant EmptyVariant;
+
+	class Object : public Json::Value
+	{
+	public:
+		Object() : Json::Value(Json::ValueType::objectValue) {}
+		
+	};
+	
+	class Array : public Json::Value
+	{
+	public:
+		Array() : Json::Value(Json::ValueType::arrayValue) {}
+		Array(std::initializer_list<Json::Value> data)
+		{
+			for (auto it = data.begin(); it != data.end(); it++)
+				append((*it));
+		}
+		Json::Value& operator[]( const char *key ) = delete;
+	};
+	
+	class StringStringMap : public std::map<String, String>
 	{
 		
 	};
@@ -52,7 +87,7 @@ namespace jucpp
 	public:
 		Job(JobBase* pJob) : m_pJob(pJob) {};
 		
-		void run() { m_pJob->run(); }
+		void run()	{ m_pJob->run(); }
 		void wait() { m_pJob->wait(); }
 		void stop() { m_pJob->stop(); }
 

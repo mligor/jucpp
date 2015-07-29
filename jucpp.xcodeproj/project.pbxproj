@@ -72,6 +72,7 @@
 		8C6EDF701B47CA5100B92258 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = libs/mongoose/mongoose.h; sourceTree = "<group>"; };
 		8C6EDF731B47CA8A00B92258 /* http.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http.cpp; path = jucpp/http.cpp; sourceTree = "<group>"; };
 		8C6EDF761B47D1AE00B92258 /* jucpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jucpp.cpp; path = jucpp/jucpp.cpp; sourceTree = "<group>"; };
+		8CFBDAF41B68C44A008FB438 /* TODO.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; name = TODO.md; path = jucpp/TODO.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -160,6 +161,7 @@
 				8C6EDF731B47CA8A00B92258 /* http.cpp */,
 				8C6EDF571B47C09700B92258 /* jucpp.h */,
 				8C6EDF761B47D1AE00B92258 /* jucpp.cpp */,
+				8CFBDAF41B68C44A008FB438 /* TODO.md */,
 			);
 			name = jucpp;
 			sourceTree = "<group>";

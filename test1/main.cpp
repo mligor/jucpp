@@ -10,48 +10,54 @@
 #include <jucpp/http.h>
 #include <unistd.h>
 
-#include <json/json.h>
+
 
 using namespace jucpp;
 using namespace jucpp::http;
 
 int main()
 {
+	// Server decalaration
 	Server server = Http::createServer([](const Request &req, Response &res)
 		 {
 			 //usleep(1000000);
-			 
-			 Json::FastWriter writer;
-			 
-			 Json::Value result;
-			 result["description"] = "Hello from JuCpp";
-			 result["error_code"] = 200;
-			 result["url"] = req.Url();
 
-			 StringStringMap headers;
-			 headers["Content-Type"] = "application/json";
-			 res.writeHead(200, headers);
+			 res.addHeader("Content-Type", "application/json");
+			 res.setStatus(200, "Everything OK");
 			 
-			 res.write(writer.write(result).c_str());
+			 Array listOfElements = {1,111,222, "MyList"};
+			 listOfElements.append(134);
+			 listOfElements.append("How are you");
+			 listOfElements.append(L"Unicode string"); // NOT working !!
+			 
+			 Object data;
+			 data["mylist"] = listOfElements;
+			 data["Status"]["code"] = 200;
+			 data["Status"]["text"] = "Everything is OK";
+			 data["Requested Url"] = req.Url();
+			 
+			 data["From_Request"]["Accept-Language"] = req.Headers("Accept-Language");
+			 
+			 data["secondList"].append(1);
+			 data["secondList"].append(2);
+			 data["secondList"].append(101);
+			 
+			 data["_Content"] = req.Content();
+			 
+			 data["_Content_json"] = req.ContentAsJson();
+			 
+			 data["_Content_json_data"] = req.Data("data");
+			 data["_Content_json_first_array_element"] = req.Data((unsigned int)0);
+			 
+			 res.write(data);
 		 });
 	
 	Job serverJob = server.listen(8000);
 	
 	printf("Server is running at http://127.0.0.1:8000/\n");
 	
-	Job* pCtrlJob = nullptr;
-	
-	Job ctrlJob = Http::createServer([&serverJob, &pCtrlJob](const Request& req, Response& res)
-					   {
-						   serverJob.stop();
-						   pCtrlJob->stop();
-						   
-					   }).listen(8001);
-	
-	pCtrlJob = &ctrlJob;
-	ctrlJob.wait();
-
 	serverJob.wait();
+	
 	return 0;
 }
 

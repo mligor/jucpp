@@ -9,6 +9,7 @@
 #include "http.h"
 
 #include <libs/mongoose/mongoose.h>
+#include <libs/json/json.h>
 
 
 #include <string.h>
@@ -114,16 +115,42 @@ namespace jucpp { namespace http {
 		}
 		
 		m_httpVersion = pConn->http_version;
+
+		//TODO: parse headers and body
+		
+		
 		//m_rawHeaders = pConn->content;
+		
+		m_content = String(pConn->content, pConn->content_len);
 	}
 	
-	const char* Request::Headers(const char *name) const
+	const Variant& Request::ContentAsJson() const
+	{
+		if (m_jsonContentParsed)
+			return m_jsonContent;
+		
+		Json::Reader reader;
+		reader.parse(Content(), m_jsonContent);
+
+		return m_jsonContent;
+	}
+	
+	const String& Request::Headers(const String& name) const
 	{
 		StringStringMap::const_iterator it = m_headers.find(name);
 		if (it == m_headers.end())
-			return nullptr;
+			return String::EmptyString;
 		
-		return (*it).second.c_str();
+		return (*it).second;
 	}
+	
+	// Response
+
+	void Response::write(const Json::Value& v)
+	{
+		write(Json::FastWriter().write(v).c_str());
+	}
+	
+	
 
 }} // namespaces

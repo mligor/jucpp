@@ -9,43 +9,87 @@
 
 namespace jucpp { namespace http {
 
+	/**
+	 HTTP Request object
+	 */
 	class Request
 	{
 	public:
 		Request(void* connection);
 		
-		const char* HttpVersion() const { return m_httpVersion.c_str(); }
-		const char* Headers(const char* name) const;
-		const char* RawHeaders() const { return m_rawHeaders.c_str(); }
-		const char* Method() const { return m_method.c_str(); }
-		const char* Url() const { return m_url.c_str(); }
+		const String& HttpVersion() const { return m_httpVersion; }
+		const String& Headers(const String& name) const;
+		const String& RawHeaders() const { return m_rawHeaders; }
+		const String& Content() const { return m_content; }
+		const Variant& ContentAsJson() const;
+		const String& Method() const { return m_method; }
+		const String& Url() const { return m_url; }
+		
+		const Variant& Data() const { return ContentAsJson(); }
+		const Variant& Data(const char* key) const
+		{
+			if (ContentAsJson().isObject())
+				return ContentAsJson()[key];
+			return EmptyVariant;
+		}
+		const Variant& Data(const String& key) const { return Data(key.c_str()); }
+		const Variant& Data(unsigned int idx) const
+		{
+			if (ContentAsJson().isArray())
+				return ContentAsJson()[idx];
+			return EmptyVariant;
+		}
 		
 	private:
 		StringStringMap m_headers;
-		std::string m_rawHeaders;
-		std::string m_httpVersion;
-		std::string m_method; // GET, POST, PUT, etc..
-		std::string m_url;
+		String m_rawHeaders;
+		String m_httpVersion;
+		String m_method; // GET, POST, PUT, etc..
+		String m_url;
+		
+		String m_content;
+		
+	private:
+		bool m_jsonContentParsed = false;
+		mutable Variant m_jsonContent; // dont't use it directly, always use ContetAsJson() or Data()
 	};
 	
+	/**
+	 HTTP Response Object @see Http::createServer
+	 */
 	class Response
 	{
 	public:
 		Response() : m_status(200) {}
-		void writeHead(int status, const StringStringMap& headers) { m_headers = headers; m_status = status; }
 		
-		void write(const char* text) { m_output += text; }
+		void write(const char* text) { if (text) m_output += text; }
+		void write(const Json::Value& v);
 
-		const std::string& getContent() { return m_output; }
+		const String& getContent() { return m_output; }
 		const int getStatus() const { return m_status; }
 		const StringStringMap& getHeaders() const { return m_headers; }
+		
+		/// Set response status code
+		void setStatus(int status, const String& statusText = String{}) { m_status = status; m_statusText = statusText; }
+		
+		/// Add custom header to the response
+		void addHeader(const String& name, const String& value) { m_headers[name] = value; }
+		
+
+	protected:
+		void writeHead(int status, const StringStringMap& headers) { m_headers = headers; m_status = status; }
 
 	private: //TODO: make it private
-		std::string m_output;
+		String m_output;
 		StringStringMap m_headers;
 		int m_status;
+		String m_statusText;
 	};
 	
+	
+	/**
+	 HTTP Server object
+	 */
 	class Server
 	{
 	public:
@@ -82,21 +126,33 @@ namespace jucpp { namespace http {
 	class Http
 	{
 	public:
-		Http() 
-		{
-			
-		}
-		
+		/**
+		 Creates server object with given Server Event funciton @fn
+		 
+		 Example:
+		 @code
+Server server = Http::createServer([](const Request &req, Response &res)
+{
+	res.addHeader("Content-Type", "application/json");
+	res.setStatus(200);
+
+	Object data;
+	data["text"] = "Hallo world";
+
+	res.write(data);
+});
+		 @endcode
+		 @param fn 
+			Server event function that will be called on every request
+		 @return @c Server object @see Server
+		 
+		 */
 		static Server createServer(Server::ServerFn fn)
 		{
 			Server serv(fn);
 			return serv;
 		}
 		
-		std::wstring getInfo()
-		{
-			return L"this is info";
-		}
 	};
 	
 // namespace end
