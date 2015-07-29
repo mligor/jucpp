@@ -1,5 +1,7 @@
 CC = g++
+C = gcc
 CXXFLAGS = -g -O2 -Wall -std=c++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
+CFLAGS = -g -O2 -Wall -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = 
 
 OUT_NAME = $(CURDIR)/../libjucpp.a
@@ -33,7 +35,7 @@ $(BUILD_DIR)/json_lib/json_value.obj : ../libs/json/json_value.cpp
 
 $(BUILD_DIR)/sqlite_lib.obj : ../libs/sqlite/sqlite3.c
 	mkdir -p $(dir $@)
-	$(CC) $(CXXFLAGS) -c -o $@ $<
+	$(C) $(CFLAGS) -c -o $@ $<
 
 
 
