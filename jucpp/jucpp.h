@@ -42,6 +42,11 @@ namespace jucpp
 			for (auto it = data.begin(); it != data.end(); it++)
 				append((*it));
 		}
+		
+		Json::Value& operator[](unsigned int idx)
+		{
+			return Json::Value::operator[](idx);
+		}
 		Json::Value& operator[]( const char *key ) = delete;
 	};
 	

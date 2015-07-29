@@ -8,12 +8,13 @@
 
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
-#include <unistd.h>
-
+#include <jucpp/sqlite.h>
 
 
 using namespace jucpp;
 using namespace jucpp::http;
+using namespace jucpp::sqlite;
+
 
 int main()
 {
@@ -48,6 +49,25 @@ int main()
 			 
 			 data["_Content_json_data"] = req.Data("data");
 			 data["_Content_json_first_array_element"] = req.Data((unsigned int)0);
+			 
+			 
+			 // access DB
+
+			 SQLite db;
+			 try
+			 {
+				 db.open("myfile.sqlite");
+				 db.query("CREATE TABLE IF NOT EXISTS test (Name TEXT UNIQUE PRIMARY KEY, Value TEXT)");
+				 
+				 SQLite::Result dbRes = db.query("SELECT * FROM test");
+				 data["data_from_db"] = dbRes;
+				 db.close();
+			 }
+			 catch (SQLiteException& ex)
+			 {
+				 data["error"] = "SQLite Exception : " + ex.description();
+			 }
+			 
 			 
 			 res.write(data);
 		 });
