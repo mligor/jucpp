@@ -31,7 +31,7 @@ $(BUILD_DIR)/json_lib/json_value.obj : ../libs/json/json_value.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/sqlite_lib.obj : ../libs/sqlite/sqlite.c
+$(BUILD_DIR)/sqlite_lib.obj : ../libs/sqlite/sqlite3.c
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 
