@@ -230,3 +230,14 @@ hello_http
 
 *~
 myfile.sqlite
+/test1/Debug
+/test1/x64
+/Debug
+/x64
+/jucpp/Debug
+/jucpp/x64
+
+*.suo
+*.sdf
+
+

@@ -6,11 +6,13 @@
 //  Copyright (c) 2015 BeanOX UG. All rights reserved.
 //
 
+// disable error when using sprintf_s
+#define _CRT_SECURE_NO_WARNINGS 
+
 #include "http.h"
 
 #include <libs/mongoose/mongoose.h>
 #include <libs/json/json.h>
-
 
 #include <string.h>
 #include <string>

@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="libs">
+      <UniqueIdentifier>{7497cb16-51ed-437d-82b6-bb567589c8c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\json">
+      <UniqueIdentifier>{ef3cfa44-4594-4aad-a13f-59ebe81aa6d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\mongoose">
+      <UniqueIdentifier>{e8484459-77b5-4174-8d56-13b78e0ad875}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\sqlite">
+      <UniqueIdentifier>{a83b1143-7928-4658-8e00-6b69ed452940}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="libs\tthread">
+      <UniqueIdentifier>{26bcfd70-9226-46b5-9737-a3175b7d0c42}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\libs\tthread\source\fast_mutex.h">
+      <Filter>libs\tthread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\tthread\source\tinythread.h">
+      <Filter>libs\tthread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\sqlite\sqlite3.h">
+      <Filter>libs\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\sqlite\sqlite3ext.h">
+      <Filter>libs\sqlite</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\mongoose\mongoose.h">
+      <Filter>libs\mongoose</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\autolink.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\config.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\features.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\forwards.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\json.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\json_batchallocator.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\reader.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\value.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="..\libs\json\writer.h">
+      <Filter>libs\json</Filter>
+    </ClInclude>
+    <ClInclude Include="http.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="jucpp.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="sqlite.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\libs\tthread\source\tinythread.cpp">
+      <Filter>libs\tthread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\sqlite\sqlite3.c">
+      <Filter>libs\sqlite</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\mongoose\mongoose.c">
+      <Filter>libs\mongoose</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\json\json_reader.cpp">
+      <Filter>libs\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\json\json_value.cpp">
+      <Filter>libs\json</Filter>
+    </ClCompile>
+    <ClCompile Include="..\libs\json\json_writer.cpp">
+      <Filter>libs\json</Filter>
+    </ClCompile>
+    <ClCompile Include="http.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="jucpp.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="sqlite.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\libs\json\json_internalarray.inl">
+      <Filter>libs\json</Filter>
+    </None>
+    <None Include="..\libs\json\json_internalmap.inl">
+      <Filter>libs\json</Filter>
+    </None>
+    <None Include="..\libs\json\json_valueiterator.inl">
+      <Filter>libs\json</Filter>
+    </None>
+  </ItemGroup>
+</Project>
