@@ -60,7 +60,7 @@ namespace jucpp { namespace http {
 	class Response
 	{
 	public:
-		Response() : m_status(200) {}
+		Response() {}
 		
 		void write(const char* text) { if (text) m_output += text; }
 		void write(const Json::Value& v);
@@ -75,15 +75,19 @@ namespace jucpp { namespace http {
 		/// Add custom header to the response
 		void addHeader(const String& name, const String& value) { m_headers[name] = value; }
 		
+		void ServeStaticFile(bool serverStaticFiles) { m_serveStaticFile = serverStaticFiles; }
+		bool ServeStaticFile() const { return m_serveStaticFile; }
+		
 
 	protected:
 		void writeHead(int status, const StringStringMap& headers) { m_headers = headers; m_status = status; }
 
-	private: //TODO: make it private
+	private:
 		String m_output;
 		StringStringMap m_headers;
-		int m_status;
+		int m_status = 200;
 		String m_statusText;
+		bool m_serveStaticFile = false;
 	};
 	
 	
@@ -95,7 +99,7 @@ namespace jucpp { namespace http {
 	public:
 		typedef std::function<void (const Request &req, Response &res)> ServerFn;
 
-		Server(ServerFn fn) : m_fn(fn) {}
+		Server(ServerFn fn, const String& documentRoot = String::EmptyString) : m_fn{fn}, m_documentRoot{documentRoot} {}
 		
 		Job listen(int port);
 
@@ -104,6 +108,7 @@ namespace jucpp { namespace http {
 		int EventHandler(const Request &req, Response &res);
 
 		ServerFn m_fn;
+		String m_documentRoot;
 	};
 	
 	class ServerJob : public ThreadJob
@@ -147,9 +152,9 @@ Server server = Http::createServer([](const Request &req, Response &res)
 		 @return @c Server object @see Server
 		 
 		 */
-		static Server createServer(Server::ServerFn fn)
+		static Server createServer(Server::ServerFn fn, const String& documentRoot = String::EmptyString)
 		{
-			Server serv(fn);
+			Server serv(fn, documentRoot);
 			return serv;
 		}
 		
