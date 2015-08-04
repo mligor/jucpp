@@ -26,9 +26,6 @@
 		8C6EDF371B47B93900B92258 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF361B47B93900B92258 /* main.cpp */; };
 		8C6EDF591B47C09700B92258 /* jucpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF571B47C09700B92258 /* jucpp.h */; };
 		8C6EDF5A1B47C09700B92258 /* http.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF581B47C09700B92258 /* http.h */; };
-		8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF681B47CA2F00B92258 /* fast_mutex.h */; };
-		8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF691B47CA2F00B92258 /* tinythread.cpp */; };
-		8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF6A1B47CA2F00B92258 /* tinythread.h */; };
 		8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF6F1B47CA5100B92258 /* mongoose.c */; };
 		8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF701B47CA5100B92258 /* mongoose.h */; };
 		8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF731B47CA8A00B92258 /* http.cpp */; };
@@ -74,9 +71,6 @@
 		8C6EDF4F1B47C02200B92258 /* libjucpp.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libjucpp.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		8C6EDF571B47C09700B92258 /* jucpp.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jucpp.h; path = jucpp/jucpp.h; sourceTree = "<group>"; };
 		8C6EDF581B47C09700B92258 /* http.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = http.h; path = jucpp/http.h; sourceTree = "<group>"; };
-		8C6EDF681B47CA2F00B92258 /* fast_mutex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = fast_mutex.h; path = libs/tthread/source/fast_mutex.h; sourceTree = "<group>"; };
-		8C6EDF691B47CA2F00B92258 /* tinythread.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = tinythread.cpp; path = libs/tthread/source/tinythread.cpp; sourceTree = "<group>"; };
-		8C6EDF6A1B47CA2F00B92258 /* tinythread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinythread.h; path = libs/tthread/source/tinythread.h; sourceTree = "<group>"; };
 		8C6EDF6F1B47CA5100B92258 /* mongoose.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mongoose.c; path = libs/mongoose/mongoose.c; sourceTree = "<group>"; };
 		8C6EDF701B47CA5100B92258 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = libs/mongoose/mongoose.h; sourceTree = "<group>"; };
 		8C6EDF731B47CA8A00B92258 /* http.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http.cpp; path = jucpp/http.cpp; sourceTree = "<group>"; };
@@ -176,7 +170,6 @@
 			children = (
 				8C1A1DE31B6967DC0083CBA3 /* sqlite */,
 				8C6E7BBE1B51A28B00BA589C /* json */,
-				8C6EDF6E1B47CA3700B92258 /* tthread */,
 				8C6EDF481B47BE2900B92258 /* mongoose */,
 				8C6EDF581B47C09700B92258 /* http.h */,
 				8C6EDF731B47CA8A00B92258 /* http.cpp */,
@@ -189,16 +182,6 @@
 			name = jucpp;
 			sourceTree = "<group>";
 		};
-		8C6EDF6E1B47CA3700B92258 /* tthread */ = {
-			isa = PBXGroup;
-			children = (
-				8C6EDF681B47CA2F00B92258 /* fast_mutex.h */,
-				8C6EDF691B47CA2F00B92258 /* tinythread.cpp */,
-				8C6EDF6A1B47CA2F00B92258 /* tinythread.h */,
-			);
-			name = tthread;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXHeadersBuildPhase section */
@@ -207,7 +190,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				8C6EDF5A1B47C09700B92258 /* http.h in Headers */,
-				8C6EDF6B1B47CA2F00B92258 /* fast_mutex.h in Headers */,
 				8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */,
 				8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */,
 				8C1A1DEA1B6967DC0083CBA3 /* sqlite3.h in Headers */,
@@ -215,7 +197,6 @@
 				8C6E7BF21B51A2FE00BA589C /* reader.h in Headers */,
 				8C6E7BED1B51A2FE00BA589C /* json_batchallocator.h in Headers */,
 				8C1A1DEB1B6967DC0083CBA3 /* sqlite3ext.h in Headers */,
-				8C6EDF6D1B47CA2F00B92258 /* tinythread.h in Headers */,
 				8C6E7BF31B51A2FE00BA589C /* value.h in Headers */,
 				8C6E7BF41B51A2FE00BA589C /* writer.h in Headers */,
 				8C6EDF591B47C09700B92258 /* jucpp.h in Headers */,
@@ -314,7 +295,6 @@
 				8C6E7BEF1B51A2FE00BA589C /* json_value.cpp in Sources */,
 				8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */,
 				8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */,
-				8C6EDF6C1B47CA2F00B92258 /* tinythread.cpp in Sources */,
 				8C1A1DE21B68E9B30083CBA3 /* sqlite.cpp in Sources */,
 				8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */,
 				8C6E7BF01B51A2FE00BA589C /* json_writer.cpp in Sources */,
