@@ -13,21 +13,15 @@
     <Filter Include="libs\sqlite">
       <UniqueIdentifier>{a83b1143-7928-4658-8e00-6b69ed452940}</UniqueIdentifier>
     </Filter>
-    <Filter Include="libs\tthread">
-      <UniqueIdentifier>{26bcfd70-9226-46b5-9737-a3175b7d0c42}</UniqueIdentifier>
-    </Filter>
     <Filter Include="src">
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="headers">
+      <UniqueIdentifier>{ab10e582-fff9-46ba-aef4-ffee0dce2eed}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\libs\tthread\source\fast_mutex.h">
-      <Filter>libs\tthread</Filter>
-    </ClInclude>
-    <ClInclude Include="..\libs\tthread\source\tinythread.h">
-      <Filter>libs\tthread</Filter>
-    </ClInclude>
     <ClInclude Include="..\libs\sqlite\sqlite3.h">
       <Filter>libs\sqlite</Filter>
     </ClInclude>
@@ -65,19 +59,16 @@
       <Filter>libs\json</Filter>
     </ClInclude>
     <ClInclude Include="http.h">
-      <Filter>src</Filter>
+      <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="jucpp.h">
-      <Filter>src</Filter>
+      <Filter>headers</Filter>
     </ClInclude>
     <ClInclude Include="sqlite.h">
-      <Filter>src</Filter>
+      <Filter>headers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\libs\tthread\source\tinythread.cpp">
-      <Filter>libs\tthread</Filter>
-    </ClCompile>
     <ClCompile Include="..\libs\sqlite\sqlite3.c">
       <Filter>libs\sqlite</Filter>
     </ClCompile>

@@ -117,31 +117,16 @@ namespace jucpp { namespace http {
 			m_url.append("?");
 			size_t queryStringLen = strlen(pConn->query_string);
 			char* buff = new char[queryStringLen + 1];
-			//mg_url_decode(ri->uri, n, (char *) ri->uri, n + 1, 0);
 			mg_url_decode(pConn->query_string, queryStringLen, buff, queryStringLen+1, 0);
 			m_url.append(buff);
 			delete [] buff;
 		}
-		
+
+		//TODO: parse headers
 		m_httpVersion = pConn->http_version;
-
-		//TODO: parse headers and body
-		
-		
-		//m_rawHeaders = pConn->content;
-		
 		m_content = String(pConn->content, pConn->content_len);
-	}
-	
-	const Variant& Request::ContentAsJson() const
-	{
-		if (m_jsonContentParsed)
-			return m_jsonContent;
-		
 		Json::Reader reader;
-		reader.parse(Content(), m_jsonContent);
-
-		return m_jsonContent;
+		reader.parse(m_content, m_jsonContent);
 	}
 	
 	const String& Request::Headers(const String& name) const

@@ -45,14 +45,13 @@ int main()
 			 
 			 data["_Content"] = req.Content();
 			 
-			 data["_Content_json"] = req.ContentAsJson();
+			 data["_Content_json"] = req.Data();
 			 
-			 data["_Content_json_data"] = req.Data("data");
-			 data["_Content_json_first_array_element"] = req.Data((unsigned int)0);
+			 data["_Content_json_data"] = req.Data("data"); // return Json Content from _data["data"] - ( e.g. { "data": "mydata" } )
+			 data["_Content_json_first_array_element"] = req.DataArray(0); // return first element from Json array  - _data[0] - ( e.g. [ "firstEl", "secondEl", "3th el" ] ) 
 			 
 			 
 			 // access DB
-
 			 SQLite db;
 			 try
 			 {

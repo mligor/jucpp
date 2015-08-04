@@ -1,6 +1,6 @@
 CC = g++
 C = gcc
-CXXFLAGS = -g -O2 -Wall -std=c++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
+CXXFLAGS = -g -O2 -Wall -std=gnu++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
 CFLAGS = -g -O2 -Wall -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = 
 
@@ -12,7 +12,7 @@ JUCPP_OBJ_FILES := $(addprefix $(BUILD_DIR)/, $(patsubst %.cpp, %.obj, $(JUCPP_F
 
 CPP_FILES := $(JUCPP_FILES) 
 
-OBJ_FILES := $(JUCPP_OBJ_FILES) $(BUILD_DIR)/json_lib/json_writer.obj $(BUILD_DIR)/json_lib/json_reader.obj $(BUILD_DIR)/json_lib/json_value.obj $(BUILD_DIR)/mongoose_lib.obj $(BUILD_DIR)/tthread_lib.obj $(BUILD_DIR)/sqlite_lib.obj
+OBJ_FILES := $(JUCPP_OBJ_FILES) $(BUILD_DIR)/json_lib/json_writer.obj $(BUILD_DIR)/json_lib/json_reader.obj $(BUILD_DIR)/json_lib/json_value.obj $(BUILD_DIR)/mongoose_lib.obj $(BUILD_DIR)/sqlite_lib.obj
 
 all: $(OUT_NAME)
 
@@ -37,20 +37,13 @@ $(BUILD_DIR)/sqlite_lib.obj : ../libs/sqlite/sqlite3.c
 	mkdir -p $(dir $@)
 	$(C) $(CFLAGS) -c -o $@ $<
 
-
-
 $(BUILD_DIR)/mongoose_lib.obj: ../libs/mongoose/mongoose.c
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
 
-$(BUILD_DIR)/tthread_lib.obj: ../libs/tthread/source/tinythread.cpp
-	mkdir -p $(dir $@)
-	$(CC) $(CXXFLAGS) -c -o $@ $<
-	
 $(BUILD_DIR)/%.obj: %.cpp
 	mkdir -p $(dir $@)
 	$(CC) $(CXXFLAGS) -c -o $@ $<
-	
 	
 
 clean:

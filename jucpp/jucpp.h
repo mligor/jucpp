@@ -1,13 +1,13 @@
 #ifndef _JUCPP_H_
 #define _JUCPP_H_
 
-#include <stdio.h>
+// json
+#include "../libs/json/value.h" //TODO: remove this dependency from header file (implement own Value/Variant type)
 
+// STL
+#include <stdio.h>
 #include <map>
 #include <string>
-
-#include <json/json.h>
-
 
 namespace jucpp
 {
@@ -21,7 +21,7 @@ namespace jucpp
 		
 		static const String EmptyString;
 	};
-	
+
 	using Variant = Json::Value;
 	
 	extern const Variant EmptyVariant;
@@ -77,14 +77,14 @@ namespace jucpp
 		friend void s_Job_ThreadFn(void* p);
 		
 	protected:
-		virtual void run();
-		virtual void wait();
-		virtual void stop();
+		virtual void run() override;
+		virtual void wait() override;
+		virtual void stop() override;
 		
 		virtual bool stopThread() { return false; }
 
 	private:
-		void* m_thread;
+		void* m_thread = nullptr;
 	};
 	
 	class Job

@@ -1,8 +1,9 @@
 #ifndef _JUCPP_HTTP_H_
 #define _JUCPP_HTTP_H_
 
-#include <jucpp/jucpp.h>
+#include "jucpp.h"
 
+// STL
 #include <string>
 #include <functional>
 
@@ -21,26 +22,27 @@ namespace jucpp { namespace http {
 		const String& Headers(const String& name) const;
 		const String& RawHeaders() const { return m_rawHeaders; }
 		const String& Content() const { return m_content; }
-		const Variant& ContentAsJson() const;
 		const String& Method() const { return m_method; }
 		const String& Url() const { return m_url; }
 		
-		const Variant& Data() const { return ContentAsJson(); }
+		const Variant& Data() const { return m_jsonContent; }
 		const Variant& Data(const char* key) const
 		{
-			if (ContentAsJson().isObject())
-				return ContentAsJson()[key];
+			if (m_jsonContent.isObject())
+				m_jsonContent[key];
 			return EmptyVariant;
 		}
 		const Variant& Data(const String& key) const { return Data(key.c_str()); }
-		const Variant& Data(unsigned int idx) const
+		const Variant& DataArray(unsigned int idx) const
 		{
-			if (ContentAsJson().isArray())
-				return ContentAsJson()[idx];
+			if (m_jsonContent.isArray())
+				return m_jsonContent[idx];
 			return EmptyVariant;
 		}
 		
 	private:
+		//const Variant& ContentAsJson() const;
+
 		StringStringMap m_headers;
 		String m_rawHeaders;
 		String m_httpVersion;

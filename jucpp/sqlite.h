@@ -6,11 +6,13 @@
 //  Copyright (c) 2015 BeanOX UG. All rights reserved.
 //
 
-#ifndef jucpp_sqlite_h
-#define jucpp_sqlite_h
+#ifndef JUCPP_SQLITE_H
+#define JUCPP_SQLITE_H
 
-#include <vector>
 #include "jucpp.h"
+
+// STL
+#include <vector>
 
 namespace jucpp { namespace sqlite {
 
@@ -56,4 +58,4 @@ namespace jucpp { namespace sqlite {
 }}
 
 
-#endif
+#endif // JUCPP_SQLITE_H

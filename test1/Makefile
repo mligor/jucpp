@@ -1,5 +1,5 @@
 CC = g++
-CXXFLAGS = -v -g -O2 -Wall -std=c++11 -I$(CURDIR)/.. -I$(CURDIR)/../libs
+CXXFLAGS = -v -g -O2 -Wall -std=gnu++11 -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = -L$(CURDIR)/.. -ljucpp -lpthread -ldl
 
 OUT_NAME = $(CURDIR)/../hello_http
