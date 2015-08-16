@@ -112,13 +112,14 @@ namespace jucpp { namespace http {
 		mg_connection* pConn = (mg_connection*)connection;
 		m_method = pConn->request_method;
 		m_url = pConn->uri;
+		
 		if (pConn->query_string)
 		{
-			m_url.append("?");
+			//m_url.append("?");
 			size_t queryStringLen = strlen(pConn->query_string);
 			char* buff = new char[queryStringLen + 1];
 			mg_url_decode(pConn->query_string, queryStringLen, buff, queryStringLen+1, 0);
-			m_url.append(buff);
+			m_queryString = buff;
 			delete [] buff;
 		}
 

@@ -12,3 +12,6 @@ _ standard Associative array (string2variant)
 _ standard Associative array (string2string)
 - standard Associative array (string2int)
 
+## REST
+
+- create class for easy REST access

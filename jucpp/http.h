@@ -24,6 +24,7 @@ namespace jucpp { namespace http {
 		const String& Content() const { return m_content; }
 		const String& Method() const { return m_method; }
 		const String& Url() const { return m_url; }
+		const String& QueryString() const { return m_queryString; }
 		
 		const Variant& Data() const { return m_jsonContent; }
 		const Variant& Data(const char* key) const
@@ -48,6 +49,7 @@ namespace jucpp { namespace http {
 		String m_httpVersion;
 		String m_method; // GET, POST, PUT, etc..
 		String m_url;
+		String m_queryString;
 		
 		String m_content;
 		
@@ -105,9 +107,11 @@ namespace jucpp { namespace http {
 		
 		Job listen(int port);
 
+	protected:
+		virtual int EventHandler(const Request &req, Response &res);
+
 	private:
 		friend int s_Server_EventHandler(void*, int);
-		int EventHandler(const Request &req, Response &res);
 
 		ServerFn m_fn;
 		String m_documentRoot;
@@ -159,7 +163,6 @@ Server server = Http::createServer([](const Request &req, Response &res)
 			Server serv(fn, documentRoot);
 			return serv;
 		}
-		
 	};
 	
 // namespace end
