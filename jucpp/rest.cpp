@@ -15,7 +15,7 @@ namespace jucpp { namespace rest {
 	{
 		int ret = jucpp::http::Server::EventHandler(req, res);
 		
-		if (ret == res.ServeStaticFile())
+		if (res.ServeStaticFile())
 			return ret;
 		
 		// write response

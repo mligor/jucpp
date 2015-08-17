@@ -33,6 +33,7 @@
     <ClInclude Include="..\libs\sqlite\sqlite3ext.h" />
     <ClInclude Include="http.h" />
     <ClInclude Include="jucpp.h" />
+    <ClInclude Include="rest.h" />
     <ClInclude Include="sqlite.h" />
   </ItemGroup>
   <ItemGroup>
@@ -43,6 +44,7 @@
     <ClCompile Include="..\libs\sqlite\sqlite3.c" />
     <ClCompile Include="http.cpp" />
     <ClCompile Include="jucpp.cpp" />
+    <ClCompile Include="rest.cpp" />
     <ClCompile Include="sqlite.cpp" />
   </ItemGroup>
   <ItemGroup>

@@ -37,7 +37,7 @@ int main()
 			 data["Status"]["text"] = "Everything is OK";
 			 data["Requested Url"] = req.Url();
 			 
-			 data["From_Request"]["Accept-Language"] = req.Headers("Accept-Language");
+			 data["From_Request"]["Accept-Language"] = req.Header("Accept-Language");
 			 
 			 data["secondList"].append(1);
 			 data["secondList"].append(2);
