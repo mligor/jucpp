@@ -19,7 +19,8 @@ namespace jucpp { namespace http {
 		Request(void* connection);
 		
 		const String& HttpVersion() const { return m_httpVersion; }
-		const String& Headers(const String& name) const;
+		const String& Header(const String& name) const;
+		const String& Get(const String& name) const;
 		const String& RawHeaders() const { return m_rawHeaders; }
 		const String& Content() const { return m_content; }
 		const String& Method() const { return m_method; }
@@ -41,10 +42,13 @@ namespace jucpp { namespace http {
 			return EmptyVariant;
 		}
 		
+		void setGet(const String& name, const String& value) { m_get[name] = value; }
 	private:
 		//const Variant& ContentAsJson() const;
 
 		StringStringMap m_headers;
+		StringStringMap m_get; // GET paramters
+		
 		String m_rawHeaders;
 		String m_httpVersion;
 		String m_method; // GET, POST, PUT, etc..
@@ -108,7 +112,7 @@ namespace jucpp { namespace http {
 		Job listen(int port);
 
 	protected:
-		virtual int EventHandler(const Request &req, Response &res);
+		virtual int EventHandler(Request &req, Response &res);
 
 	private:
 		friend int s_Server_EventHandler(void*, int);

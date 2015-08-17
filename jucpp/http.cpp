@@ -54,7 +54,7 @@ namespace jucpp { namespace http {
 		return MG_FALSE;  // Rest of the events are not processed
 	}
 	
-	int Server::EventHandler(const Request &req, Response &res)
+	int Server::EventHandler(Request &req, Response &res)
 	{
 		if (m_fn)
 		{
@@ -130,10 +130,19 @@ namespace jucpp { namespace http {
 		reader.parse(m_content, m_jsonContent);
 	}
 	
-	const String& Request::Headers(const String& name) const
+	const String& Request::Header(const String& name) const
 	{
 		StringStringMap::const_iterator it = m_headers.find(name);
 		if (it == m_headers.end())
+			return String::EmptyString;
+		
+		return (*it).second;
+	}
+	
+	const String& Request::Get(const String& name) const
+	{
+		StringStringMap::const_iterator it = m_get.find(name);
+		if (it == m_get.end())
 			return String::EmptyString;
 		
 		return (*it).second;

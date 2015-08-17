@@ -33,7 +33,7 @@ namespace jucpp { namespace rest {
 
 		
 	protected:
-		virtual int EventHandler(const jucpp::http::Request &req, jucpp::http::Response &res) override;
+		virtual int EventHandler(jucpp::http::Request &req, jucpp::http::Response &res) override;
 		
 	private:
 		using FunctionList = std::map<String, jucpp::http::Server::ServerFn>;

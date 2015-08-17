@@ -18,6 +18,7 @@ namespace jucpp
 		String() {}
 		String(const char* chrValue, size_type len) : std::string(chrValue, len) {}
 		String(const char* chrVal) : std::string(chrVal) {}
+		String(const std::string& str) : std::string(str) {}
 		
 		static const String EmptyString;
 	};
