@@ -3,6 +3,8 @@
 
 #include "jucpp.h"
 
+#include "base64.h"
+
 // STL
 #include <string>
 #include <functional>
@@ -167,6 +169,87 @@ Server server = Http::createServer([](const Request &req, Response &res)
 			Server serv(fn, documentRoot);
 			return serv;
 		}
+	};
+	
+	
+	class Auth
+	{
+	public:
+		virtual bool isAuthenticated() = 0;
+		virtual String getUsername() = 0;
+		virtual String getPassword() = 0;
+		virtual void requestAuthentication(Response& res, String realm) = 0;
+		void deny(Response& res)
+		{
+			res.setStatus(401, "Not Authorized");
+			res.write("401 Not Authorized");
+		}
+	};
+	
+	
+	/**
+	 * Basic authentication
+	 */
+	class BasicAuth : public Auth
+	{
+	public:
+		BasicAuth(const Request& req) : m_req(req)
+		{
+			String authHeader = m_req.Header("Authorization");
+			
+			if (authHeader.substr(0, 6) == "Basic ")
+			{
+				authHeader = authHeader.substr(6);
+				
+				int len = Base64decode_len(authHeader.c_str());
+				String data;
+				data.resize(len);
+				
+				int bytesDecoded = Base64decode(&data[0], authHeader.c_str());
+				
+				if (bytesDecoded)
+				{
+					data.resize(bytesDecoded);
+					m_decodedData = data;
+				}
+			}
+		}
+		
+		virtual bool isAuthenticated() override { return !m_decodedData.empty(); }
+		
+		virtual String getUsername() override
+		{
+			if (m_decodedData.empty())
+				return "";
+			
+			size_t pos = m_decodedData.find(':');
+			if (pos == m_decodedData.npos)
+				return "";
+			
+			return m_decodedData.substr(0, pos);
+		}
+		
+		virtual String getPassword() override
+		{
+			if (m_decodedData.empty())
+				return "";
+			
+			size_t pos = m_decodedData.find(':');
+			if (pos == m_decodedData.npos)
+				return "";
+			
+			return m_decodedData.substr(pos+1);
+		}
+		
+		virtual void requestAuthentication(Response& res, String realm) override
+		{
+			res.addHeader("WWW-Authenticate", "Basic realm=\"" + realm + "\"");
+			deny(res);
+		}
+		
+	private:
+		const Request& m_req;
+		String m_decodedData;
 	};
 	
 // namespace end

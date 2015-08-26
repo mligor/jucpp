@@ -122,6 +122,9 @@ namespace jucpp { namespace http {
 			m_queryString = buff;
 			delete [] buff;
 		}
+		
+		for (int i = 0; i < pConn->num_headers; ++i)
+			m_headers[pConn->http_headers[i].name] = pConn->http_headers[i].value;
 
 		//TODO: parse headers
 		m_httpVersion = pConn->http_version;
@@ -154,7 +157,6 @@ namespace jucpp { namespace http {
 	{
 		write(Json::FastWriter().write(v).c_str());
 	}
-	
 	
 
 }} // namespaces

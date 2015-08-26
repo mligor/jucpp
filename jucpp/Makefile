@@ -7,7 +7,7 @@ LDFLAGS =
 OUT_NAME = $(CURDIR)/../libjucpp.a
 BUILD_DIR = $(CURDIR)/../build
 
-JUCPP_FILES := http.cpp jucpp.cpp sqlite.cpp rest.cpp
+JUCPP_FILES := http.cpp jucpp.cpp sqlite.cpp rest.cpp base64.cpp
 JUCPP_OBJ_FILES := $(addprefix $(BUILD_DIR)/, $(patsubst %.cpp, %.obj, $(JUCPP_FILES)))
 
 CPP_FILES := $(JUCPP_FILES) 
