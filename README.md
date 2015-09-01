@@ -44,7 +44,9 @@ using namespace jucpp::sqlite;
 int main()
 {
 	// Server decalaration
-	Server server = Http::createServer([](const Request &req, Response &res)
+	Server server;
+
+	server.GET([](const Request &req, Response &res, Server::ResponseStatus& s)
 		 {
 			 res.addHeader("Content-Type", "application/json");
 			 res.setStatus(200);
@@ -68,6 +70,7 @@ int main()
 				 data["error"] = "SQLite Exception : " + ex.description();
 			 }
 			 res.write(data);
+			 s = Server::Processed;
 		 });
 
 	// listen on port 8000
