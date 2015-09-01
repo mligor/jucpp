@@ -17,6 +17,7 @@
 #include <string.h>
 #include <string>
 #include <vector>
+#include <regex>
 
 #include <stdio.h>
 
@@ -37,35 +38,101 @@ namespace jucpp { namespace http {
 			Server* _this = (Server*)conn->server_param;
 			Request req(conn);
 			Response res;
-			int ret = _this->EventHandler(req, res);
+			Server::ResponseStatus s = Server::Skipped;
+			_this->EventHandler(req, res, s);
 			
-			if (ret != MG_TRUE)
-				return ret;
+			if (s == Server::ServerStaticFile)
+				return MG_FALSE; // Mongoose will do it for us
+			
+			if (s == Server::Skipped)
+			{
+				// set status not found
+				mg_send_status(conn, 404);
+				mg_printf_data(conn, "Not found");
+				return MG_TRUE;
+			}
 			
 			mg_send_status(conn, res.getStatus());
+			
+			//TODO: add settings to include CORS headers or not
+			_this->addCORSHeaders(req, res);
 			
 			const StringStringMap& headers = res.getHeaders();
 			for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
 				mg_send_header(conn, (*it).first.c_str(), (*it).second.c_str());
 			
 			mg_printf_data((mg_connection*)conn, res.getContent().c_str(), res.getContent().size());
-			return ret;
+			return MG_TRUE;
 		}
 		return MG_FALSE;  // Rest of the events are not processed
 	}
 	
-	int Server::EventHandler(Request &req, Response &res)
+	void Server::EventHandler(Request &req, Response &res, ResponseStatus& s)
 	{
-		if (m_fn)
+		const auto& l = m_functions.find(req.Method());
+		
+		if (l != m_functions.end())
 		{
-			m_fn(req, res);
+			// write response
+			const auto& it_all = (*l).second.find(""); // ALL Match
 			
-			if (res.ServeStaticFile())
-				return MG_FALSE;
+			if (it_all != (*l).second.end())
+			{
+				(*it_all).second(req, res, s);
+				if (s != Skipped)
+					return;
+			}
 			
-			return MG_TRUE;
+			const auto& it = (*l).second.find(req.Url());
+			
+			if (it != (*l).second.end())
+			{
+				s = Processed;
+				(*it).second(req, res, s);
+				if (s != Skipped)
+					return;
+			}
+
+			
+			// find in param
+			for (const auto &f : (*l).second)
+			{
+				std::regex regex_part(":[^\\/]*");
+				if (std::regex_search(f.first, regex_part, std::regex_constants::match_any))
+				{
+					// TODO: escape other special characters
+					// TODO: build regex_name and catche it when function is inserted
+					
+					std::string regex_name = std::regex_replace(f.first, std::regex("/"), "\\/");
+					
+					regex_name = std::regex_replace(regex_name, regex_part, "([^\\/]*?)");
+					regex_name.append("$");
+					
+					std::smatch match_name;
+					if (std::regex_match(req.Url(), match_name, std::regex(regex_name)))
+					{
+						std::sregex_iterator next(f.first.begin(), f.first.end(), regex_part);
+						std::sregex_iterator end;
+						size_t counter = 0;
+						while (next != end)
+						{
+							if (counter >= match_name.size())
+								break;
+							std::smatch match = *next;
+							String key = match.str().substr(1);
+							String value = match_name[counter+1].str();
+							req.setGet(key, value);
+							next++;
+							counter++;
+						}
+						s = Processed;
+						f.second(req, res, s);
+						if (s != Skipped)
+							return;
+					}
+				}
+			}
 		}
-		return MG_FALSE;
 	}
 	
 	Job Server::listen(int port)
@@ -82,6 +149,20 @@ namespace jucpp { namespace http {
 		Job job(new ServerJob(server));
 		job.run();
 		return job;
+	}
+	
+	void Server::addCORSHeaders(const Request &req, Response &res)
+	{
+		//TODO: add configuration to allow just specific Origins
+		
+		if (req.Header("Access-Control-Request-Headers").length())
+			res.addHeader("Access-Control-Allow-Headers", req.Header("Access-Control-Request-Headers"));
+
+		if (req.Header("Access-Control-Request-Method").length())
+			res.addHeader("Access-Control-Allow-Methods", req.Header("Access-Control-Request-Method"));
+
+		if (req.Header("Origin").length())
+			res.addHeader("Access-Control-Allow-Origin", req.Header("Origin"));
 	}
 	
 	

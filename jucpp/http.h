@@ -33,7 +33,7 @@ namespace jucpp { namespace http {
 		const Variant& Data(const char* key) const
 		{
 			if (m_jsonContent.isObject())
-				m_jsonContent[key];
+				return m_jsonContent[key];
 			return EmptyVariant;
 		}
 		const Variant& Data(const String& key) const { return Data(key.c_str()); }
@@ -107,21 +107,62 @@ namespace jucpp { namespace http {
 	class Server
 	{
 	public:
-		typedef std::function<void (const Request &req, Response &res)> ServerFn;
-
-		Server(ServerFn fn, const String& documentRoot = String::EmptyString) : m_fn{fn}, m_documentRoot{documentRoot} {}
+		enum ResponseStatus { Skipped = 0, Processed = 1, ServerStaticFile = 2 };
 		
+		using Fn = std::function<void (const Request &req, Response &res, ResponseStatus& s)>;
+		
+		using FnList = std::map<String, Fn>;
+		using FnListMap = std::map<String, FnList>;
+		
+	public:
+		Server() {}
 		Job listen(int port);
+		void setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; }
+		
+		void addCORSHeaders(const Request& req, Response& res);
+		
+		Server& GET(String cp, Fn fn) { m_functions["GET"][cp] = fn; return *this; }
+		Server& POST(String cp, Fn fn) { m_functions["POST"][cp] = fn; return *this; }
+		Server& PUT(String cp, Fn fn) { m_functions["PUT"][cp] = fn; return *this; }
+		Server& DELETE(String cp, Fn fn) { m_functions["DELETE"][cp] = fn; return *this; }
+		Server& OPTIONS(String cp, Fn fn) { m_functions["OPTIONS"][cp] = fn; return *this; }
+		Server& HEAD(String cp, Fn fn) { m_functions["HEAD"][cp] = fn; return *this; }
 
+		Server& GET(Fn fn) { return GET("", fn); }
+		Server& POST(Fn fn) { return POST("", fn); }
+		Server& PUT(Fn fn) { return PUT("", fn); }
+		Server& DELETE(Fn fn) { return DELETE("", fn); }
+		Server& OPTIONS(Fn fn) { return OPTIONS("", fn); }
+		Server& HEAD(Fn fn) { return HEAD("", fn); }
 	protected:
-		virtual int EventHandler(Request &req, Response &res);
+		virtual void EventHandler(Request &req, Response &res, ResponseStatus& s);
 
 	private:
 		friend int s_Server_EventHandler(void*, int);
 
-		ServerFn m_fn;
 		String m_documentRoot;
+		FnListMap m_functions;
 	};
+	
+	#define BIND(method, uri, function) method(uri, std::bind(function, this, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3))
+	
+	#define BIND_GET(uri, function) BIND(GET, uri, function)
+	#define BIND_ALL_GET(function) BIND_GET("", function)
+
+	#define BIND_POST(uri, function) BIND(POST, uri, function)
+	#define BIND_ALL_POST(function) BIND_POST("", function)
+
+	#define BIND_PUT(uri, function) BIND(PUT, uri, function)
+	#define BIND_ALL_PUT(function) BIND_PUT("", function)
+
+	#define BIND_DELETE(uri, function) BIND(DELETE, uri, function)
+	#define BIND_ALL_DELETE(function) BIND_DELETE("", function)
+	
+	#define BIND_OPTIONS(uri, function) BIND(OPTIONS, uri, function)
+	#define BIND_ALL_OPTIONS(function) BIND_OPTIONS("", function)
+	
+	#define BIND_HEAD(uri, function) BIND(HEAD, uri, function)
+	#define BIND_ALL_HEAD(function) BIND_HEAD("", function)
 	
 	class ServerJob : public ThreadJob
 	{
@@ -164,9 +205,9 @@ Server server = Http::createServer([](const Request &req, Response &res)
 		 @return @c Server object @see Server
 		 
 		 */
-		static Server createServer(Server::ServerFn fn, const String& documentRoot = String::EmptyString)
+		static Server createServer(const String& documentRoot = String::EmptyString)
 		{
-			Server serv(fn, documentRoot);
+			Server serv;
 			return serv;
 		}
 	};
@@ -186,6 +227,7 @@ Server server = Http::createServer([](const Request &req, Response &res)
 		}
 	};
 	
+	using AuthPtr = std::unique_ptr<Auth>;
 	
 	/**
 	 * Basic authentication

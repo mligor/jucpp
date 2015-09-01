@@ -18,11 +18,8 @@ using namespace jucpp::sqlite;
 
 int main()
 {
-	// Server decalaration
-	Server server = Http::createServer([](const Request &req, Response &res)
+	Server().GET([](const Request &req, Response &res, Server::ResponseStatus& s)
 		 {
-			 //usleep(1000000);
-
 			 res.addHeader("Content-Type", "application/json");
 			 res.setStatus(200, "Everything OK");
 			 
@@ -69,13 +66,9 @@ int main()
 			 
 			 
 			 res.write(data);
-		 });
-	
-	Job serverJob = server.listen(8000);
-	
-	printf("Server is running at http://127.0.0.1:8000/\n");
-	
-	serverJob.wait();
+			 
+			 s = Server::Processed;
+		 }).listen(8000).wait();
 	
 	return 0;
 }
