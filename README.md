@@ -39,48 +39,42 @@ I like Open Source projects - I think you can still sell your work even with ope
 
 using namespace jucpp;
 using namespace jucpp::http;
-using namespace jucpp::sqlite;
 
 int main()
 {
-	// Server decalaration
-	Server server;
-
-	server.GET([](const Request &req, Response &res, Server::ResponseStatus& s)
-		 {
-			 res.addHeader("Content-Type", "application/json");
-			 res.setStatus(200);
-
-			 Object data;
-			 data["request_url"] = req.Url();
-			 data["request_language"] = req.Headers("Accept-Language");
-			 data["request_content"] = req.ContentAsJson();
-			 
-			 // access DB
-			 SQLite db;
-			 try
-			 {
-				 db.open("myfile.db");
-				 SQLite::Result dbRes = db.query("SELECT * FROM test");
-				 data["data_from_db"] = dbRes;
-				 db.close();
-			 }
-			 catch (SQLiteException& ex)
-			 {
-				 data["error"] = "SQLite Exception : " + ex.description();
-			 }
-			 res.write(data);
-			 s = Server::Processed;
-		 });
-
-	// listen on port 8000
-	Job serverJob = server.listen(8000);
+	// Global GET handler - will catch all GET requests
+	Server().GET([](const Request &req, Response &res, Server::ResponseStatus& s)
+	{
+		String url = req.Url();
+		
+		if (url == "/favicon.ico")
+		{
+			s = Server::Skipped; // allow GET /favicon.ico handler to response
+			return;
+		}
+		else if (url == "/main.cpp")
+		{
+			s = Server::ServerStaticFile; // jucpp will try to server main.cpp as static file
+			return;
+		}
+		
+		Object data;
+		data["url"] = url;
+		data["language"] = req.Header("Accept-Language");
+		res.write(data);
+		
+		s = Server::Processed; // inform jucpp framework that request is processed
+	})
 	
-	// output on server (can be redirected to log file)
-	printf("Server is running at http://127.0.0.1:8000/\n");
+	// special GET handler, will catch only specific URL
+	.GET("/favicon.ico", [](const Request &req, Response &res, Server::ResponseStatus& s)
+	{
+		res.write("no icon today");
+	})
 	
-	// wait forever	
-	serverJob.wait();
+	.listen(8000)	// listen on port 8000
+	.wait();		// wait for connections
+	
 	return 0;
 }
 ```
