@@ -67,8 +67,11 @@
     <ClInclude Include="sqlite.h">
       <Filter>headers</Filter>
     </ClInclude>
-    <ClInclude Include="rest.h">
-      <Filter>headers</Filter>
+    <ClInclude Include="base64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="mail.h">
+      <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -96,7 +99,10 @@
     <ClCompile Include="sqlite.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="rest.cpp">
+    <ClCompile Include="base64.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="mail.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

@@ -226,3 +226,7 @@ myfile.sqlite
 
 /hello_http.exe
 .DS_Store
+libs/curl/Debug
+libs/curl/Release
+libs/curl/x64
+libs/curl/curl-src

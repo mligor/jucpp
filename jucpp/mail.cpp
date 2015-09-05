@@ -13,6 +13,8 @@
 #include <iomanip>
 #include <iostream>
 #include <sstream>
+#include <algorithm>
+
 #include <curl/curl.h>
 
 namespace jucpp { namespace mail {

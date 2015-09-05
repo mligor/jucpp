@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libjucpp", "jucpp\libjucpp.
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "test1", "test1\test1.vcxproj", "{13212D72-AB22-487F-91EC-4F183786BF69}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "curl", "libs\curl\curl.vcxproj", "{FDC68000-AAF7-443B-B768-F453EF0C9488}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x64.Build.0 = Release|x64
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x86.ActiveCfg = Release|Win32
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x86.Build.0 = Release|Win32
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Debug|x64.ActiveCfg = Debug|x64
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Debug|x64.Build.0 = Debug|x64
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Debug|x86.ActiveCfg = Debug|Win32
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Debug|x86.Build.0 = Debug|Win32
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Release|x64.ActiveCfg = Release|x64
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Release|x64.Build.0 = Release|x64
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Release|x86.ActiveCfg = Release|Win32
+		{FDC68000-AAF7-443B-B768-F453EF0C9488}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -8,6 +8,7 @@
 // STL
 #include <string>
 #include <functional>
+#include <memory>
 
 
 namespace jucpp { namespace http {
@@ -60,7 +61,6 @@ namespace jucpp { namespace http {
 		String m_content;
 		
 	private:
-		bool m_jsonContentParsed = false;
 		mutable Variant m_jsonContent; // dont't use it directly, always use ContetAsJson() or Data()
 	};
 	
