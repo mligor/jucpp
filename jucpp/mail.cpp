@@ -95,10 +95,12 @@ namespace jucpp { namespace mail {
 			
 			std::time_t t = std::time(nullptr);
 			std::tm tm = *std::localtime(&t);
-			std::stringstream dateBuffer;
-			dateBuffer << std::put_time(&tm, "%a, %d %b %Y %T %z");
 			
-			data.append("Date: " + dateBuffer.str() + "\r\n");
+			char* buff = new char[100];
+			size_t timeSize = std::strftime(buff, 100, "%a, %d %b %Y %T %z", &tm);
+			
+			data.append("Date: " + String(buff, timeSize) + "\r\n");
+			delete[] buff;
 			
 			data.append("\r\n");
 			data.append(m_body);

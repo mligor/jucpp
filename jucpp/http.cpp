@@ -100,9 +100,9 @@ namespace jucpp { namespace http {
 					// TODO: escape other special characters
 					// TODO: build regex_name and catche it when function is inserted
 					
-					std::string regex_name = std::regex_replace(f.first, std::regex("/"), "\\/");
+					std::string regex_name = std::regex_replace(f.first, std::regex("/"), std::string("\\/"));
 					
-					regex_name = std::regex_replace(regex_name, regex_part, "([^\\/]*?)");
+					regex_name = std::regex_replace(regex_name, regex_part, std::string("([^\\/]*?)"));
 					regex_name.append("$");
 					
 					std::smatch match_name;
