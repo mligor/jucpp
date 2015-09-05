@@ -36,7 +36,16 @@ namespace jucpp { namespace http {
 			Request req(conn);
 			Response res;
 			Server::ResponseStatus s = Server::Skipped;
-			_this->EventHandler(req, res, s);
+			try
+			{
+				_this->EventHandler(req, res, s);
+			}
+			catch (std::exception* e)
+			{
+				mg_send_status(conn, 501);
+				mg_printf_data(conn, "%s", e->what());
+				return MG_TRUE;
+			}
 			
 			if (s == Server::ServerStaticFile)
 				return MG_FALSE; // Mongoose will do it for us
@@ -89,7 +98,6 @@ namespace jucpp { namespace http {
 				if (s != Skipped)
 					return;
 			}
-
 			
 			// find in param
 			for (const auto &f : (*l).second)
