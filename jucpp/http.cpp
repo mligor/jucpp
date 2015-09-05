@@ -40,10 +40,10 @@ namespace jucpp { namespace http {
 			{
 				_this->EventHandler(req, res, s);
 			}
-			catch (std::exception* e)
+			catch (std::exception& e)
 			{
 				mg_send_status(conn, 501);
-				mg_printf_data(conn, "%s", e->what());
+				mg_printf_data(conn, "exception: %s", e.what());
 				return MG_TRUE;
 			}
 			
@@ -102,6 +102,9 @@ namespace jucpp { namespace http {
 			// find in param
 			for (const auto &f : (*l).second)
 			{
+				if (f.first == "")	continue;
+				if (f.first == req.Url()) continue;
+
 				std::regex regex_part(":[^\\/]*");
 				if (std::regex_search(f.first, regex_part, std::regex_constants::match_any))
 				{
