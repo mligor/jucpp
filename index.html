@@ -61,7 +61,6 @@ Having native code increase performance and memory usage – therefore your Web 
 
 <div class="highlight highlight-c++"><pre>#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>jucpp/jucpp.h<span class="pl-pds">&gt;</span></span>
 #<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>jucpp/http.h<span class="pl-pds">&gt;</span></span>
-#<span class="pl-k">include</span> <span class="pl-s"><span class="pl-pds">&lt;</span>jucpp/sqlite.h<span class="pl-pds">&gt;</span></span>
 
 <span class="pl-k">using</span> <span class="pl-k">namespace</span> <span class="pl-en">jucpp</span><span class="pl-k">;</span>
 <span class="pl-k">using</span> <span class="pl-k">namespace</span> <span class="pl-en">jucpp</span>::http<span class="pl-k">;</span>
@@ -69,34 +68,31 @@ Having native code increase performance and memory usage – therefore your Web 
 <span class="pl-k">int</span> <span class="pl-en">main</span>()
 {
     <span class="pl-c">// Global GET handler - will catch all GET requests</span>
-    <span class="pl-c1">Server</span>().<span class="pl-c1">GET</span>([](<span class="pl-k">const</span> Request &amp;req, Response &amp;res, Server::ResponseStatus&amp; s)
+    <span class="pl-c1">Server</span>()
+    .<span class="pl-c1">setDocumentRoot</span>(<span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-pds">"</span></span>) <span class="pl-c">// Allow to ServeStaticFile       </span>
+    .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res)
     {
         String url = req.<span class="pl-c1">Url</span>();
 
         <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/favicon.ico<span class="pl-pds">"</span></span>)
-        {
-            s = Server::Skipped; <span class="pl-c">// allow GET /favicon.ico handler to response</span>
-            <span class="pl-k">return</span>;
-        }
-        <span class="pl-k">else</span> <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/main.cpp<span class="pl-pds">"</span></span>)
-        {
-            s = Server::ServerStaticFile; <span class="pl-c">// jucpp will try to server main.cpp as static file</span>
-            <span class="pl-k">return</span>;
-        }
+            <span class="pl-k">return</span> Server::Skipped; <span class="pl-c">// allow GET /favicon.ico handler to response</span>
+        <span class="pl-k">else</span> <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/example.cpp<span class="pl-pds">"</span></span>)
+            <span class="pl-k">return</span> Server::ServeStaticFile; <span class="pl-c">// jucpp will try to server main.cpp as static file</span>
 
         Object data;
         data[<span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>] = url;
         data[<span class="pl-s"><span class="pl-pds">"</span>language<span class="pl-pds">"</span></span>] = req.<span class="pl-c1">Header</span>(<span class="pl-s"><span class="pl-pds">"</span>Accept-Language<span class="pl-pds">"</span></span>);
         res.<span class="pl-c1">write</span>(data);
 
-        s = Server::Processed; <span class="pl-c">// inform jucpp framework that request is processed</span>
+        <span class="pl-k">return</span> Server::Proceeded; <span class="pl-c">// inform jucpp framework that request is processed</span>
     })
 
     <span class="pl-c">// special GET handler, will catch only specific URL</span>
-    .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>/favicon.ico<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res, Server::ResponseStatus&amp; s)
-    {
-        res.<span class="pl-c1">write</span>(<span class="pl-s"><span class="pl-pds">"</span>no icon today<span class="pl-pds">"</span></span>);
-    })
+    .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>/favicon.ico<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res)
+     {
+         res.<span class="pl-c1">write</span>(<span class="pl-s"><span class="pl-pds">"</span>no icon today<span class="pl-pds">"</span></span>);
+         <span class="pl-k">return</span> Server::Proceeded;
+     })
 
     .<span class="pl-c1">listen</span>(<span class="pl-c1">8000</span>)   <span class="pl-c">// listen on port 8000</span>
     .<span class="pl-c1">wait</span>();        <span class="pl-c">// wait for connections</span>
