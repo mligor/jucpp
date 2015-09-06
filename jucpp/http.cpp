@@ -84,7 +84,7 @@ namespace jucpp { namespace http {
 				return MG_TRUE;
 			}
 			
-			if (s == Server::ServerStaticFile)
+			if (s == Server::ServeStaticFile)
 				return MG_FALSE; // Mongoose will do it for us
 			
 			if (s == Server::Skipped)

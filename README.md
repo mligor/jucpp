@@ -45,7 +45,7 @@ int main()
 {
 	// Global GET handler - will catch all GET requests
 	Server()
-	.setDocumentRoot(".") // Allow to ServerStaticFile		
+	.setDocumentRoot(".") // Allow to ServeStaticFile		
 	.GET("*", [](const Request &req, Response &res)
 	{
 		String url = req.Url();
@@ -53,7 +53,7 @@ int main()
 		if (url == "/favicon.ico")
 			return Server::Skipped; // allow GET /favicon.ico handler to response
 		else if (url == "/example.cpp")
-			return Server::ServerStaticFile; // jucpp will try to server main.cpp as static file
+			return Server::ServeStaticFile; // jucpp will try to server main.cpp as static file
 		
 		Object data;
 		data["url"] = url;

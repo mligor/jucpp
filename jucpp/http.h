@@ -109,7 +109,7 @@ namespace jucpp { namespace http {
 	class Server
 	{
 	public:
-		enum ResponseStatus { Skipped = 0, Proceeded = 1, ServerStaticFile = 2 };
+		enum ResponseStatus { Skipped = 0, Proceeded = 1, ServeStaticFile = 2 };
 		
 		using Fn = std::function<ResponseStatus (const Request &req, Response &res)>;
 		
