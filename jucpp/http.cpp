@@ -6,6 +6,8 @@
 //  Copyright (c) 2015 BeanOX UG. All rights reserved.
 //
 
+#define _CRT_SECURE_NO_WARNINGS
+
 #include "http.h"
 
 #include <libs/mongoose/mongoose.h>
@@ -14,14 +16,49 @@
 #include <string.h>
 #include <string>
 #include <vector>
-#include <regex>
 
 #include <stdio.h>
 
 
 namespace jucpp { namespace http {
 
-	
+	using StringList = std::vector<String>;
+
+	static size_t SplitString(const String &strInput, const String delimiter, StringList &strList, int nMax = -1)
+	{
+		strList.clear();
+
+		if (delimiter.empty())
+		{
+			strList.push_back(strInput);
+			return 1;
+		}
+
+		String::size_type i = 0;
+		String::size_type j = 0;
+
+		for (;;)
+		{
+			j = strInput.find(delimiter, i);
+			if (j == String::npos || (nMax > 0 && ((int)strList.size() >= (nMax - 1))))
+			{
+				strList.push_back(strInput.substr(i));
+				break;
+			}
+
+			strList.push_back(strInput.substr(i, j - i));
+			i = j + delimiter.size();
+
+			if (i == strInput.size())
+			{
+				strList.push_back(String());
+				break;
+			}
+		}
+
+		return strList.size();
+	}
+
 	int s_Server_EventHandler(void *_conn, int ev)
 	{
 		mg_connection* conn = (mg_connection*)_conn;
@@ -38,7 +75,7 @@ namespace jucpp { namespace http {
 			Server::ResponseStatus s = Server::Skipped;
 			try
 			{
-				_this->EventHandler(req, res, s);
+				s = _this->EventHandler(req, res);
 			}
 			catch (std::exception& e)
 			{
@@ -73,74 +110,59 @@ namespace jucpp { namespace http {
 		return MG_FALSE;  // Rest of the events are not processed
 	}
 	
-	void Server::EventHandler(Request &req, Response &res, ResponseStatus& s)
+	Server::ResponseStatus Server::EventHandler(Request &req, Response &res)
 	{
 		const auto& l = m_functions.find(req.Method());
-		
+		String url = req.Url();
+		if (url.length() > 0 && url.at(url.length() - 1) == '/')
+			url = url.substr(0, url.length() - 1);
+
 		if (l != m_functions.end())
 		{
-			// write response
-			const auto& it_all = (*l).second.find(""); // ALL Match
-			
-			if (it_all != (*l).second.end())
-			{
-				(*it_all).second(req, res, s);
-				if (s != Skipped)
-					return;
-			}
-			
-			const auto& it = (*l).second.find(req.Url());
-			
-			if (it != (*l).second.end())
-			{
-				s = Processed;
-				(*it).second(req, res, s);
-				if (s != Skipped)
-					return;
-			}
-			
+			StringList urlParts;
+			SplitString(url, "/", urlParts);
+
 			// find in param
 			for (const auto &f : (*l).second)
 			{
-				if (f.first == "")	continue;
-				if (f.first == req.Url()) continue;
-
-				std::regex regex_part(":[^\\/]*");
-				if (std::regex_search(f.first, regex_part, std::regex_constants::match_any))
+				const String& pattern = f.first;
+				
+				if (pattern != "*" && pattern != url) // direct and * (all) match
 				{
-					// TODO: escape other special characters
-					// TODO: build regex_name and catche it when function is inserted
+					StringList patternList;
+					SplitString(pattern, "/", patternList);
 					
-					std::string regex_name = std::regex_replace(f.first, std::regex("/"), std::string("\\/"));
+					if (urlParts.size() != patternList.size()) continue;
 					
-					regex_name = std::regex_replace(regex_name, regex_part, std::string("([^\\/]*?)"));
-					regex_name.append("$");
+					bool matched = true;
+					StringStringMap getValues;
 					
-					std::smatch match_name;
-					if (std::regex_match(req.Url(), match_name, std::regex(regex_name)))
+					for (size_t i = 0; i != urlParts.size(); ++i)
 					{
-						std::sregex_iterator next(f.first.begin(), f.first.end(), regex_part);
-						std::sregex_iterator end;
-						size_t counter = 0;
-						while (next != end)
+						const String& a = urlParts[i];
+						const String& b = patternList[i];
+						
+						if (b.length() && b.at(0) == ':')
+							getValues[b.substr(1)] = a;
+						else if (b != a)
 						{
-							if (counter >= match_name.size())
-								break;
-							std::smatch match = *next;
-							String key = match.str().substr(1);
-							String value = match_name[counter+1].str();
-							req.setGet(key, value);
-							next++;
-							counter++;
+							matched = false;
+							break;
 						}
-						s = Processed;
-						f.second(req, res, s);
-						if (s != Skipped)
-							return;
 					}
+					
+					if (!matched) continue;
+
+					for (StringStringMap::const_iterator it = getValues.begin(); it != getValues.end(); ++it)
+						req.setGet(it->first, it->second);
 				}
+
+				ResponseStatus s = f.second(req, res);
+				if (s != Skipped)
+					return s;
 			}
 		}
+		return Skipped;
 	}
 	
 	Job Server::listen(int port)

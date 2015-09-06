@@ -1,5 +1,5 @@
-CC = g++-4.9
-C = gcc-4.9
+CC = g++
+C = gcc
 
 CXXFLAGS = -g -O2 -Wall -std=gnu++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
 CFLAGS = -g -O2 -Wall -I$(CURDIR)/.. -I$(CURDIR)/../libs

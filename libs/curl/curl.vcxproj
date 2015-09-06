@@ -23,7 +23,6 @@
     <ClCompile Include="curl-src\lib\asyn-ares.c" />
     <ClCompile Include="curl-src\lib\asyn-thread.c" />
     <ClCompile Include="curl-src\lib\base64.c" />
-    <ClCompile Include="curl-src\lib\bundles.c" />
     <ClCompile Include="curl-src\lib\conncache.c" />
     <ClCompile Include="curl-src\lib\connect.c" />
     <ClCompile Include="curl-src\lib\content_encoding.c" />

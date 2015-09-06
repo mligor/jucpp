@@ -145,9 +145,6 @@
     <ClCompile Include="curl-src\lib\base64.c">
       <Filter>lib</Filter>
     </ClCompile>
-    <ClCompile Include="curl-src\lib\bundles.c">
-      <Filter>lib</Filter>
-    </ClCompile>
     <ClCompile Include="curl-src\lib\conncache.c">
       <Filter>lib</Filter>
     </ClCompile>

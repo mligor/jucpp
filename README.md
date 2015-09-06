@@ -37,7 +37,6 @@ I like Open Source projects - I think you can still sell your work even with ope
 ```c++
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
-#include <jucpp/sqlite.h>
 
 using namespace jucpp;
 using namespace jucpp::http;
@@ -45,37 +44,34 @@ using namespace jucpp::http;
 int main()
 {
 	// Global GET handler - will catch all GET requests
-	Server().GET([](const Request &req, Response &res, Server::ResponseStatus& s)
+	Server()
+	.setDocumentRoot(".") // Allow to ServerStaticFile		
+	.GET("*", [](const Request &req, Response &res)
 	{
 		String url = req.Url();
-		
+
 		if (url == "/favicon.ico")
-		{
-			s = Server::Skipped; // allow GET /favicon.ico handler to response
-			return;
-		}
-		else if (url == "/main.cpp")
-		{
-			s = Server::ServerStaticFile; // jucpp will try to server main.cpp as static file
-			return;
-		}
+			return Server::Skipped; // allow GET /favicon.ico handler to response
+		else if (url == "/example.cpp")
+			return Server::ServerStaticFile; // jucpp will try to server main.cpp as static file
 		
 		Object data;
 		data["url"] = url;
 		data["language"] = req.Header("Accept-Language");
 		res.write(data);
 		
-		s = Server::Processed; // inform jucpp framework that request is processed
+		return Server::Proceeded; // inform jucpp framework that request is processed
 	})
 	
 	// special GET handler, will catch only specific URL
-	.GET("/favicon.ico", [](const Request &req, Response &res, Server::ResponseStatus& s)
-	{
-		res.write("no icon today");
-	})
+	.GET("/favicon.ico", [](const Request &req, Response &res)
+	 {
+		 res.write("no icon today");
+		 return Server::Proceeded;
+	 })
 	
-	.listen(8000)	// listen on port 8000
-	.wait();		// wait for connections
+	.listen(8000)   // listen on port 8000
+	.wait();        // wait for connections
 	
 	return 0;
 }
