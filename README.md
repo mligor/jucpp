@@ -6,8 +6,6 @@ __jucpp__ intentionally similar to node.js. It shuld be compilable and should wo
 
 __jucpp__ is using C++11 features and it requires C++11 compiler. It is still in early development and if you are interested to join development, please contact me.
 
-__jucpp__ requires at least g++ 4.9 to compile (C++11 regex is not implemented before g++ 4.9).
-
 ## Why C++? 
 
 Today there are many different programing languages used for Web Development: PHP, NodeJS (JavaScript), Ruby, Perl, Java, Python, but none of them generate native code (none of them use real compiler). On another side C++ does. 
