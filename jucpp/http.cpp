@@ -18,6 +18,7 @@
 #include <vector>
 
 #include <stdio.h>
+#include <cassert>
 
 
 namespace jucpp { namespace http {
@@ -103,6 +104,18 @@ namespace jucpp { namespace http {
 			const StringStringMap& headers = res.getHeaders();
 			for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
 				mg_send_header(conn, (*it).first.c_str(), (*it).second.c_str());
+            
+            const StringStringMap& cookies = res.getCookies();
+            String setCookie;
+            for (StringStringMap::const_iterator it = cookies.begin(); it != cookies.end(); ++it)
+            {
+                if (setCookie.length()) setCookie.append(" ;");
+                setCookie.append((*it).first);
+                setCookie.append("=");
+                setCookie.append((*it).second);
+            }
+            if (setCookie.length())
+                mg_send_header(conn, "Set-Cookie", setCookie.c_str());
 			
 			mg_printf_data((mg_connection*)conn, res.getContent().c_str(), res.getContent().size());
 			return MG_TRUE;
@@ -135,7 +148,7 @@ namespace jucpp { namespace http {
 					if (urlParts.size() != patternList.size()) continue;
 					
 					bool matched = true;
-					StringStringMap getValues;
+					StringStringMap pathParams;
 					
 					for (size_t i = 0; i != urlParts.size(); ++i)
 					{
@@ -143,20 +156,18 @@ namespace jucpp { namespace http {
 						const String& b = patternList[i];
 						
 						if (b.length() && b.at(0) == ':')
-							getValues[b.substr(1)] = a;
+							pathParams[b.substr(1)] = a;
 						else if (b != a)
 						{
 							matched = false;
 							break;
 						}
 					}
-					
 					if (!matched) continue;
 
-					for (StringStringMap::const_iterator it = getValues.begin(); it != getValues.end(); ++it)
-						req.setGet(it->first, it->second);
+					for (StringStringMap::const_iterator it = pathParams.begin(); it != pathParams.end(); ++it)
+						req.setPathParam(it->first, it->second);
 				}
-
 				ResponseStatus s = f.second(req, res);
 				if (s != Skipped)
 					return s;
@@ -251,8 +262,8 @@ namespace jucpp { namespace http {
 		
 		for (int i = 0; i < pConn->num_headers; ++i)
 			m_headers[pConn->http_headers[i].name] = pConn->http_headers[i].value;
-
-		//TODO: parse headers
+        
+    
 		m_httpVersion = pConn->http_version;
 		m_content = String(pConn->content, pConn->content_len);
 		Json::Reader reader;
@@ -262,20 +273,122 @@ namespace jucpp { namespace http {
 	const String& Request::Header(const String& name) const
 	{
 		StringStringMap::const_iterator it = m_headers.find(name);
-		if (it == m_headers.end())
-			return String::EmptyString;
-		
-		return (*it).second;
+		if (it != m_headers.end())
+            return (*it).second;
+		return String::EmptyString;
 	}
 	
-	const String& Request::Get(const String& name) const
+    // mongose method
+    static int get_var(const char *data, size_t data_len, const char *name,
+                       char *dst, size_t dst_len)
+    {
+        auto mg_strncasecmp = [](const char *s1, const char *s2, size_t len)
+        {
+            auto lowercase = [](const char *s)
+            {
+                return tolower(* (const unsigned char *) s);
+            };
+            
+            int diff = 0;
+            
+            if (len > 0)
+                do {
+                    diff = lowercase(s1++) - lowercase(s2++);
+                } while (diff == 0 && s1[-1] != '\0' && --len > 0);
+            
+            return diff;
+        };
+        
+        const char *p, *e, *s;
+        size_t name_len;
+        int len;
+        
+        if (dst == NULL || dst_len == 0) {
+            len = -2;
+        } else if (data == NULL || name == NULL || data_len == 0) {
+            len = -1;
+            dst[0] = '\0';
+        } else {
+            name_len = strlen(name);
+            e = data + data_len;
+            len = -1;
+            dst[0] = '\0';
+            
+            // data is "var1=val1&var2=val2...". Find variable first
+            for (p = data; p + name_len < e; p++) {
+                if ((p == data || p[-1] == '&') && p[name_len] == '=' &&
+                    !mg_strncasecmp(name, p, name_len)) {
+                    
+                    // Point p to variable value
+                    p += name_len + 1;
+                    
+                    // Point s to the end of the value
+                    s = (const char *) memchr(p, '&', (size_t)(e - p));
+                    if (s == NULL) {
+                        s = e;
+                    }
+                    assert(s >= p);
+                    
+                    // Decode variable into destination buffer
+                    len = mg_url_decode(p, (size_t)(s - p), dst, dst_len, 1);
+                    
+                    // Redirect error code from -1 to -2 (destination buffer too small).
+                    if (len == -1) {
+                        len = -2;
+                    }
+                    break;
+                }
+            }
+        }
+        
+        return len;
+    }
+    
+	String Request::Get(const String& name) const
 	{
-		StringStringMap::const_iterator it = m_get.find(name);
-		if (it == m_get.end())
-			return String::EmptyString;
-		
-		return (*it).second;
+        String ret;
+        if (!m_queryString.length())
+            return ret;
+        
+        char* buff = new char[m_queryString.length()];
+        
+        int r = get_var(m_queryString.c_str(), m_queryString.length(), name.c_str(), buff, m_queryString.length());
+        
+        if (r > 0)
+            ret = String(buff, r);
+        
+        delete [] buff;
+
+        return ret;
 	}
+    
+    const String& Request::PathParam(const String& name) const
+    {
+        StringStringMap::const_iterator it = m_pathParams.find(name);
+        if (it != m_pathParams.end())
+            return (*it).second;
+         return String::EmptyString;
+    }
+    
+    const String Request::Cookie(const String &name) const
+    {
+        String ret;
+        String str = Header("Cookie");
+        
+        if (!str.length())
+            return ret;
+        
+        char* buff = new char[str.length()];
+        
+        int r = get_var(str.c_str(), str.length(), name.c_str(), buff, str.length());
+        
+        if (r > 0)
+            ret = String(buff, r);
+        
+        delete [] buff;
+
+        return ret;
+    }
 	
 	// Response
 
