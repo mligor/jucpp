@@ -86,11 +86,9 @@ namespace jucpp { namespace http {
 		
 		/// Add custom header to the response
 		void addHeader(const String& name, const String& value) { m_headers[name] = value; }
+        
+        void redirect(String url, int status = 302);
 		
-		void ServeStaticFile(bool serverStaticFiles) { m_serveStaticFile = serverStaticFiles; }
-		bool ServeStaticFile() const { return m_serveStaticFile; }
-		
-
 	protected:
 		void writeHead(int status, const StringStringMap& headers) { m_headers = headers; m_status = status; }
 
@@ -99,7 +97,6 @@ namespace jucpp { namespace http {
 		StringStringMap m_headers;
 		int m_status = 200;
 		String m_statusText;
-		bool m_serveStaticFile = false;
 	};
 	
 	

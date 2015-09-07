@@ -283,6 +283,12 @@ namespace jucpp { namespace http {
 	{
 		write(Json::FastWriter().write(v).c_str());
 	}
+    
+    void Response::redirect(String url, int status)
+    {
+        setStatus(status);
+        addHeader("Location", url);
+    }
 	
 
 }} // namespaces
