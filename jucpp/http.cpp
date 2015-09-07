@@ -194,7 +194,22 @@ namespace jucpp { namespace http {
 		if (req.Header("Origin").length())
 			res.addHeader("Access-Control-Allow-Origin", req.Header("Origin"));
 	}
-	
+    
+    Variant Server::jsonDecode(const String &s, bool *error)
+    {
+        Variant v;
+        Json::Reader reader;
+        bool ok = reader.parse(s, v);
+        if (error)
+            *error = !ok;
+        return v;
+    }
+
+    String Server::jsonEncode(const Variant &v)
+    {
+        return Json::FastWriter().write(v);
+    }
+
 	
 	// ServerJob
 	

@@ -129,6 +129,11 @@ namespace jucpp { namespace http {
 		Server& DELETE(String cp, Fn fn) { m_functions["DELETE"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& OPTIONS(String cp, Fn fn) { m_functions["OPTIONS"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& HEAD(String cp, Fn fn) { m_functions["HEAD"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
+        
+    public:
+        static String jsonEncode(const Variant &v);
+        static Variant jsonDecode(const String &s, bool *error = nullptr);
+        
 	protected:
 		virtual ResponseStatus EventHandler(Request &req, Response &res);
 
