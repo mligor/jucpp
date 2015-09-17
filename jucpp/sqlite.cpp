@@ -74,6 +74,11 @@ namespace jucpp { namespace sqlite {
 		return ret;
 	}
 	
+	String SQLite::getLastInsertRowId()
+	{
+		return std::to_string(sqlite3_last_insert_rowid((sqlite3*)m_db));
+	}
+	
 	
 	// namespace end
 }}

@@ -23,31 +23,34 @@ namespace jucpp { namespace sqlite {
 		using Result = Array;
 		
 	public:
-		SQLite() : m_db(nullptr){}
+		SQLite() {}
+		SQLite(const String& dbName, bool readonly = false) { open(dbName, readonly); }
+		~SQLite() { close();}
 		
 		void open(const String& dbName, bool readonly = false);
 		void close();
 		Result query(const char* q);
 		Result query(const String& q) { return query(q.c_str()); };
+		String getLastInsertRowId();
 		
 		//bool execute(const String& q);
 
 	protected:
-		void* m_db;
+		void* m_db = nullptr;
 		
 	};
 	
-	class SQLiteException
+	class SQLiteException : public std::exception
 	{
 	public:
 		SQLiteException(const char* description)
 		{
+			m_description = "SQLite Error : ";
 			if (description)
-				m_description = description;
+				m_description +=  description;
 			
 		}
-		
-		const String& description() const { return m_description; }
+		virtual const char* what() const _NOEXCEPT { return m_description.c_str(); }
 		
 	private:
 		String m_description;
