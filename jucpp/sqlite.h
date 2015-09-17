@@ -50,7 +50,7 @@ namespace jucpp { namespace sqlite {
 				m_description +=  description;
 			
 		}
-		virtual const char* what() const _NOEXCEPT { return m_description.c_str(); }
+		virtual const char* what() const noexcept { return m_description.c_str(); }
 		
 	private:
 		String m_description;
