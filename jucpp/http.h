@@ -54,9 +54,7 @@ namespace jucpp { namespace http {
 
         String Get(const String& name) const;
         const String& PathParam(const String& name) const;
-        
-        //TODO: introduce special object for Cookies
-        const Cookie& Cookie(const String& name) const;
+        const Cookie& getCookie(const String& name) const;
 		
 		const Variant& Data() const { return m_jsonContent; }
 		const Variant& Data(const char* key) const

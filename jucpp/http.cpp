@@ -282,7 +282,7 @@ namespace jucpp { namespace http {
 				else
 					singleCookie = cookiesHeader.substr(oldPos);
 				
-				class Cookie c(singleCookie);
+				Cookie c(singleCookie);
 				m_cookies[c.Name()] = c;
 			}
 		}
@@ -394,7 +394,7 @@ namespace jucpp { namespace http {
          return String::EmptyString;
     }
     
-    const Cookie& Request::Cookie(const String &name) const
+    const Cookie& Request::getCookie(const String &name) const
     {
 		auto it = m_cookies.find(name);
 		if (it != m_cookies.end())

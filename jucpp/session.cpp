@@ -143,7 +143,7 @@ namespace jucpp { namespace http {
 	: m_request(req)
 	, m_response(res)
 	{
-		m_sessionId = m_request.Cookie("jucpp-session").Value();
+		m_sessionId = m_request.getCookie("jucpp-session").Value();
 	}
 	
 	void Session::set(Variant o)
