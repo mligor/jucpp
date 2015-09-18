@@ -105,17 +105,15 @@ namespace jucpp { namespace http {
 			for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
 				mg_send_header(conn, (*it).first.c_str(), (*it).second.c_str());
             
-            const StringStringMap& cookies = res.getCookies();
-            String setCookie;
-            for (StringStringMap::const_iterator it = cookies.begin(); it != cookies.end(); ++it)
+            const StringCookieMap& cookies = res.getCookies();
+            for (StringCookieMap::const_iterator it = cookies.begin(); it != cookies.end(); ++it)
             {
-                if (setCookie.length()) setCookie.append(" ;");
+				String setCookie;
                 setCookie.append((*it).first);
                 setCookie.append("=");
-                setCookie.append((*it).second);
+                setCookie.append((*it).second.Value());
+				mg_send_header(conn, "Set-Cookie", setCookie.c_str());
             }
-            if (setCookie.length())
-                mg_send_header(conn, "Set-Cookie", setCookie.c_str());
 			
 			mg_printf_data((mg_connection*)conn, res.getContent().c_str(), res.getContent().size());
 			return MG_TRUE;
@@ -265,7 +263,30 @@ namespace jucpp { namespace http {
 		
 		for (int i = 0; i < pConn->num_headers; ++i)
 			m_headers[pConn->http_headers[i].name] = pConn->http_headers[i].value;
-        
+		
+		auto it = m_headers.find("Cookie");
+		if (it != m_headers.end())
+		{
+			String cookiesHeader = (*it).second;
+			std::size_t pos = 0;
+			while (pos != cookiesHeader.npos)
+			{
+				std::size_t oldPos = pos;
+				pos = cookiesHeader.find(";", oldPos);
+				String singleCookie;
+				if (pos != cookiesHeader.npos)
+				{
+					singleCookie = cookiesHeader.substr(oldPos, pos - oldPos);
+					++pos;
+				}
+				else
+					singleCookie = cookiesHeader.substr(oldPos);
+				
+				class Cookie c(singleCookie);
+				m_cookies[c.Name()] = c;
+			}
+		}
+		
     
 		m_httpVersion = pConn->http_version;
 		m_content = String(pConn->content, pConn->content_len);
@@ -373,24 +394,12 @@ namespace jucpp { namespace http {
          return String::EmptyString;
     }
     
-    const String Request::Cookie(const String &name) const
+    const Cookie& Request::Cookie(const String &name) const
     {
-        String ret;
-        String str = Header("Cookie");
-        
-        if (!str.length())
-            return ret;
-        
-        char* buff = new char[str.length()];
-        
-        int r = get_var(str.c_str(), str.length(), name.c_str(), buff, str.length());
-        
-        if (r > 0)
-            ret = String(buff, r);
-        
-        delete [] buff;
-
-        return ret;
+		auto it = m_cookies.find(name);
+		if (it != m_cookies.end())
+			return it->second;
+		return Cookie::InvalidCookie;
     }
 	
 	// Response
@@ -399,12 +408,54 @@ namespace jucpp { namespace http {
 	{
 		write(Json::FastWriter().write(v).c_str());
 	}
-    
+	
+	void Response::write_styled(const Json::Value& v)
+	{
+		write(Json::StyledWriter().write(v).c_str());
+	}
+	
     void Response::redirect(String url, int status)
     {
         setStatus(status);
         addHeader("Location", url);
     }
+	
+	// Cookie
+	
+	const Cookie Cookie::InvalidCookie;
+	
+	void Cookie::parse(String text)
+	{
+		auto TrimLeft = [](String s) -> String
+		{
+			std::size_t pos = s.find_first_not_of(" ");
+			if (pos != s.npos)
+				return s.substr(pos);
+			return s;
+		};
+		
+		auto TrimRight = [](String s) -> String
+		{
+			std::size_t pos = s.find_last_not_of(" ");
+			if (pos != s.npos)
+				return s.substr(0, pos+1);
+			return s;
+		};
+		
+		m_name.clear();
+		m_value.clear();
+		
+		std::size_t pos = text.find("=");
+		if (pos == text.npos)
+		{
+			m_name = TrimLeft(TrimRight(text));
+			return;
+		}
+		m_name = TrimLeft(text.substr(0, pos));
+		m_value = TrimRight(text.substr(pos+1));
+		
+		
+	}
 	
 
 }} // namespaces

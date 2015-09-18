@@ -14,6 +14,28 @@
 namespace jucpp { namespace http {
 
 	/**
+	 HTTP Cookie object
+	 */
+	//TODO: currently only session cookies are supported
+	// Other cookie properties should be added : path, domain, expiration, secure, ...
+	class Cookie
+	{
+	public:
+		Cookie() {}
+		Cookie(String text) { parse(text); }
+		Cookie(String name, String value) : m_name(name), m_value(value) { }
+		const String& Name() const { return m_name; }
+		const String& Value() const { return m_value; }
+		static const Cookie InvalidCookie;
+	private:
+		void parse(String text);
+		String m_name;
+		String m_value;
+	};
+	
+	using StringCookieMap = std::map<String, Cookie>;
+
+	/**
 	 HTTP Request object
 	 */
 	class Request
@@ -34,7 +56,7 @@ namespace jucpp { namespace http {
         const String& PathParam(const String& name) const;
         
         //TODO: introduce special object for Cookies
-        const String Cookie(const String& name) const;
+        const Cookie& Cookie(const String& name) const;
 		
 		const Variant& Data() const { return m_jsonContent; }
 		const Variant& Data(const char* key) const
@@ -55,6 +77,7 @@ namespace jucpp { namespace http {
 	private:
 		StringStringMap m_headers;
         StringStringMap m_pathParams; // parameter from the named path (e.g. /feed/:name -> m_pathParams["name"])
+		StringCookieMap m_cookies;
 		String m_rawHeaders;
 		String m_httpVersion;
 		String m_method; // GET, POST, PUT, etc..
@@ -76,19 +99,19 @@ namespace jucpp { namespace http {
 		
 		void write(const char* text) { if (text) m_output += text; }
 		void write(const Json::Value& v);
+		void write_styled(const Json::Value& v);
 
 		const String& getContent() { return m_output; }
 		const int getStatus() const { return m_status; }
 		const StringStringMap& getHeaders() const { return m_headers; }
-        const StringStringMap& getCookies() const { return m_cookies; }
+        const StringCookieMap& getCookies() const { return m_cookies; }
 		
 		/// Set response status code
 		void setStatus(int status, const String& statusText = String{}) { m_status = status; m_statusText = statusText; }
 		
 		/// Add custom header to the response
 		void addHeader(const String& name, const String& value) { m_headers[name] = value; }
-        // TODO: addCookie should use some Cookie object to define expiration, path, domain etc...
-        void addCookie(const String& name, const String& value) { m_cookies[name] = value; }
+        void addCookie(const Cookie& cookie) { m_cookies[cookie.Name()] = cookie; }
         
         void redirect(String url, int status = 302);
 		
@@ -98,7 +121,7 @@ namespace jucpp { namespace http {
 	private:
 		String m_output;
 		StringStringMap m_headers;
-        StringStringMap m_cookies;
+        StringCookieMap m_cookies;
 		int m_status = 200;
 		String m_statusText;
 	};
