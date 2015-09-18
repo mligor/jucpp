@@ -31,7 +31,15 @@ namespace jucpp
 	{
 	public:
 		Object() : Json::Value(Json::ValueType::objectValue) {}
-		
+	};
+	
+	class Exception : public std::exception
+	{
+	private:
+		String m_error;
+	public:
+		Exception(const char* error) : m_error(error) { };
+		virtual const char* what() const noexcept override { return m_error.c_str(); }
 	};
 	
 	class Array : public Json::Value

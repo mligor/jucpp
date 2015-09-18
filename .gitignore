@@ -230,3 +230,5 @@ libs/curl/Debug
 libs/curl/Release
 libs/curl/x64
 libs/curl/curl-src
+example/example
+example/example.dSYM

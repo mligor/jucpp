@@ -185,7 +185,10 @@ namespace jucpp { namespace http {
 		char buffer[33];
 		sprintf(buffer, "%d", port);
 
-		mg_set_option(server, "listening_port", buffer);
+		const char* err = mg_set_option(server, "listening_port", buffer);
+		
+		if (err)
+			throw Exception(err);
 	
 		Job job(new ServerJob(server));
 		job.run();
