@@ -53,6 +53,8 @@ namespace jucpp { namespace http {
 		/// Default database is jucpp.sessions.db in the current directory.
 		static void SetSessionDatabasePath(String dbName) { s_sessionDatabasePath = dbName; }
 		static String GetSessionDatabasePath() { return s_sessionDatabasePath; }
+		static void SetSessionCookieName(String name) { s_sessionCookieName = name; }
+		static String GetSessionCookieName() { return s_sessionCookieName; }
 		
 	private:
 		String m_sessionId;
@@ -60,6 +62,7 @@ namespace jucpp { namespace http {
 		Response& m_response;
 		
 		static String s_sessionDatabasePath;
+		static String s_sessionCookieName;
 	};
 	
 }} // namespace jucpp::http
