@@ -138,6 +138,7 @@ namespace jucpp { namespace http {
 	// Session
 	
 	String Session::s_sessionDatabasePath = "jucpp.sessions.db";
+	String Session::s_sessionCookieName = "jucpp-session";
 	
 	Session::Session(const Request &req, Response &res)
 	: m_request(req)
@@ -150,7 +151,7 @@ namespace jucpp { namespace http {
 	{
 		SessionManager sm(s_sessionDatabasePath);
 		m_sessionId = sm.setSession(o, m_sessionId);
-		m_response.addCookie(Cookie("jucpp-session", m_sessionId));
+		m_response.addCookie(Cookie(s_sessionCookieName, m_sessionId));
 	}
 
 	Variant Session::get()
@@ -166,7 +167,7 @@ namespace jucpp { namespace http {
 			SessionManager sm(s_sessionDatabasePath);
 			sm.deleteSession(m_sessionId);
 			//TODO: ugly hack, should be changed when Cookie support expiration time
-			m_response.addCookie(Cookie("jucpp-session", " ;Expires=Thu, 01-Jan-1970 00:00:01 GMT;"));
+			m_response.addCookie(Cookie(s_sessionCookieName, " ;Expires=Thu, 01-Jan-1970 00:00:01 GMT;"));
 		}
 	}
 
