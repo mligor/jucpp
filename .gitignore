@@ -232,3 +232,7 @@ libs/curl/x64
 libs/curl/curl-src
 example/example
 example/example.dSYM
+
+/angularExample/angularExample
+/angularExample/angularExample.dSYM/
+/angularExample/angularObject.db
