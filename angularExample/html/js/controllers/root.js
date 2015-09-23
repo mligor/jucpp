@@ -1,11 +1,14 @@
 (function(angular) {
 'use strict';
 
-angular.module('app').controller('RootController', ['$scope', 'User',
-function($scope, User)
+angular.module('app').controller('RootController', ['$scope', 'User', 'Feed',
+function($scope, User, Feed)
 {
     $scope.users = [];
+    $scope.feeds = [];
+    
     $scope.selected = null;
+    $scope.fselected = null;
     
     var init = function()
     {
@@ -19,6 +22,17 @@ function($scope, User)
             {
                 alert(err);
             });
+            
+        Feed.get().then(
+            function onSuccess(feeds)
+            {
+                $scope.feeds = feeds;
+            },
+            function onError(err)
+            {
+                alert(err);
+            });
+
     };
     
     $scope.select = function(u)
@@ -38,6 +52,20 @@ function($scope, User)
             {
                 alert(err);
             });
+    }
+    
+    $scope.addFeed = function()
+    {
+        console.log("addUser()");
+        Feed.add({"url" : "http://myurl", title: "Dummy feed"}).then(
+        function onSuccess(newFeed)
+        {
+            $scope.feeds.push(newFeed);
+        },
+        function onError(err)
+        {
+            alert(err);
+        });
     }
     
     $scope.editUser = function(user)
@@ -70,6 +98,7 @@ function($scope, User)
             });
 
     }
+    
     
     
     init();

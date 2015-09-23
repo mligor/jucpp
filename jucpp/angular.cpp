@@ -192,7 +192,7 @@ namespace jucpp { namespace angular {
     {
         abd.jsContent += "//automaticly generated file using jucpp (http://www.jucpp.com)\n";
         abd.jsContent = "(function(angular){'use strict';\n";
-        abd.jsContent += "angular.module('jucpp', ['zimco.rest']).factory('" + abd.name + "', ['REST', '$q', function(REST, $q) {\n";
+        abd.jsContent += "angular.module('jucpp." + abd.name + "', ['zimco.rest']).factory('" + abd.name + "', ['REST', '$q', function(REST, $q) {\n";
         
         abd.jsContent += "  var actions = {\n";
         abd.jsContent += "    get : { url:'" + abd.apiUrl + "', method:'GET', isArray:true},\n";

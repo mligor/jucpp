@@ -19,6 +19,7 @@ int main()
     AngularRestServer()
     .setDatabaseName("angularObject.db")
     .AngularBinding("User", "/api/user", "/js/user.js", "user")
+    .AngularBinding("Feed", "/api/feed", "/js/feed.js", "feed")
     .setDocumentRoot("./html")
     .GET("*", [](const Request &req, Response &res)
     {
