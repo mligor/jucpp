@@ -14,7 +14,6 @@
 		8C230A821B9E50E4009CFC04 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C230A811B9E50E4009CFC04 /* libcurl.dylib */; };
 		8C5B4E3C1BAC85F6009B01F0 /* session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B4E3A1BAC85F6009B01F0 /* session.cpp */; settings = {ASSET_TAGS = (); }; };
 		8C5B4E3D1BAC85F6009B01F0 /* session.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5B4E3B1BAC85F6009B01F0 /* session.h */; settings = {ASSET_TAGS = (); }; };
-		8C618B3F1B9C42FE00F45250 /* example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C618B3E1B9C42FE00F45250 /* example.cpp */; };
 		8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDA1B51A2FE00BA589C /* autolink.h */; };
 		8C6E7BEA1B51A2FE00BA589C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDB1B51A2FE00BA589C /* config.h */; };
 		8C6E7BEB1B51A2FE00BA589C /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDC1B51A2FE00BA589C /* features.h */; };
@@ -34,6 +33,10 @@
 		8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF731B47CA8A00B92258 /* http.cpp */; };
 		8C6EDF751B47D17700B92258 /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
 		8C6EDF771B47D1AE00B92258 /* jucpp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF761B47D1AE00B92258 /* jucpp.cpp */; };
+		8C81B9151BB32FF4007EE5C0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B9141BB32FF4007EE5C0 /* main.cpp */; };
+		8C81B91B1BB3309F007EE5C0 /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
+		8C81B91D1BB33214007EE5C0 /* html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C81B91C1BB331F2007EE5C0 /* html */; };
+		8C81B91F1BB34EC8007EE5C0 /* example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B91E1BB34EC8007EE5C0 /* example.cpp */; settings = {ASSET_TAGS = (); }; };
 		8CA2D5A61B8E496400308DB2 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2D5A41B8E496400308DB2 /* base64.cpp */; settings = {COMPILER_FLAGS = "-Wno-deprecated-register -Wno-shorten-64-to-32"; }; };
 		8CA2D5A71B8E496400308DB2 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CA2D5A51B8E496400308DB2 /* base64.h */; };
 		8CEAAC571B9630A50073CB25 /* mail.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CEAAC551B9630A50073CB25 /* mail.h */; };
@@ -50,6 +53,16 @@
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
+		8C81B9101BB32FF4007EE5C0 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 7;
+			files = (
+				8C81B91D1BB33214007EE5C0 /* html in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -61,7 +74,6 @@
 		8C230A811B9E50E4009CFC04 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		8C5B4E3A1BAC85F6009B01F0 /* session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = session.cpp; path = jucpp/session.cpp; sourceTree = "<group>"; };
 		8C5B4E3B1BAC85F6009B01F0 /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = session.h; path = jucpp/session.h; sourceTree = "<group>"; };
-		8C618B3E1B9C42FE00F45250 /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = example.cpp; path = example/example.cpp; sourceTree = SOURCE_ROOT; };
 		8C6E7BDA1B51A2FE00BA589C /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = libs/json/autolink.h; sourceTree = "<group>"; };
 		8C6E7BDB1B51A2FE00BA589C /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = libs/json/config.h; sourceTree = "<group>"; };
 		8C6E7BDC1B51A2FE00BA589C /* features.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = features.h; path = libs/json/features.h; sourceTree = "<group>"; };
@@ -85,6 +97,10 @@
 		8C6EDF701B47CA5100B92258 /* mongoose.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mongoose.h; path = libs/mongoose/mongoose.h; sourceTree = "<group>"; };
 		8C6EDF731B47CA8A00B92258 /* http.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = http.cpp; path = jucpp/http.cpp; sourceTree = "<group>"; };
 		8C6EDF761B47D1AE00B92258 /* jucpp.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jucpp.cpp; path = jucpp/jucpp.cpp; sourceTree = "<group>"; };
+		8C81B9121BB32FF4007EE5C0 /* angularExample */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = angularExample; sourceTree = BUILT_PRODUCTS_DIR; };
+		8C81B9141BB32FF4007EE5C0 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		8C81B91C1BB331F2007EE5C0 /* html */ = {isa = PBXFileReference; lastKnownFileType = folder; path = html; sourceTree = "<group>"; };
+		8C81B91E1BB34EC8007EE5C0 /* example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = example.cpp; path = example/example.cpp; sourceTree = SOURCE_ROOT; };
 		8CA2D5A41B8E496400308DB2 /* base64.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = base64.cpp; path = jucpp/base64.cpp; sourceTree = "<group>"; };
 		8CA2D5A51B8E496400308DB2 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = base64.h; path = jucpp/base64.h; sourceTree = "<group>"; };
 		8CEAAC551B9630A50073CB25 /* mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mail.h; path = jucpp/mail.h; sourceTree = "<group>"; };
@@ -105,6 +121,14 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C81B90F1BB32FF4007EE5C0 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C81B91B1BB3309F007EE5C0 /* libjucpp.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -150,6 +174,7 @@
 				8C230A811B9E50E4009CFC04 /* libcurl.dylib */,
 				8C6EDF5B1B47C09D00B92258 /* jucpp */,
 				8C6EDF351B47B93900B92258 /* example */,
+				8C81B9131BB32FF4007EE5C0 /* angularExample */,
 				8C6EDF271B47B90A00B92258 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -159,6 +184,7 @@
 			children = (
 				8C6EDF341B47B93900B92258 /* example */,
 				8C6EDF4F1B47C02200B92258 /* libjucpp.a */,
+				8C81B9121BB32FF4007EE5C0 /* angularExample */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -166,7 +192,7 @@
 		8C6EDF351B47B93900B92258 /* example */ = {
 			isa = PBXGroup;
 			children = (
-				8C618B3E1B9C42FE00F45250 /* example.cpp */,
+				8C81B91E1BB34EC8007EE5C0 /* example.cpp */,
 			);
 			name = example;
 			path = test1;
@@ -200,6 +226,15 @@
 				8C5B4E3B1BAC85F6009B01F0 /* session.h */,
 			);
 			name = jucpp;
+			sourceTree = "<group>";
+		};
+		8C81B9131BB32FF4007EE5C0 /* angularExample */ = {
+			isa = PBXGroup;
+			children = (
+				8C81B9141BB32FF4007EE5C0 /* main.cpp */,
+				8C81B91C1BB331F2007EE5C0 /* html */,
+			);
+			path = angularExample;
 			sourceTree = "<group>";
 		};
 		8CEAAC591B9630B00073CB25 /* mail */ = {
@@ -275,6 +310,23 @@
 			productReference = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		8C81B9111BB32FF4007EE5C0 /* angularExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8C81B9181BB32FF4007EE5C0 /* Build configuration list for PBXNativeTarget "angularExample" */;
+			buildPhases = (
+				8C81B90E1BB32FF4007EE5C0 /* Sources */,
+				8C81B90F1BB32FF4007EE5C0 /* Frameworks */,
+				8C81B9101BB32FF4007EE5C0 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = angularExample;
+			productName = angularExample;
+			productReference = 8C81B9121BB32FF4007EE5C0 /* angularExample */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -289,6 +341,9 @@
 					};
 					8C6EDF4E1B47C02200B92258 = {
 						CreatedOnToolsVersion = 6.4;
+					};
+					8C81B9111BB32FF4007EE5C0 = {
+						CreatedOnToolsVersion = 7.0;
 					};
 				};
 			};
@@ -306,6 +361,7 @@
 			targets = (
 				8C6EDF331B47B93900B92258 /* example */,
 				8C6EDF4E1B47C02200B92258 /* jucpp */,
+				8C81B9111BB32FF4007EE5C0 /* angularExample */,
 			);
 		};
 /* End PBXProject section */
@@ -315,7 +371,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8C618B3F1B9C42FE00F45250 /* example.cpp in Sources */,
+				8C81B91F1BB34EC8007EE5C0 /* example.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -334,6 +390,14 @@
 				8C6E7BF01B51A2FE00BA589C /* json_writer.cpp in Sources */,
 				8CEAAC581B9630A50073CB25 /* mail.cpp in Sources */,
 				8C1A1DE91B6967DC0083CBA3 /* sqlite3.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8C81B90E1BB32FF4007EE5C0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8C81B9151BB32FF4007EE5C0 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -470,6 +534,28 @@
 			};
 			name = Release;
 		};
+		8C81B9161BB32FF4007EE5C0 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8C81B9171BB32FF4007EE5C0 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -499,6 +585,14 @@
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
+		};
+		8C81B9181BB32FF4007EE5C0 /* Build configuration list for PBXNativeTarget "angularExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8C81B9161BB32FF4007EE5C0 /* Debug */,
+				8C81B9171BB32FF4007EE5C0 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
 		};
 /* End XCConfigurationList section */
 	};

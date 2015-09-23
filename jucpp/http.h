@@ -143,7 +143,7 @@ namespace jucpp { namespace http {
 		Job listen(int port);
 		Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
 		
-		void addCORSHeaders(const Request& req, Response& res);
+		static void addCORSHeaders(const Request& req, Response& res);
 		
 		Server& GET(String cp, Fn fn) { m_functions["GET"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& POST(String cp, Fn fn) { m_functions["POST"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
