@@ -62,7 +62,10 @@ namespace jucpp { namespace sqlite {
 				{
 					const char* name = sqlite3_column_name(stmt, i);
 					const char* value = (const char*)sqlite3_column_text(stmt, i);
-					newRow[name] = value;
+					if (value == NULL)
+						newRow[name] = Variant::null;
+					else
+						newRow[name] = value;
 				}
 				
 				ret.append(newRow);

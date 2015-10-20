@@ -20,7 +20,18 @@ namespace jucpp { namespace angular {
     public:
         AngularRestServer& AngularBinding(String name, String apiUrl, String jsUrl, String tableName);
         AngularRestServer& setDatabaseName(String databaseName) { m_databaseName = databaseName; return *this; }
-        
+		enum RequestType
+		{
+			RequestTypeUnknown,
+			RequestTypeGet,
+			RequestTypeGetOne,
+			RequestTypeAdd,
+			RequestTypeEdit,
+			RequestTypeDelete
+		};
+		
+		// return list of rows that are available (e.g. "firstName, lastName")
+		virtual String getListOfRows(String name, RequestType rt, String id, const Request &req, Response &res) { return "*"; };
     private:
         struct AngularBindingData
         {

@@ -42,20 +42,20 @@ namespace jucpp { namespace angular {
         auto it = m_angularBinding.find(req.Url());
         if (it == m_angularBinding.end())
             return Proceeded;
-        
+		
         try
         {
+			String listOfRows = getListOfRows((*it).second.name, RequestTypeGet, "", req, res);
+			if (listOfRows == "")
+			{
+				res.setStatus(403);
+				res.write("Request not allowed");
+				return Proceeded;
+			}
+			
             SQLite db(m_databaseName);
-            SQLite::Result r = db.query("SELECT * FROM `" + (*it).second.tableName + "`");
-            
-            Array ret;
-            for (auto row: r)
-            {
-                Variant o = Server::jsonDecode(row["data"].asString());
-                o["id"] = row["id"];
-                ret.append(o);
-            }
-            res.write(ret);
+            SQLite::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "`");
+            res.write(r);
         }
         catch (std::exception& e)
         {
@@ -67,13 +67,28 @@ namespace jucpp { namespace angular {
     
     Server::ResponseStatus AngularRestServer::getItem(const Request &req, Response &res)
     {
-        auto it = m_angularBinding.find(req.Url());
+		String url = req.Url();
+		std::size_t p = url.find_last_of("/");
+		if (p == url.npos)
+			return Proceeded;
+		url = url.substr(0, p);
+
+        auto it = m_angularBinding.find(url);
         if (it == m_angularBinding.end())
             return Proceeded;
         try
         {
-            SQLite db(m_databaseName);
-            SQLite::Result r = db.query("SELECT * FROM `" + (*it).second.tableName + "` WHERE id='" + req.PathParam("id") + "'");
+			String id = req.PathParam("id");
+			String listOfRows = getListOfRows((*it).second.name, RequestTypeGetOne, id, req, res);
+			if (listOfRows == "")
+			{
+				res.setStatus(403);
+				res.write("Request not allowed");
+				return Proceeded;
+			}
+
+			SQLite db(m_databaseName);
+            SQLite::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
             if (r.size() > 0)
                 res.write(r[(unsigned int)0]);
             
