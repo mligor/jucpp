@@ -27,7 +27,8 @@ namespace jucpp { namespace angular {
         BIND_POST(apiUrl, &AngularRestServer::addItem);
         BIND_PUT(apiUrl, &AngularRestServer::editItem);
         BIND_DELETE(apiUrl + "/:id", &AngularRestServer::deleteItem);
-        BIND_GET(jsUrl, &AngularRestServer::getAngularFactory);
+		if (jsUrl != "")
+			BIND_GET(jsUrl, &AngularRestServer::getAngularFactory);
         
         m_angularBinding[apiUrl] = abd;
         m_jsUrlMapping[jsUrl] = apiUrl;
