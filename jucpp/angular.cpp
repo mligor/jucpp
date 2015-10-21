@@ -46,7 +46,8 @@ namespace jucpp { namespace angular {
 		
         try
         {
-			String listOfRows = getListOfRows((*it).second.name, RequestTypeGet, "", req, res);
+			String filter = "";
+			String listOfRows = getListOfRows((*it).second.name, RequestTypeGet, "", req, res, filter);
 			if (listOfRows == "")
 			{
 				res.setStatus(403);
@@ -55,7 +56,10 @@ namespace jucpp { namespace angular {
 			}
 			
             SQLite db(m_databaseName);
-            SQLite::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "`");
+			String query = "SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "`";
+			if (filter != "")
+				query += " WHERE " + filter;
+            SQLite::Result r = db.query(query);
             res.write(r);
         }
         catch (std::exception& e)
@@ -80,7 +84,8 @@ namespace jucpp { namespace angular {
         try
         {
 			String id = req.PathParam("id");
-			String listOfRows = getListOfRows((*it).second.name, RequestTypeGetOne, id, req, res);
+			String filter = "";
+			String listOfRows = getListOfRows((*it).second.name, RequestTypeGetOne, id, req, res, filter);
 			if (listOfRows == "")
 			{
 				res.setStatus(403);

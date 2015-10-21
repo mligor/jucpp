@@ -31,7 +31,7 @@ namespace jucpp { namespace angular {
 		};
 		
 		// return list of rows that are available (e.g. "firstName, lastName")
-		virtual String getListOfRows(String name, RequestType rt, String id, const Request &req, Response &res) { return "*"; };
+		virtual String getListOfRows(String name, RequestType rt, String id, const Request &req, Response &res, String& filter) { return "*"; };
     private:
         struct AngularBindingData
         {
