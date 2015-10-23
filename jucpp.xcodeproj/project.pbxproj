@@ -12,8 +12,8 @@
 		8C1A1DEA1B6967DC0083CBA3 /* sqlite3.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C1A1DE61B6967DC0083CBA3 /* sqlite3.h */; };
 		8C1A1DEB1B6967DC0083CBA3 /* sqlite3ext.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C1A1DE71B6967DC0083CBA3 /* sqlite3ext.h */; };
 		8C230A821B9E50E4009CFC04 /* libcurl.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C230A811B9E50E4009CFC04 /* libcurl.dylib */; };
-		8C5B4E3C1BAC85F6009B01F0 /* session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B4E3A1BAC85F6009B01F0 /* session.cpp */; settings = {ASSET_TAGS = (); }; };
-		8C5B4E3D1BAC85F6009B01F0 /* session.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5B4E3B1BAC85F6009B01F0 /* session.h */; settings = {ASSET_TAGS = (); }; };
+		8C5B4E3C1BAC85F6009B01F0 /* session.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C5B4E3A1BAC85F6009B01F0 /* session.cpp */; };
+		8C5B4E3D1BAC85F6009B01F0 /* session.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C5B4E3B1BAC85F6009B01F0 /* session.h */; };
 		8C6E7BE91B51A2FE00BA589C /* autolink.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDA1B51A2FE00BA589C /* autolink.h */; };
 		8C6E7BEA1B51A2FE00BA589C /* config.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDB1B51A2FE00BA589C /* config.h */; };
 		8C6E7BEB1B51A2FE00BA589C /* features.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BDC1B51A2FE00BA589C /* features.h */; };
@@ -36,9 +36,9 @@
 		8C81B9151BB32FF4007EE5C0 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B9141BB32FF4007EE5C0 /* main.cpp */; };
 		8C81B91B1BB3309F007EE5C0 /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
 		8C81B91D1BB33214007EE5C0 /* html in CopyFiles */ = {isa = PBXBuildFile; fileRef = 8C81B91C1BB331F2007EE5C0 /* html */; };
-		8C81B91F1BB34EC8007EE5C0 /* example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B91E1BB34EC8007EE5C0 /* example.cpp */; settings = {ASSET_TAGS = (); }; };
-		8C81B9221BB34FD9007EE5C0 /* angular.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B9201BB34FD9007EE5C0 /* angular.cpp */; settings = {ASSET_TAGS = (); }; };
-		8C81B9231BB34FD9007EE5C0 /* angular.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C81B9211BB34FD9007EE5C0 /* angular.h */; settings = {ASSET_TAGS = (); }; };
+		8C81B91F1BB34EC8007EE5C0 /* example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B91E1BB34EC8007EE5C0 /* example.cpp */; };
+		8C81B9221BB34FD9007EE5C0 /* angular.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C81B9201BB34FD9007EE5C0 /* angular.cpp */; };
+		8C81B9231BB34FD9007EE5C0 /* angular.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C81B9211BB34FD9007EE5C0 /* angular.h */; };
 		8CA2D5A61B8E496400308DB2 /* base64.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CA2D5A41B8E496400308DB2 /* base64.cpp */; settings = {COMPILER_FLAGS = "-Wno-deprecated-register -Wno-shorten-64-to-32"; }; };
 		8CA2D5A71B8E496400308DB2 /* base64.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CA2D5A51B8E496400308DB2 /* base64.h */; };
 		8CEAAC571B9630A50073CB25 /* mail.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CEAAC551B9630A50073CB25 /* mail.h */; };
@@ -601,6 +601,7 @@
 				8C81B9171BB32FF4007EE5C0 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
