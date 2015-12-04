@@ -31,10 +31,12 @@
     <ClInclude Include="..\libs\mongoose\mongoose.h" />
     <ClInclude Include="..\libs\sqlite\sqlite3.h" />
     <ClInclude Include="..\libs\sqlite\sqlite3ext.h" />
+    <ClInclude Include="angular.h" />
     <ClInclude Include="base64.h" />
     <ClInclude Include="http.h" />
     <ClInclude Include="jucpp.h" />
     <ClInclude Include="mail.h" />
+    <ClInclude Include="session.h" />
     <ClInclude Include="sqlite.h" />
   </ItemGroup>
   <ItemGroup>
@@ -43,10 +45,12 @@
     <ClCompile Include="..\libs\json\json_writer.cpp" />
     <ClCompile Include="..\libs\mongoose\mongoose.c" />
     <ClCompile Include="..\libs\sqlite\sqlite3.c" />
+    <ClCompile Include="angular.cpp" />
     <ClCompile Include="base64.cpp" />
     <ClCompile Include="http.cpp" />
     <ClCompile Include="jucpp.cpp" />
     <ClCompile Include="mail.cpp" />
+    <ClCompile Include="session.cpp" />
     <ClCompile Include="sqlite.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -69,26 +73,26 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v120_xp</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>

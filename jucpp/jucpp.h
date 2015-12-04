@@ -9,6 +9,12 @@
 #include <map>
 #include <string>
 
+#if defined(_MSC_VER) && (_MSC_VER < 1900)
+#define NOEXCEPT
+#else
+#define NOEXCEPT noexcept
+#endif
+
 namespace jucpp
 {
 	
@@ -39,7 +45,7 @@ namespace jucpp
 		String m_error;
 	public:
 		Exception(const char* error) : m_error(error) { };
-		virtual const char* what() const noexcept override { return m_error.c_str(); }
+		virtual const char* what() const NOEXCEPT override { return m_error.c_str(); }
 	};
 	
 	class Array : public Json::Value

@@ -73,6 +73,12 @@
     <ClInclude Include="mail.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="session.h">
+      <Filter>headers</Filter>
+    </ClInclude>
+    <ClInclude Include="angular.h">
+      <Filter>headers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\sqlite\sqlite3.c">
@@ -103,6 +109,12 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="mail.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="session.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="angular.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
