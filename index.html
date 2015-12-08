@@ -67,35 +67,34 @@ Having native code increase performance and memory usage – therefore your Web 
 
 <span class="pl-k">int</span> <span class="pl-en">main</span>()
 {
-    <span class="pl-c">// Global GET handler - will catch all GET requests</span>
+    <span class="pl-k">int</span> port = <span class="pl-c1">8000</span>;
+
+    <span class="pl-c1">printf</span>(<span class="pl-s"><span class="pl-pds">"</span>Server available on http://localhost:<span class="pl-c1">%d</span><span class="pl-cce">\n</span><span class="pl-pds">"</span></span>, port);
+
     <span class="pl-c1">Server</span>()
-    .<span class="pl-c1">setDocumentRoot</span>(<span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-pds">"</span></span>) <span class="pl-c">// Allow to ServeStaticFile       </span>
-    .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res)
-    {
-        String url = req.<span class="pl-c1">Url</span>();
-
-        <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/favicon.ico<span class="pl-pds">"</span></span>)
-            <span class="pl-k">return</span> Server::Skipped; <span class="pl-c">// allow GET /favicon.ico handler to response</span>
-        <span class="pl-k">else</span> <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/example.cpp<span class="pl-pds">"</span></span>)
-            <span class="pl-k">return</span> Server::ServeStaticFile; <span class="pl-c">// jucpp will try to server main.cpp as static file</span>
-
-        Object data;
-        data[<span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>] = url;
-        data[<span class="pl-s"><span class="pl-pds">"</span>language<span class="pl-pds">"</span></span>] = req.<span class="pl-c1">Header</span>(<span class="pl-s"><span class="pl-pds">"</span>Accept-Language<span class="pl-pds">"</span></span>);
-        res.<span class="pl-c1">write</span>(data);
-
-        <span class="pl-k">return</span> Server::Proceeded; <span class="pl-c">// inform jucpp framework that request is processed</span>
-    })
-
-    <span class="pl-c">// special GET handler, will catch only specific URL</span>
+    .<span class="pl-c1">setDocumentRoot</span>(<span class="pl-s"><span class="pl-pds">"</span>.<span class="pl-pds">"</span></span>) <span class="pl-c">// Allow to ServeStaticFile</span>
     .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>/favicon.ico<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res)
      {
          res.<span class="pl-c1">write</span>(<span class="pl-s"><span class="pl-pds">"</span>no icon today<span class="pl-pds">"</span></span>);
          <span class="pl-k">return</span> Server::Proceeded;
      })
+    .<span class="pl-c1">GET</span>(<span class="pl-s"><span class="pl-pds">"</span>*<span class="pl-pds">"</span></span>, [](<span class="pl-k">const</span> Request &amp;req, Response &amp;res)
+     {
+         String url = req.<span class="pl-c1">Url</span>();
+         <span class="pl-k">if</span> (url == <span class="pl-s"><span class="pl-pds">"</span>/example.cpp<span class="pl-pds">"</span></span>)
+             <span class="pl-k">return</span> Server::ServeStaticFile; <span class="pl-c">// jucpp will try to serve example.cpp as a static file</span>
 
-    .<span class="pl-c1">listen</span>(<span class="pl-c1">8000</span>)   <span class="pl-c">// listen on port 8000</span>
+         Object data;
+         data[<span class="pl-s"><span class="pl-pds">"</span>url<span class="pl-pds">"</span></span>] = url;
+         data[<span class="pl-s"><span class="pl-pds">"</span>language<span class="pl-pds">"</span></span>] = req.<span class="pl-c1">Header</span>(<span class="pl-s"><span class="pl-pds">"</span>Accept-Language<span class="pl-pds">"</span></span>);
+         res.<span class="pl-c1">write</span>(data);
+
+         <span class="pl-k">return</span> Server::Proceeded; <span class="pl-c">// inform jucpp framework that request is processed</span>
+     })
+    .<span class="pl-c1">listen</span>(port)   <span class="pl-c">// set port</span>
     .<span class="pl-c1">wait</span>();        <span class="pl-c">// wait for connections</span>
+
+    <span class="pl-c1">printf</span>(<span class="pl-s"><span class="pl-pds">"</span>Server done<span class="pl-cce">\n</span><span class="pl-pds">"</span></span>); <span class="pl-c">// should never come here</span>
 
     <span class="pl-k">return</span> <span class="pl-c1">0</span>;
 }</pre></div>
