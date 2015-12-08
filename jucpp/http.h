@@ -124,6 +124,23 @@ namespace jucpp { namespace http {
 		String m_statusText;
 	};
 	
+	// ServerJob
+	class ServerJob : public ThreadJob
+	{
+	public:
+		ServerJob(void* server) : m_server(server) {}
+		
+	protected:
+		// Job virtual functions
+		virtual void Execute();
+		virtual void OnFinish();
+		
+	private:
+		void* m_server;
+
+	public:
+		int m_jobNumber;
+	};
 	
 	/**
 	 HTTP Server object
@@ -139,9 +156,12 @@ namespace jucpp { namespace http {
 		using FnListMap = std::map<String, FnList>;
 		
 	public:
-		Server() {}
-		Job listen(int port);
+		Server(int workerPool = 4) : m_workerPoolCnt(workerPool) {}
+		Server& listen(int port);
+		Server& wait();
 		Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
+		Server& stop();
+		Server& terminate();
 		
 		static void addCORSHeaders(const Request& req, Response& res);
 		
@@ -164,6 +184,9 @@ namespace jucpp { namespace http {
 
 		String m_documentRoot;
 		FnListMap m_functions;
+		int m_workerPoolCnt;
+		JobPtrList m_jobList;
+		int m_workerCnt = 0;
 	};
 	
 	#define BIND(method, uri, function) method(uri, std::bind(function, this, std::placeholders::_1, std::placeholders::_2))
@@ -175,24 +198,6 @@ namespace jucpp { namespace http {
 	#define BIND_OPTIONS(uri, function) BIND(OPTIONS, uri, function)
 	#define BIND_HEAD(uri, function) BIND(HEAD, uri, function)
 	
-	class ServerJob : public ThreadJob
-	{
-	public:
-		ServerJob(void* server) : m_server(server), m_bStop(false) {}
-		
-	protected:
-		// Job virtual functions
-		virtual void Execute();
-		virtual void OnFinish();
-		
-		virtual bool stopThread() { m_bStop = true; return true; }
-	
-	private:
-		void* m_server;
-		volatile bool m_bStop;
-	};
-
-
 	class Auth
 	{
 	public:

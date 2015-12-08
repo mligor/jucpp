@@ -1,40 +1,48 @@
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
 
+#include <thread>
+#include <chrono>
+
 using namespace jucpp;
 using namespace jucpp::http;
 
 int main()
 {
-	// Global GET handler - will catch all GET requests
+	int port = 8000;
+	
+	printf("Server available on http://localhost:%d\n", port);
+	
 	Server()
 	.setDocumentRoot(".") // Allow to ServeStaticFile
-	.GET("*", [](const Request &req, Response &res)
-	{
-		String url = req.Url();
-		
-		if (url == "/favicon.ico")
-			return Server::Skipped; // allow GET /favicon.ico handler to response
-		else if (url == "/example.cpp")
-			return Server::ServeStaticFile; // jucpp will try to server main.cpp as static file
-		
-		Object data;
-		data["url"] = url;
-		data["language"] = req.Header("Accept-Language");
-		res.write(data);
-		
-		return Server::Proceeded; // inform jucpp framework that request is processed
-	})
-	
-	// special GET handler, will catch only specific URL
 	.GET("/favicon.ico", [](const Request &req, Response &res)
 	 {
 		 res.write("no icon today");
 		 return Server::Proceeded;
 	 })
-	
-	.listen(8000)   // listen on port 8000
+	.GET("/wait", [](const Request &req, Response &res)
+	 {
+		 std::this_thread::sleep_for(std::chrono::seconds(30));
+		 res.write(".. after 30 sec");
+		 return Server::Proceeded;
+	 })
+	.GET("*", [](const Request &req, Response &res)
+	 {
+		 String url = req.Url();
+		 if (url == "/example.cpp")
+			 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
+		 
+		 Object data;
+		 data["url"] = url;
+		 data["language"] = req.Header("Accept-Language");
+		 res.write(data);
+		 
+		 return Server::Proceeded; // inform jucpp framework that request is processed
+	 })
+	.listen(port)   // set port
 	.wait();        // wait for connections
+	
+	printf("Server done\n"); // should never come here
 	
 	return 0;
 }

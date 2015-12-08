@@ -20,7 +20,7 @@ namespace jucpp
 	
 	// ThreadJob
 	
-	void s_Job_ThreadFn(void* p)
+	void s_job_ThreadFn(void* p)
 	{
 		ThreadJob* _jobBase = (ThreadJob*)p;
 		_jobBase->Execute();
@@ -38,28 +38,59 @@ namespace jucpp
 	{
 		m_thread = new std::thread([](ThreadJob* jobBase)
 		{
-			jobBase->Execute();
-			jobBase->OnFinish();
+			try
+			{
+				jobBase->Execute();
+				jobBase->OnFinish();
+			}
+			catch (std::exception &e)
+			{
+				printf("Fatal exception in Server Thread : %s\n", e.what());
+			}
+			catch (...)
+			{
+				printf("Fatal exception in Server Thread\n");
+			}
 		}, this);
 	}
 	
 	void ThreadJob::wait()
 	{
 		std::thread* thread = (std::thread*)m_thread;
-		if (thread->get_id() == std::this_thread::get_id())
+		if (isMyThread())
 			return; // we are on current thread
 
-		if (thread)
+		if (thread && thread->joinable())
 			thread->join();
+	}
+
+	bool ThreadJob::isMyThread()
+	{
+		std::thread* thread = (std::thread*)m_thread;
+		if (thread->get_id() == std::this_thread::get_id())
+			return true;
+		return false;
 	}
 
 	void ThreadJob::stop()
 	{
+		m_bStop = true;
+		wait();
+	}
+
+	void ThreadJob::terminate()
+	{
 		std::thread* thread = (std::thread*)m_thread;
-		if (stopThread())
-			wait();
-		else
-			delete thread, m_thread = nullptr; // destroy thread object
+		m_bStop = true;
+
+		if (thread)
+		{
+#ifdef _WIN32
+			TerminateThread(thread->native_handle(), 0);
+#else
+			pthread_cancel(thread->native_handle());
+#endif
+		}
 	}
 
 } // namespace end

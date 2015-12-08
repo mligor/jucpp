@@ -15,6 +15,10 @@
 #define NOEXCEPT noexcept
 #endif
 
+#if defined(DEBUG) && not defined(_DEBUG)
+#define _DEBUG DEBUG
+#endif
+
 namespace jucpp
 {
 	
@@ -70,50 +74,62 @@ namespace jucpp
 		
 	};
 	
-	class JobBase
+	/*
+	 * Base Job class
+	 */
+	class Job
 	{
 	public:
 		// Virtual methods to implemented
 		virtual void Execute() = 0;
 		virtual void OnFinish() {};
-		
+
 	protected:
-		friend class Job;
+		friend class JobPtr;
 		virtual void run() = 0;
 		virtual void wait() = 0;
 		virtual void stop() = 0;
+		virtual void terminate() = 0;
 	};
 	
-	class ThreadJob : public JobBase
+	class ThreadJob : public Job
 	{
 	public:
 		~ThreadJob();
-	protected:
-		friend void s_Job_ThreadFn(void* p);
 		
 	protected:
 		virtual void run() override;
 		virtual void wait() override;
 		virtual void stop() override;
+		virtual void terminate() override;
 		
-		virtual bool stopThread() { return false; }
+		bool shouldStop() const { return m_bStop; }
+	public:
+		virtual bool isMyThread();
 
 	private:
 		void* m_thread = nullptr;
+		volatile bool m_bStop = false;
 	};
 	
-	class Job
+	class JobPtr
 	{
 	public:
-		Job(JobBase* pJob) : m_pJob(pJob) {};
+		JobPtr(Job* pJob) : m_pJob(pJob) {};
 		
 		void run()	{ m_pJob->run(); }
 		void wait() { m_pJob->wait(); }
 		void stop() { m_pJob->stop(); }
-
+		void terminate() { m_pJob->terminate(); }
+		
+		Job* operator->() { return m_pJob; }
+		Job* getJob() { return m_pJob; }
+		
 	private:
-		JobBase* m_pJob;
+		Job* m_pJob;
 	};
+	
+	using JobPtrList = std::vector<JobPtr>;
 }
 
 #endif // _JUCPP_H_

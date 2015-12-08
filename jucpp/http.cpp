@@ -56,7 +56,6 @@ namespace jucpp { namespace http {
 				break;
 			}
 		}
-
 		return strList.size();
 	}
 
@@ -66,7 +65,6 @@ namespace jucpp { namespace http {
 		if (ev == MG_AUTH)
 		{
 			return MG_TRUE;   // Authorize all requests
-			
 		}
 		else if (ev == MG_REQUEST)
 		{
@@ -123,6 +121,22 @@ namespace jucpp { namespace http {
 	
 	Server::ResponseStatus Server::EventHandler(Request &req, Response &res)
 	{
+#ifdef _DEBUG 
+		for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
+		{
+			ServerJob* serverJob = (ServerJob*)(*it).getJob();
+			if (serverJob->isMyThread())
+			{
+				printf("Job(%d):", serverJob->m_jobNumber);
+				printf("%s %s%s%s\n",
+					   req.Method().c_str(),
+					   req.Url().c_str(),
+					   req.QueryString().length() ? "?" : "",
+					   req.QueryString().c_str());
+				break;
+			}
+		}
+#endif
 		const auto& l = m_functions.find(req.Method());
 		String url = req.Url();
 		if (url.length() > 0 && url.at(url.length() - 1) == '/')
@@ -174,29 +188,73 @@ namespace jucpp { namespace http {
 		return Skipped;
 	}
 	
-	Job Server::listen(int port)
+	Server& Server::listen(int port)
 	{
-		mg_server* server = mg_create_server(this, (mg_handler_t)s_Server_EventHandler);
-		if (m_documentRoot.size())
-			mg_set_option(server, "document_root", m_documentRoot.c_str());
-		
 		char buffer[33];
 		sprintf(buffer, "%d", port);
+		mg_server* firstServer = NULL;
 
-		const char* err = mg_set_option(server, "listening_port", buffer);
-		
-		if (err)
-			throw Exception(err);
-	
-		Job job(new ServerJob(server));
-		job.run();
-		return job;
+		for (int i = 0; i < m_workerPoolCnt; ++i)
+		{
+			mg_server* server = mg_create_server(this, (mg_handler_t)s_Server_EventHandler);
+			if (m_documentRoot.size())
+				mg_set_option(server, "document_root", m_documentRoot.c_str());
+
+			if (i == 0)
+			{
+				firstServer = server;
+				const char* err = mg_set_option(server, "listening_port", buffer);
+
+				if (err)
+					throw Exception(err);
+			}
+			else
+				mg_copy_listeners(firstServer, server);
+
+			ServerJob* serverJob = new ServerJob(server);
+			serverJob->m_jobNumber =  m_workerCnt + i;
+			JobPtr job(serverJob);
+			job.run();
+			m_jobList.push_back(job);
+		}
+		m_workerCnt += m_workerPoolCnt;
+		return *this;
 	}
 	
+	Server& Server::wait()
+	{
+		for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
+			(*it).wait();
+
+		return *this;
+	}
+	
+	Server& Server::stop()
+	{
+		if (m_jobList.size())
+		{
+			for (JobPtrList::iterator it = m_jobList.begin() + 1; it != m_jobList.end(); ++it)
+				(*it).stop();
+			m_jobList.at(0).stop(); // First job is listen job and it should be stoped at the end;
+		}
+		return *this;
+	}
+	
+	Server& Server::terminate()
+	{
+		if (m_jobList.size())
+		{
+			for (JobPtrList::iterator it = m_jobList.begin() + 1; it != m_jobList.end(); ++it)
+				(*it).terminate();
+			m_jobList.at(0).terminate();
+		}
+		return *this;
+	}
+
 	void Server::addCORSHeaders(const Request &req, Response &res)
 	{
 		//TODO: add configuration to allow just specific Origins
-		
+
 		if (req.Header("Access-Control-Request-Headers").length())
 			res.addHeader("Access-Control-Allow-Headers", req.Header("Access-Control-Request-Headers"));
 
@@ -224,17 +282,14 @@ namespace jucpp { namespace http {
 
 	
 	// ServerJob
-	
 	void ServerJob::Execute()
 	{
 		mg_server* mgserver = (mg_server*)m_server;
 		for (;;)
 		{
-			if (m_bStop)
-				break;
+			if (shouldStop()) break;
 			mg_poll_server(mgserver, 1000);  // Infinite loop, Ctrl-C to stop
 		}
-		
 	}
 	
 	void ServerJob::OnFinish()
@@ -286,7 +341,6 @@ namespace jucpp { namespace http {
 				m_cookies[c.Name()] = c;
 			}
 		}
-		
     
 		m_httpVersion = pConn->http_version;
 		m_content = String(pConn->content, pConn->content_len);
@@ -364,7 +418,6 @@ namespace jucpp { namespace http {
                 }
             }
         }
-        
         return len;
     }
     
@@ -375,14 +428,12 @@ namespace jucpp { namespace http {
             return ret;
         
         char* buff = new char[m_queryString.length()];
-        
         int r = get_var(m_queryString.c_str(), m_queryString.length(), name.c_str(), buff, m_queryString.length());
         
         if (r > 0)
             ret = String(buff, r);
         
         delete [] buff;
-
         return ret;
 	}
     
@@ -403,7 +454,6 @@ namespace jucpp { namespace http {
     }
 	
 	// Response
-
 	void Response::write(const Json::Value& v)
 	{
 		write(Json::FastWriter().write(v).c_str());
@@ -421,7 +471,6 @@ namespace jucpp { namespace http {
     }
 	
 	// Cookie
-	
 	const Cookie Cookie::InvalidCookie;
 	
 	void Cookie::parse(String text)
@@ -453,9 +502,6 @@ namespace jucpp { namespace http {
 		}
 		m_name = TrimLeft(text.substr(0, pos));
 		m_value = TrimRight(text.substr(pos+1));
-		
-		
 	}
-	
 
 }} // namespaces
