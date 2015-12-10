@@ -2,5 +2,5 @@ language: cpp
 compiler:
   - clang
   - gcc
-install: make get-deps
+install: true
 script: make
