@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libjucpp", "jucpp\libjucpp.vcxproj", "{640087FC-E516-4D71-B873-A27B7B900B95}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "curl", "libs\curl\curl.vcxproj", "{FDC68000-AAF7-443B-B768-F453EF0C9488}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "example", "example\example.vcxproj", "{13212D72-AB22-487F-91EC-4F183786BF69}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "angularExample", "angularExample\angularExample.vcxproj", "{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -41,6 +43,14 @@ Global
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x64.Build.0 = Release|x64
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x86.ActiveCfg = Release|Win32
 		{13212D72-AB22-487F-91EC-4F183786BF69}.Release|x86.Build.0 = Release|Win32
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Debug|x64.ActiveCfg = Debug|x64
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Debug|x64.Build.0 = Debug|x64
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Debug|x86.ActiveCfg = Debug|Win32
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Debug|x86.Build.0 = Debug|Win32
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Release|x64.ActiveCfg = Release|x64
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Release|x64.Build.0 = Release|x64
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Release|x86.ActiveCfg = Release|Win32
+		{3848A8C3-C76C-4EA7-9A8D-BF2C44F76EAC}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
