@@ -15,7 +15,7 @@
 #define NOEXCEPT noexcept
 #endif
 
-#if defined(DEBUG) && not defined(_DEBUG)
+#if defined(DEBUG) && !defined(_DEBUG)
 #define _DEBUG DEBUG
 #endif
 

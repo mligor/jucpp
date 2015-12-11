@@ -17,7 +17,8 @@ int main()
 	.setDocumentRoot(".") // Allow to ServeStaticFile
 	.GET("/favicon.ico", [](const Request &req, Response &res)
 	 {
-		 res.write("no icon today");
+		 res.addHeader("Content-Type", "image/x-icon");
+		 res.write("");
 		 return Server::Proceeded;
 	 })
 	.GET("/wait", [](const Request &req, Response &res)
