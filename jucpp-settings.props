@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup Label="UserMacros">
+    <RepositoryRoot>$(MSBuildThisFileDirectory)</RepositoryRoot>
+  </PropertyGroup>
+  <PropertyGroup Label="UserMacros">
+    <!--IsDebug: search for 'Debug' in Configuration-->
+    <IsDebug>$([System.Convert]::ToString( $([System.Text.RegularExpressions.Regex]::IsMatch($(Configuration), '[Dd]ebug'))))</IsDebug>
+    <IsStaticLib>$([System.Convert]::ToString( $([System.Text.RegularExpressions.Regex]::IsMatch($(ConfigurationType), 'StaticLibrary'))))</IsStaticLib>
+    <!--ShortPlatform-->
+    <ShortPlatform Condition="'$(Platform)' == 'Win32'">x86</ShortPlatform>
+    <ShortPlatform Condition="'$(Platform)' == 'x64'">x64</ShortPlatform>
+    <BuildDir>$(RepositoryRoot)build\$(ProjectName)\$(Platform)-$(Configuration)\</BuildDir>
+    <BinDir>$(RepositoryRoot)bin\$(Configuration)\</BinDir>
+    <PdbDir>$(RepositoryRoot)bin\$(Configuration)\pdb\</PdbDir>
+    <LibBinDir>$(RepositoryRoot)build\libs\$(Platform)-$(Configuration)\</LibBinDir>
+    <OutputPath>$(BinDir)</OutputPath>
+    <IntermediateOutputPath>$(BuildDir)</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="$(ROOTBuildDir) != ''">
+    <BuildDir>$(ROOTBuildDir)\build\$(ProjectName)\$(Platform)-$(Configuration)\</BuildDir>
+    <BinDir>$(ROOTBuildDir)\</BinDir>
+    <PdbDir>$(ROOTBuildDir)\pdb\</PdbDir>
+    <LibBinDir>$(ROOTBuildDir)\build\libs\$(Platform)-$(Configuration)\</LibBinDir>
+    <OutputPath>$(BinDir)</OutputPath>
+    <IntermediateOutputPath>$(BuildDir)</IntermediateOutputPath>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="$([System.Convert]::ToBoolean($(IsDebug)))">
+      <!-- debug macroses -->
+    </When>
+    <Otherwise>
+      <!-- other/release macroses -->
+    </Otherwise>
+  </Choose>
+  <PropertyGroup>
+    <OutDir>$(BinDir)</OutDir>
+    <IntDir>$(BuildDir)</IntDir>
+    <LinkIncremental>false</LinkIncremental>
+    <ExecutablePath>$(RepositoryRoot)tools;$(ExecutablePath)</ExecutablePath>
+  </PropertyGroup>
+  <Choose>
+    <When Condition="$([System.Convert]::ToBoolean($(IsStaticLib)))">
+      <PropertyGroup>
+        <OutDir>$(LibBinDir)</OutDir>
+      </PropertyGroup>
+    </When>
+  </Choose>
+  <ItemDefinitionGroup Condition="$([System.Convert]::ToBoolean($(IsDebug)))">
+    <CLCompile>
+      <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+    </CLCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="!$([System.Convert]::ToBoolean($(IsDebug)))">
+    <CLCompile>
+      <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
+    </CLCompile>
+  </ItemDefinitionGroup>
+  <PropertyGroup>
+    <TargetName Condition="'$(Platform)' == 'x64' And !$([System.Convert]::ToBoolean($(IsStaticLib)))">$(TargetName)64</TargetName>
+  </PropertyGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalIncludeDirectories></AdditionalIncludeDirectories>
+      <ProgramDataBaseFileName>$(PdbDir)$(ProjectName).pdb</ProgramDataBaseFileName>
+      <ProgramDataBaseFileName Condition="'$(Platform)' == 'x64'">$(PdbDir)$(ProjectName)64.pdb</ProgramDataBaseFileName>
+    </ClCompile>
+    <Link>
+      <AdditionalLibraryDirectories>$(LibBinDir)</AdditionalLibraryDirectories>
+      <ImportLibrary>$(LibBinDir)$(ProjectName).lib</ImportLibrary>
+      <ProgramDatabaseFile>$(PdbDir)$(ProjectName).pdb</ProgramDatabaseFile>
+      <ProgramDatabaseFile Condition="'$(Platform)' == 'x64'">$(PdbDir)$(ProjectName)64.pdb</ProgramDatabaseFile>
+      <!--OutputFile Condition="'$(Platform)' == 'x64'">$(OutDir)$(TargetName)64$(TargetExt)</OutputFile>
+      <ProfileGuidedDatabase Condition="'$(Platform)' == 'x64'">$(OutDir)$(TargetName)64.pgd</ProfileGuidedDatabase-->
+    </Link>
+    <ResourceCompile>
+      <PreprocessorDefinitions  Condition="$([System.Convert]::ToBoolean($(IsDebug)))">%(PreprocessorDefinitions);_DEBUG</PreprocessorDefinitions>
+    </ResourceCompile>
+  </ItemDefinitionGroup>
+  <!-- automatic version info -->
+</Project>
