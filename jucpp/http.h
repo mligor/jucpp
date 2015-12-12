@@ -10,6 +10,12 @@
 #include <functional>
 #include <memory>
 
+#ifdef _DEBUG
+#define DEFAULT_LOG_LEVEL LogDebug
+#else
+#define DEFAULT_LOG_LEVEL LogError
+#endif 
+
 
 namespace jucpp { namespace http {
 
@@ -165,6 +171,13 @@ namespace jucpp { namespace http {
 		
 		static void addCORSHeaders(const Request& req, Response& res);
 		
+		/***
+		 * Valid patterns:
+		   "/myurl"     - exackt match
+		   "/user/:id"  - match url with parameter (e.g. /user/333, /user/tom)
+		   "/api/*"     - match all urls that starts with /api/ (wildcard must be at the end)
+		   "/api/!*"    - negative start match - match all that do not start with /api/
+	    */
 		Server& GET(String cp, Fn fn) { m_functions["GET"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& POST(String cp, Fn fn) { m_functions["POST"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& PUT(String cp, Fn fn) { m_functions["PUT"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
@@ -179,6 +192,19 @@ namespace jucpp { namespace http {
 	protected:
 		virtual ResponseStatus EventHandler(Request &req, Response &res);
 
+	public:
+		/*
+			Fatal	Highest level: important stuff down
+			Error	For example application crashes / exceptions.
+			Warn	Incorrect behavior but the application can continue
+			Info	Normal behavior like mail sent, user updated profile etc.
+			Debug	Executed queries, user authenticated, session expired
+			Trace	Begin method X, end method X etc
+		*/
+		enum LogLevel { LogTrace, LogDebug, LogInfo, LogWarn, LogError, LogFatal };
+		void Log(LogLevel l, const char* fmt, ...);
+		Server& setLogLevel(LogLevel l) { m_logLevel = l; return *this; }
+
 	private:
 		friend int s_Server_EventHandler(void*, int);
 
@@ -187,6 +213,7 @@ namespace jucpp { namespace http {
 		int m_workerPoolCnt;
 		JobPtrList m_jobList;
 		int m_workerCnt = 0;
+		LogLevel m_logLevel = DEFAULT_LOG_LEVEL;
 	};
 	
 	#define BIND(method, uri, function) method(uri, std::bind(function, this, std::placeholders::_1, std::placeholders::_2))

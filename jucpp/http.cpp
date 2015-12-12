@@ -19,6 +19,7 @@
 
 #include <stdio.h>
 #include <cassert>
+#include <cstdarg>
 
 
 namespace jucpp { namespace http {
@@ -121,22 +122,23 @@ namespace jucpp { namespace http {
 	
 	Server::ResponseStatus Server::EventHandler(Request &req, Response &res)
 	{
-#ifdef _DEBUG 
-		for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
+		if (m_logLevel <= LogDebug)
 		{
-			ServerJob* serverJob = (ServerJob*)(*it).getJob();
-			if (serverJob->isMyThread())
+			for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
 			{
-				printf("Job(%d):", serverJob->m_jobNumber);
-				printf("%s %s%s%s\n",
-					   req.Method().c_str(),
-					   req.Url().c_str(),
-					   req.QueryString().length() ? "?" : "",
-					   req.QueryString().c_str());
-				break;
+				ServerJob* serverJob = (ServerJob*)(*it).getJob();
+				if (serverJob->isMyThread())
+				{
+					Log(LogDebug, "Job(%d): %s %s%s%s",
+						serverJob->m_jobNumber,
+						req.Method().c_str(),
+						req.Url().c_str(),
+						req.QueryString().length() ? "?" : "",
+						req.QueryString().c_str());
+					break;
+				}
 			}
 		}
-#endif
 		const auto& l = m_functions.find(req.Method());
 		String url = req.Url();
 		if (url.length() > 0 && url.at(url.length() - 1) == '/')
@@ -154,31 +156,58 @@ namespace jucpp { namespace http {
 				
 				if (pattern != "*" && pattern != url) // direct and * (all) match
 				{
-					StringList patternList;
-					SplitString(pattern, "/", patternList);
-					
-					if (urlParts.size() != patternList.size()) continue;
-					
-					bool matched = true;
-					StringStringMap pathParams;
-					
-					for (size_t i = 0; i != urlParts.size(); ++i)
+					// check if pattern has * at the end (e.g. /api/*)
+					if (pattern.length() && pattern.at(pattern.length() - 1) == '*')
 					{
-						const String& a = urlParts[i];
-						const String& b = patternList[i];
-						
-						if (b.length() && b.at(0) == ':')
-							pathParams[b.substr(1)] = a;
-						else if (b != a)
+						// normal or negative match 
+						bool normalMatch = (url.length() > 2 && pattern.at(pattern.length() - 2) != '!');
+
+						if (normalMatch)
 						{
-							matched = false;
-							break;
+							if (url.length() >= pattern.length() && 
+								pattern.substr(0, pattern.length() - 1) != url.substr(0, pattern.length() - 1))
+								continue;
+						}
+						else
+						{
+							// negative match
+							if (url.length() >= pattern.length() - 1 &&
+								pattern.substr(0, pattern.length() - 2) == url.substr(0, pattern.length() - 2))
+								continue;
 						}
 					}
-					if (!matched) continue;
+					else
+					{
+						StringList patternList;
+						SplitString(pattern, "/", patternList);
 
-					for (StringStringMap::const_iterator it = pathParams.begin(); it != pathParams.end(); ++it)
-						req.setPathParam(it->first, it->second);
+						if (urlParts.size() != patternList.size()) continue;
+
+						bool matched = true;
+						StringStringMap pathParams;
+
+						for (size_t i = 0; i != urlParts.size(); ++i)
+						{
+							const String& a = urlParts[i];
+							const String& b = patternList[i];
+							Log(LogTrace, "URL PART: url=%s pattern=%s", a.c_str(), b.c_str());
+
+							if (b.length() && b.at(0) == ':')
+								pathParams[b.substr(1)] = a;
+							else if (b == "*")
+								;
+							else if (b != a)
+							{
+								matched = false;
+								break;
+							}
+						}
+						if (!matched) continue;
+
+						for (StringStringMap::const_iterator it = pathParams.begin(); it != pathParams.end(); ++it)
+							req.setPathParam(it->first, it->second);
+
+					}
 				}
 				ResponseStatus s = f.second(req, res);
 				if (s != Skipped)
@@ -186,6 +215,56 @@ namespace jucpp { namespace http {
 			}
 		}
 		return Skipped;
+	}
+
+	void Server::Log(LogLevel l, const char * fmt, ...)
+	{
+		if (l < m_logLevel) return;
+
+		String logText;
+
+		size_t n;
+		size_t size = 64;
+		char *p, *np;
+		va_list ap;
+
+		if ((p = (char*)malloc(size)) == NULL)
+			return;
+
+		while (1)
+		{
+			va_start(ap, fmt);
+			n = vsnprintf(p, size, fmt, ap);
+			va_end(ap);
+
+			if (n < 0) return;
+
+			if (n < size)
+			{
+				logText = String(p, size);
+				break;
+			}
+			size = n * 2;
+			if ((np = (char*)realloc(p, size)) == NULL) 
+			{
+				free(p);
+				return;
+			}
+			else 
+				p = np;
+		}
+
+		const char* prefix = "UNKNWON";
+		switch (l)
+		{
+		case LogTrace: prefix = "TRACE"; break;
+		case LogDebug: prefix = "DEBUG"; break;
+		case LogInfo:  prefix = "INFO";  break;
+		case LogWarn:  prefix = "WARN";  break;
+		case LogError: prefix = "ERROR"; break;
+		case LogFatal: prefix = "FATAL"; break;
+		}
+		printf("%s: %s\n", prefix, logText.c_str());
 	}
 	
 	Server& Server::listen(int port)
