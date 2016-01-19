@@ -7,7 +7,7 @@
 //
 
 #include "session.h"
-#include "sqlite.h"
+#include "sql.h"
 
 #include <stdlib.h>
 #include <algorithm>
@@ -17,7 +17,7 @@ namespace jucpp { namespace http {
 	
 	// ServerSessions
 	
-	class SessionManager : public sqlite::SQLite
+	class SessionManager
 	{
 	public:
 		SessionManager(String databasePath);
@@ -26,12 +26,13 @@ namespace jucpp { namespace http {
 		void deleteSession(String s);
 	private:
 		static String random_string(size_t length);
+		sql::SQLDB m_db;
 	};
 
 	SessionManager::SessionManager(String databasePath)
 	{
-		open(databasePath);
-		query("CREATE TABLE IF NOT EXISTS jucpp_session_info "
+		m_db.set(sql::SQLDB::SQLite, databasePath);
+		m_db.query("CREATE TABLE IF NOT EXISTS jucpp_session_info "
 			  "(id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, "
 			  "c TEXT, t DATETIME, obj TEXT"
 			  ")");
@@ -72,20 +73,20 @@ namespace jucpp { namespace http {
 		
 		if (id.length() && check.length())
 		{
-			Result r = query("SELECT c FROM jucpp_session_info WHERE id='" + id + "'");
+			sql::SQLDB::Result r = m_db.query("SELECT c FROM jucpp_session_info WHERE id='" + id + "'");
 			if (r.size())
 			{
 				if (r[(unsigned int)0]["c"] == check)
 				{
-					query("REPLACE INTO jucpp_session_info (t, id, c, obj) VALUES (datetime('now'), '" + id + "', '" + check + "', '" + value + "')");
+					m_db.query("REPLACE INTO jucpp_session_info (t, id, c, obj) VALUES (datetime('now'), '" + id + "', '" + check + "', '" + value + "')");
 					String sessionId = check + "-" + id;
 					return sessionId;
 				}
 			}
 		}
 		check = random_string(64);
-		query("INSERT INTO jucpp_session_info (t, c, obj) VALUES (datetime('now'), '" + check + "', '" + value + "')");
-		id = getLastInsertRowId();
+		m_db.query("INSERT INTO jucpp_session_info (t, c, obj) VALUES (datetime('now'), '" + check + "', '" + value + "')");
+		id = m_db.lastInsertRowId();
 		String sessionId = check + "-" + id;
 		return sessionId;
 	}
@@ -107,7 +108,7 @@ namespace jucpp { namespace http {
 		
 		if (id.length() && check.length())
 		{
-			Result r = query("SELECT obj FROM jucpp_session_info WHERE id='" + id + "' AND c='" + check + "'");
+			sql::SQLDB::Result r = m_db.query("SELECT obj FROM jucpp_session_info WHERE id='" + id + "' AND c='" + check + "'");
 			if (r.size())
 			{
 				return Server::jsonDecode(r[(unsigned int)0]["obj"].asString());
@@ -132,7 +133,7 @@ namespace jucpp { namespace http {
 		}
 		
 		if (id.length() && check.length())
-			query("DELETE FROM jucpp_session_info WHERE id='" + id + "' AND c='" + check + "'");
+			m_db.query("DELETE FROM jucpp_session_info WHERE id='" + id + "' AND c='" + check + "'");
 	}
 	
 	// Session

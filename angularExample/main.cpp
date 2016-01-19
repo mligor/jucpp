@@ -8,7 +8,7 @@
 
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
-#include <jucpp/sqlite.h>
+#include <jucpp/sql.h>
 #include <jucpp/angular.h>
 
 using namespace jucpp;

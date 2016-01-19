@@ -175,7 +175,7 @@ namespace jucpp { namespace http {
 		 * Valid patterns:
 		   "/myurl"     - exackt match
 		   "/user/:id"  - match url with parameter (e.g. /user/333, /user/tom)
-		   "/api/*"     - match all urls that starts with /api/ (wildcard must be at the end)
+		   "/api/ *"    - match all urls that starts with /api/ (wildcard must be at the end)
 		   "/api/!*"    - negative start match - match all that do not start with /api/
 	    */
 		Server& GET(String cp, Fn fn) { m_functions["GET"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
