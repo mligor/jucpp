@@ -47,9 +47,9 @@ namespace jucpp { namespace http {
 	class Request
 	{
 	public:
-		Request(void* connection);
+		Request(void* msg);
 		
-		const String& HttpVersion() const { return m_httpVersion; }
+		//const String& HttpVersion() const { return m_httpVersion; }
 		const String& Header(const String& name) const;
 		const StringStringMap& Header() const { return m_headers; };
 		const String& RawHeaders() const { return m_rawHeaders; }
@@ -83,7 +83,7 @@ namespace jucpp { namespace http {
         StringStringMap m_pathParams; // parameter from the named path (e.g. /feed/:name -> m_pathParams["name"])
 		StringCookieMap m_cookies;
 		String m_rawHeaders;
-		String m_httpVersion;
+		//String m_httpVersion;
 		String m_method; // GET, POST, PUT, etc..
 		String m_url;
 		String m_queryString;
@@ -130,28 +130,11 @@ namespace jucpp { namespace http {
 		String m_statusText;
 	};
 	
-	// ServerJob
-	class ServerJob : public ThreadJob
-	{
-	public:
-		ServerJob(void* server) : m_server(server) {}
-		
-	protected:
-		// Job virtual functions
-		virtual void Execute();
-		virtual void OnFinish();
-		
-	private:
-		void* m_server;
-
-	public:
-		int m_jobNumber;
-	};
 	
 	/**
 	 HTTP Server object
 	 */
-	class Server
+    class Server : public ThreadJob
 	{
 	public:
 		enum ResponseStatus { Skipped = 0, Proceeded = 1, ServeStaticFile = 2 };
@@ -162,20 +145,22 @@ namespace jucpp { namespace http {
 		using FnListMap = std::map<String, FnList>;
 		
 	public:
-		Server(int workerPool = 4) : m_workerPoolCnt(workerPool) {}
+        Server();
+        ~Server();
 		Server& listen(int port);
-		Server& wait();
-		Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
-		Server& stop();
-		Server& terminate();
-		
-		static void addCORSHeaders(const Request& req, Response& res);
+        
+        // ThreadJob
+        virtual void Execute() override;
+        
+        Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
+
+        static void addCORSHeaders(const Request& req, Response& res);
 		
 		/***
 		 * Valid patterns:
 		   "/myurl"     - exackt match
 		   "/user/:id"  - match url with parameter (e.g. /user/333, /user/tom)
-		   "/api/*"     - match all urls that starts with /api/ (wildcard must be at the end)
+		   "/api/ *"     - match all urls that starts with /api/ (wildcard must be at the end)
 		   "/api/!*"    - negative start match - match all that do not start with /api/
 	    */
 		Server& GET(String cp, Fn fn) { m_functions["GET"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
@@ -204,15 +189,19 @@ namespace jucpp { namespace http {
 		enum LogLevel { LogTrace, LogDebug, LogInfo, LogWarn, LogError, LogFatal };
 		void Log(LogLevel l, const char* fmt, ...);
 		Server& setLogLevel(LogLevel l) { m_logLevel = l; return *this; }
+        
+        void* GetMongoosePtr() {return m_mongoose;}
 
 	private:
-		friend int s_Server_EventHandler(void*, int);
-
+		static void _MongooseEventHandler(void*, int, void*);
+        void MongooseEventHandler(void*, int, void*);
+        
+    private:
+        void send_status_result(void *conn, int status, const char *msg, const char* text = nullptr);
+        
+        void* m_mongoose = nullptr;
 		String m_documentRoot;
 		FnListMap m_functions;
-		int m_workerPoolCnt;
-		JobPtrList m_jobList;
-		int m_workerCnt = 0;
 		LogLevel m_logLevel = DEFAULT_LOG_LEVEL;
 	};
 	

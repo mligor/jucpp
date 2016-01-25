@@ -59,9 +59,81 @@ namespace jucpp { namespace http {
 		}
 		return strList.size();
 	}
+    
+    void Server::send_status_result(void *conn, int status, const char *msg, const char* text)
+    {
+        mg_printf((mg_connection*)conn, "HTTP/1.1 %d %s\r\nContent-type: text/html\r\n\r\n<h2>%d %s</h2>", status, msg, status, msg);
+        
+        if (text)
+            mg_printf((mg_connection*)conn, "%s", text);
+        
+        mg_printf((mg_connection*)conn, "<p>jucpp v1.0 - <a href='http://www.jucpp.com/'>http://www.jucpp.com/</a></p>");
+    }
 
-	int s_Server_EventHandler(void *_conn, int ev)
+    void Server::_MongooseEventHandler(void *_conn, int ev, void *ev_data)
 	{
+        mg_connection* conn = (mg_connection*)_conn;
+        Server* _this = (Server*)conn->user_data;
+        if (_this)
+            _this->MongooseEventHandler(_conn, ev, ev_data);
+    }
+    
+    void Server::MongooseEventHandler(void *_conn, int ev, void *ev_data)
+    {
+        http_message *hm = (http_message *) ev_data;
+        mg_connection* conn = (mg_connection*)_conn;
+        switch (ev)
+        {
+            case MG_EV_HTTP_REQUEST:
+            {
+                Request req(hm);
+                Response res;
+                Server::ResponseStatus s = Server::Skipped;
+                
+                try
+                {
+                    s = EventHandler(req, res);
+                }
+                catch (std::exception& e)
+                {
+                    send_status_result(conn, 501, "Internal Error", e.what());
+                    conn->flags |= MG_F_SEND_AND_CLOSE;
+                    return;
+                }
+                
+                if (s == Server::ServeStaticFile && m_documentRoot.size() == 0)
+                    s = Server::Skipped;
+                
+                if (s == Server::Proceeded)
+                {
+                    //addCORSHeaders(req, res);
+                    
+                    mg_send_head(conn, res.getStatus(), res.getContent().size(), nullptr);
+                    mg_printf(conn, res.getContent().c_str(), res.getContent().size());
+                    conn->flags |= MG_F_SEND_AND_CLOSE;
+                    return;
+                }
+                else if (s == Server::ServeStaticFile)
+                {
+                    mg_serve_http_opts opts = {};
+                    if (m_documentRoot.size())
+                        opts.document_root = m_documentRoot.c_str();
+
+                    mg_serve_http(conn, hm, opts);
+                }
+                else if (s == Server::Skipped)
+                {
+                    send_status_result(conn, 404, "Not found");
+                    conn->flags |= MG_F_SEND_AND_CLOSE;
+                    return;
+                }
+            }
+                break;
+            default:
+                break;
+        }
+
+        /*
 		mg_connection* conn = (mg_connection*)_conn;
 		if (ev == MG_AUTH)
 		{
@@ -118,26 +190,30 @@ namespace jucpp { namespace http {
 			return MG_TRUE;
 		}
 		return MG_FALSE;  // Rest of the events are not processed
+         */
 	}
 	
+    Server::Server()
+    {
+        m_mongoose = new mg_mgr();
+        
+        mg_mgr_init((mg_mgr *)m_mongoose, 0);
+    }
+    
+    Server::~Server()
+    {
+        mg_mgr_free((mg_mgr *)m_mongoose);
+    }
+    
 	Server::ResponseStatus Server::EventHandler(Request &req, Response &res)
 	{
 		if (m_logLevel <= LogDebug)
 		{
-			for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
-			{
-				ServerJob* serverJob = (ServerJob*)(*it).getJob();
-				if (serverJob->isMyThread())
-				{
-					Log(LogDebug, "Job(%d): %s %s%s%s",
-						serverJob->m_jobNumber,
-						req.Method().c_str(),
-						req.Url().c_str(),
-						req.QueryString().length() ? "?" : "",
-						req.QueryString().c_str());
-					break;
-				}
-			}
+            Log(LogDebug, "%s %s%s%s",
+                req.Method().c_str(),
+                req.Url().c_str(),
+                req.QueryString().length() ? "?" : "",
+                req.QueryString().c_str());
 		}
 		const auto& l = m_functions.find(req.Method());
 		String url = req.Url();
@@ -270,65 +346,19 @@ namespace jucpp { namespace http {
 	{
 		char buffer[33];
 		sprintf(buffer, "%d", port);
-		mg_server* firstServer = NULL;
+        
+        mg_connection* conn = mg_bind((mg_mgr*)m_mongoose, buffer, (mg_event_handler_t)Server::_MongooseEventHandler);
+        conn->user_data = this;
 
-		for (int i = 0; i < m_workerPoolCnt; ++i)
-		{
-			mg_server* server = mg_create_server(this, (mg_handler_t)s_Server_EventHandler);
-			if (m_documentRoot.size())
-				mg_set_option(server, "document_root", m_documentRoot.c_str());
+        mg_set_protocol_http_websocket(conn);
+        mg_enable_multithreading(conn);
 
-			if (i == 0)
-			{
-				firstServer = server;
-				const char* err = mg_set_option(server, "listening_port", buffer);
-
-				if (err)
-					throw Exception(err);
-			}
-			else
-				mg_copy_listeners(firstServer, server);
-
-			ServerJob* serverJob = new ServerJob(server);
-			serverJob->m_jobNumber =  m_workerCnt + i;
-			JobPtr job(serverJob);
-			job.run();
-			m_jobList.push_back(job);
-		}
-		m_workerCnt += m_workerPoolCnt;
-		return *this;
+        run();
+        wait();
+        return *this;
 	}
 	
-	Server& Server::wait()
-	{
-		for (JobPtrList::iterator it = m_jobList.begin(); it != m_jobList.end(); ++it)
-			(*it).wait();
-
-		return *this;
-	}
 	
-	Server& Server::stop()
-	{
-		if (m_jobList.size())
-		{
-			for (JobPtrList::iterator it = m_jobList.begin() + 1; it != m_jobList.end(); ++it)
-				(*it).stop();
-			m_jobList.at(0).stop(); // First job is listen job and it should be stoped at the end;
-		}
-		return *this;
-	}
-	
-	Server& Server::terminate()
-	{
-		if (m_jobList.size())
-		{
-			for (JobPtrList::iterator it = m_jobList.begin() + 1; it != m_jobList.end(); ++it)
-				(*it).terminate();
-			m_jobList.at(0).terminate();
-		}
-		return *this;
-	}
-
 	void Server::addCORSHeaders(const Request &req, Response &res)
 	{
 		//TODO: add configuration to allow just specific Origins
@@ -358,45 +388,47 @@ namespace jucpp { namespace http {
         return Json::FastWriter().write(v);
     }
 
-	
-	// ServerJob
-	void ServerJob::Execute()
+    void Server::Execute()
 	{
-		mg_server* mgserver = (mg_server*)m_server;
 		for (;;)
 		{
 			if (shouldStop()) break;
-			mg_poll_server(mgserver, 1000);  // Infinite loop, Ctrl-C to stop
+            mg_mgr_poll((mg_mgr*)m_mongoose, 1000);
 		}
 	}
 	
-	void ServerJob::OnFinish()
-	{
-		mg_server* mgserver = (mg_server*)m_server;
-		mg_destroy_server(&mgserver);
-	}
-	
 	// Request
-	
-	Request::Request(void* connection)
+	Request::Request(void* _msg)
 	{
-		mg_connection* pConn = (mg_connection*)connection;
-		m_method = pConn->request_method;
-		m_url = pConn->uri;
-		
-		if (pConn->query_string)
+        http_message* msg = (http_message*)_msg;
+        
+		m_method = String(msg->method.p, msg->method.len);
+		m_url = String(msg->uri.p, msg->uri.len);
+        
+		if (msg->uri.p)
+        {
+            char* buff = new char[msg->uri.len + 1];
+            mg_url_decode(msg->uri.p, (int)msg->uri.len, buff, (int)(msg->uri.len + 1), 0);
+            m_url = buff;
+            delete [] buff;
+        }
+        
+		if (msg->query_string.p)
 		{
-			//m_url.append("?");
-			size_t queryStringLen = strlen(pConn->query_string);
-			char* buff = new char[queryStringLen + 1];
-			mg_url_decode(pConn->query_string, queryStringLen, buff, queryStringLen+1, 0);
+			char* buff = new char[msg->query_string.len + 1];
+			mg_url_decode(msg->query_string.p, (int)msg->query_string.len, buff, (int)(msg->query_string.len + 1), 0);
 			m_queryString = buff;
 			delete [] buff;
 		}
 		
-		for (int i = 0; i < pConn->num_headers; ++i)
-			m_headers[pConn->http_headers[i].name] = pConn->http_headers[i].value;
-		
+		for (int i = 0; i < MG_MAX_HTTP_HEADERS; ++i)
+        {
+            if (msg->header_names[i].p)
+                m_headers[String(msg->header_names[i].p, msg->header_names[i].len)] = String(msg->header_values[i].p, msg->header_values[i].len);
+            else
+                break;
+        }
+        
 		auto it = m_headers.find("Cookie");
 		if (it != m_headers.end())
 		{
@@ -420,8 +452,7 @@ namespace jucpp { namespace http {
 			}
 		}
     
-		m_httpVersion = pConn->http_version;
-		m_content = String(pConn->content, pConn->content_len);
+		m_content = String(msg->body.p, msg->body.len);
 		Json::Reader reader;
 		reader.parse(m_content, m_jsonContent);
 	}
@@ -434,79 +465,16 @@ namespace jucpp { namespace http {
 		return String::EmptyString;
 	}
 	
-    // mongose method
-    static int get_var(const char *data, size_t data_len, const char *name,
-                       char *dst, size_t dst_len)
-    {
-        auto mg_strncasecmp = [](const char *s1, const char *s2, size_t len)
-        {
-            auto lowercase = [](const char *s)
-            {
-                return tolower(* (const unsigned char *) s);
-            };
-            
-            int diff = 0;
-            
-            if (len > 0)
-                do {
-                    diff = lowercase(s1++) - lowercase(s2++);
-                } while (diff == 0 && s1[-1] != '\0' && --len > 0);
-            
-            return diff;
-        };
-        
-        const char *p, *e, *s;
-        size_t name_len;
-        int len;
-        
-        if (dst == NULL || dst_len == 0) {
-            len = -2;
-        } else if (data == NULL || name == NULL || data_len == 0) {
-            len = -1;
-            dst[0] = '\0';
-        } else {
-            name_len = strlen(name);
-            e = data + data_len;
-            len = -1;
-            dst[0] = '\0';
-            
-            // data is "var1=val1&var2=val2...". Find variable first
-            for (p = data; p + name_len < e; p++) {
-                if ((p == data || p[-1] == '&') && p[name_len] == '=' &&
-                    !mg_strncasecmp(name, p, name_len)) {
-                    
-                    // Point p to variable value
-                    p += name_len + 1;
-                    
-                    // Point s to the end of the value
-                    s = (const char *) memchr(p, '&', (size_t)(e - p));
-                    if (s == NULL) {
-                        s = e;
-                    }
-                    assert(s >= p);
-                    
-                    // Decode variable into destination buffer
-                    len = mg_url_decode(p, (size_t)(s - p), dst, dst_len, 1);
-                    
-                    // Redirect error code from -1 to -2 (destination buffer too small).
-                    if (len == -1) {
-                        len = -2;
-                    }
-                    break;
-                }
-            }
-        }
-        return len;
-    }
-    
 	String Request::Get(const String& name) const
 	{
         String ret;
         if (!m_queryString.length())
             return ret;
         
+        mg_str qs{m_queryString.c_str(), m_queryString.length()};
+        
         char* buff = new char[m_queryString.length()];
-        int r = get_var(m_queryString.c_str(), m_queryString.length(), name.c_str(), buff, m_queryString.length());
+        int r = mg_get_http_var(&qs, name.c_str(), buff, m_queryString.length());
         
         if (r > 0)
             ret = String(buff, r);

@@ -40,8 +40,7 @@ int main()
 		 
 		 return Server::Proceeded; // inform jucpp framework that request is processed
 	 })
-	.listen(port)   // set port
-	.wait();        // wait for connections
+    .listen(port);   // wait for connections
 	
 	printf("Server done\n"); // should never come here
 	

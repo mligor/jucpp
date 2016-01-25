@@ -28,7 +28,7 @@
 		8C6E7BF41B51A2FE00BA589C /* writer.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6E7BE81B51A2FE00BA589C /* writer.h */; };
 		8C6EDF591B47C09700B92258 /* jucpp.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF571B47C09700B92258 /* jucpp.h */; };
 		8C6EDF5A1B47C09700B92258 /* http.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF581B47C09700B92258 /* http.h */; };
-		8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF6F1B47CA5100B92258 /* mongoose.c */; };
+		8C6EDF711B47CA5100B92258 /* mongoose.c in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF6F1B47CA5100B92258 /* mongoose.c */; settings = {COMPILER_FLAGS = "-Wno-shorten-64-to-32 -Wno-unreachable-code"; }; };
 		8C6EDF721B47CA5100B92258 /* mongoose.h in Headers */ = {isa = PBXBuildFile; fileRef = 8C6EDF701B47CA5100B92258 /* mongoose.h */; };
 		8C6EDF741B47CA8A00B92258 /* http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8C6EDF731B47CA8A00B92258 /* http.cpp */; };
 		8C6EDF751B47D17700B92258 /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
@@ -528,6 +528,7 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
+					MG_ENABLE_THREADS,
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -538,6 +539,7 @@
 			buildSettings = {
 				COMBINE_HIDPI_IMAGES = YES;
 				EXECUTABLE_PREFIX = lib;
+				GCC_PREPROCESSOR_DEFINITIONS = MG_ENABLE_THREADS;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

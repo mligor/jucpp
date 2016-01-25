@@ -33,7 +33,7 @@ int main()
         Server::addCORSHeaders(req, res);
         return Server::Proceeded;
     })
-    .listen(8000)
-    .wait();
+    .listen(8000);
+    
     return 0;
 }
