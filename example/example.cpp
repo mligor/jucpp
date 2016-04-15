@@ -1,11 +1,14 @@
 #include <jucpp/jucpp.h>
 #include <jucpp/http.h>
+#include <jucpp/sql.h>
+#include <jucpp/session.h>
 
 #include <thread>
 #include <chrono>
 
 using namespace jucpp;
 using namespace jucpp::http;
+using namespace jucpp::sql;
 
 int main()
 {
@@ -19,6 +22,35 @@ int main()
 	 {
 		 res.addHeader("Content-Type", "image/x-icon");
 		 res.write("");
+		 return Server::Proceeded;
+	 })
+	.GET("/dbtest", [](const Request &req, Response &res)
+	{
+		SQLDB db(SQLDB::SQLite, "test.sqlite");
+		if (db)
+			res.write("OK");
+		else
+			res.write("Error");
+		return Server::Proceeded;
+	 })
+	.GET("/test", [](const Request &req, Response &res)
+	 {
+		 res.write("Test OK");
+		 return Server::Proceeded;
+	})
+	.GET("/counter", [](const Request &req, Response &res)
+	 {
+		 Session s(req, res);
+		 Variant sessionData = s.get(); // Read data from session
+		 if (sessionData.isNull())
+			 sessionData = Object();
+		 if (!sessionData["counter"].isNumeric())
+			 sessionData["counter"] = 1;
+		 else
+			 sessionData["counter"] = sessionData["counter"].asInt() + 1;
+		 s.set(sessionData); // Write data into session
+		 
+		 res.write(sessionData["counter"]);
 		 return Server::Proceeded;
 	 })
 	.GET("/wait", [](const Request &req, Response &res)

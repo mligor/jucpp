@@ -7,9 +7,9 @@
 //
 
 #include "angular.h"
-#include "sqlite.h"
+#include "sql.h"
 
-using namespace jucpp::sqlite;
+using namespace jucpp::sql;
 
 namespace jucpp { namespace angular {
 
@@ -33,7 +33,7 @@ namespace jucpp { namespace angular {
         m_angularBinding[apiUrl] = abd;
         m_jsUrlMapping[jsUrl] = apiUrl;
         
-        SQLite db(m_databaseName);
+		SQLDB db(m_storageType, m_databaseName);
         db.query("CREATE TABLE IF NOT EXISTS `" + abd.tableName + "` (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, data TEXT)");
         return *this;
     }
@@ -55,11 +55,11 @@ namespace jucpp { namespace angular {
 				return Proceeded;
 			}
 			
-            SQLite db(m_databaseName);
+			SQLDB db(m_storageType, m_databaseName);
 			String query = "SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "`";
 			if (filter != "")
 				query += " WHERE " + filter;
-            SQLite::Result r = db.query(query);
+            sql::SQLDB::Result r = db.query(query);
             res.write(r);
         }
         catch (std::exception& e)
@@ -93,8 +93,8 @@ namespace jucpp { namespace angular {
 				return Proceeded;
 			}
 
-			SQLite db(m_databaseName);
-            SQLite::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
+			SQLDB db(m_storageType, m_databaseName);
+            sql::SQLDB::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
             if (r.size() > 0)
                 res.write(r[(unsigned int)0]);
             
@@ -118,11 +118,11 @@ namespace jucpp { namespace angular {
         
         try
         {
-            SQLite db(m_databaseName);
+			SQLDB db(m_storageType, m_databaseName);
             String data = Server::jsonEncode(req.Data());
             db.query("INSERT INTO `" + (*it).second.tableName + "` (data) VALUES ('" + data + "')");
-            String id = db.getLastInsertRowId();
-            SQLite::Result r = db.query("SELECT * FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
+            String id = db.lastInsertRowId();
+            SQLDB::Result r = db.query("SELECT * FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
             if (r.size() > 0)
             {
                 auto row = r[(unsigned int)0];
@@ -155,7 +155,7 @@ namespace jucpp { namespace angular {
         try
         {
             String data = Server::jsonEncode(req.Data());
-            SQLite db(m_databaseName);
+			SQLDB db(m_storageType, m_databaseName);
             db.query("INSERT OR REPLACE INTO `" + (*it).second.tableName + "` (id, data) VALUES ('" + id.asString() + "', '" + data + "')");
         }
         catch (std::exception& e)
@@ -181,8 +181,8 @@ namespace jucpp { namespace angular {
         
         try
         {
-            SQLite db(m_databaseName);
-            SQLite::Result r = db.query("DELETE FROM `" + (*it).second.tableName + "` WHERE id='" + req.PathParam("id") + "'");
+			SQLDB db(m_storageType, m_databaseName);
+            SQLDB::Result r = db.query("DELETE FROM `" + (*it).second.tableName + "` WHERE id='" + req.PathParam("id") + "'");
         }
         catch (std::exception& e)
         {
