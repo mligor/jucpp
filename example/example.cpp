@@ -23,8 +23,8 @@ int main()
 	 })
 	.GET("/wait", [](const Request &req, Response &res)
 	 {
-		 std::this_thread::sleep_for(std::chrono::seconds(30));
-		 res.write(".. after 30 sec");
+		 std::this_thread::sleep_for(std::chrono::seconds(15));
+		 res.write(".. after 15 sec");
 		 return Server::Proceeded;
 	 })
 	.GET("*", [](const Request &req, Response &res)

@@ -313,10 +313,11 @@ namespace jucpp { namespace http {
 			n = vsnprintf(p, size, fmt, ap);
 			va_end(ap);
 
+			if (n < 0) return;
 			if (n < size)
 			{
 				logText = String(p, size);
-                free(p);
+				free(p);
 				break;
 			}
 			size = n * 2;
