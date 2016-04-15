@@ -34,10 +34,30 @@ int main()
 		return Server::Proceeded;
 	 })
 	.GET("/test", [](const Request &req, Response &res)
-	 {
-		 res.write("Test OK");
-		 return Server::Proceeded;
+	{
+		res.write("Test OK");
+		return Server::Proceeded;
 	})
+	.GET("/testcookie", [](const Request &req, Response &res)
+	{
+		Cookie c = req.getCookie("tracking");
+		res.write("Cookie counter: ");
+		
+		if (c.Name() == Cookie::InvalidCookie.Name())
+		{
+			res.write("No counter cookie found");
+			res.addCookie(Cookie("tracking", "0"));
+		}
+		else
+		{
+			String v = c.Value();
+			int counter = std::stoi(v) + 1;
+			
+			res.addCookie(Cookie("tracking", std::to_string(counter)));
+			res.write(v);
+		}
+		return Server::Proceeded;
+	 })
 	.GET("/counter", [](const Request &req, Response &res)
 	 {
 		 Session s(req, res);

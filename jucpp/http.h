@@ -154,7 +154,8 @@ namespace jucpp { namespace http {
         
         Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
 
-        static void addCORSHeaders(const Request& req, Response& res);
+		static void addCORSHeaders(const Request& req, Response& res);
+        static void addCommonHeaders(const Request& req, Response& res);
 		
 		/***
 		 * Valid patterns:

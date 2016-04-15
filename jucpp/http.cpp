@@ -106,9 +106,30 @@ namespace jucpp { namespace http {
                 
                 if (s == Server::Proceeded)
                 {
-                    //addCORSHeaders(req, res);
-                    
-                    mg_send_head(conn, res.getStatus(), res.getContent().size(), nullptr);
+                    addCORSHeaders(req, res);
+					addCommonHeaders(req, res);
+					
+					String extraHeaders;
+					
+					const StringStringMap& headers = res.getHeaders();
+					for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
+					{
+						if (extraHeaders.length()) extraHeaders += "\r\n";
+						extraHeaders += (*it).first + ":" +(*it).second;
+					}
+					
+					const StringCookieMap& cookies = res.getCookies();
+					for (StringCookieMap::const_iterator it = cookies.begin(); it != cookies.end(); ++it)
+					{
+						String setCookie;
+						setCookie.append((*it).first);
+						setCookie.append("=");
+						setCookie.append((*it).second.Value());
+						if (extraHeaders.length()) extraHeaders += "\r\n";
+						extraHeaders += "Set-Cookie:" + setCookie;
+					}
+					
+                    mg_send_head(conn, res.getStatus(), res.getContent().size(), extraHeaders.c_str());
                     mg_printf(conn, res.getContent().c_str(), res.getContent().size());
                     conn->flags |= MG_F_SEND_AND_CLOSE;
                     return;
@@ -132,71 +153,11 @@ namespace jucpp { namespace http {
             default:
                 break;
         }
-
-        /*
-		mg_connection* conn = (mg_connection*)_conn;
-		if (ev == MG_AUTH)
-		{
-			return MG_TRUE;   // Authorize all requests
-		}
-		else if (ev == MG_REQUEST)
-		{
-			Server* _this = (Server*)conn->server_param;
-			Request req(conn);
-			Response res;
-			Server::ResponseStatus s = Server::Skipped;
-			try
-			{
-				s = _this->EventHandler(req, res);
-			}
-			catch (std::exception& e)
-			{
-				mg_send_status(conn, 501);
-				mg_printf_data(conn, "exception: %s", e.what());
-				return MG_TRUE;
-			}
-			
-			if (s == Server::ServeStaticFile)
-				return MG_FALSE; // Mongoose will do it for us
-			
-			if (s == Server::Skipped)
-			{
-				// set status not found
-				mg_send_status(conn, 404);
-				mg_printf_data(conn, "Not found");
-				return MG_TRUE;
-			}
-			
-			mg_send_status(conn, res.getStatus());
-			
-			//TODO: add settings to include CORS headers or not
-			_this->addCORSHeaders(req, res);
-			
-			const StringStringMap& headers = res.getHeaders();
-			for (StringStringMap::const_iterator it = headers.begin(); it != headers.end(); ++it)
-				mg_send_header(conn, (*it).first.c_str(), (*it).second.c_str());
-            
-            const StringCookieMap& cookies = res.getCookies();
-            for (StringCookieMap::const_iterator it = cookies.begin(); it != cookies.end(); ++it)
-            {
-				String setCookie;
-                setCookie.append((*it).first);
-                setCookie.append("=");
-                setCookie.append((*it).second.Value());
-				mg_send_header(conn, "Set-Cookie", setCookie.c_str());
-            }
-			
-			mg_printf_data((mg_connection*)conn, res.getContent().c_str(), res.getContent().size());
-			return MG_TRUE;
-		}
-		return MG_FALSE;  // Rest of the events are not processed
-         */
 	}
 	
     Server::Server()
     {
         m_mongoose = new mg_mgr();
-        
         mg_mgr_init((mg_mgr *)m_mongoose, 0);
     }
     
@@ -313,10 +274,14 @@ namespace jucpp { namespace http {
 			n = vsnprintf(p, size, fmt, ap);
 			va_end(ap);
 
-			if (n < 0) return;
+			if (n < 0)
+			{
+				free(p);
+				return;
+			}
 			if (n < size)
 			{
-				logText = String(p, size);
+				logText = String(p, n);
 				free(p);
 				break;
 			}
@@ -373,7 +338,12 @@ namespace jucpp { namespace http {
 		if (req.Header("Origin").length())
 			res.addHeader("Access-Control-Allow-Origin", req.Header("Origin"));
 	}
-    
+	
+	void Server::addCommonHeaders(const Request &req, Response &res)
+	{
+		res.addHeader("Server", "jucpp/1.0");
+	}
+	
     Variant Server::jsonDecode(const String &s, bool *error)
     {
         Variant v;
