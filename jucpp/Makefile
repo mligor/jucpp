@@ -1,14 +1,14 @@
 CC = g++
 C = gcc
 
-CXXFLAGS = -g -O2 -Wall -std=gnu++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs
+CXXFLAGS = -g -O2 -Wall -std=gnu++11  -I$(CURDIR)/.. -I$(CURDIR)/../libs -DMG_ENABLE_THREADS
 CFLAGS = -g -O2 -Wall -I$(CURDIR)/.. -I$(CURDIR)/../libs
 LDFLAGS = 
 
 OUT_NAME = $(CURDIR)/../libjucpp.a
 BUILD_DIR = $(CURDIR)/../build
 
-JUCPP_FILES := http.cpp jucpp.cpp sqlite.cpp session.cpp mail.cpp base64.cpp angular.cpp
+JUCPP_FILES := http.cpp jucpp.cpp sql.cpp session.cpp mail.cpp base64.cpp angular.cpp
 JUCPP_OBJ_FILES := $(addprefix $(BUILD_DIR)/, $(patsubst %.cpp, %.obj, $(JUCPP_FILES)))
 
 CPP_FILES := $(JUCPP_FILES) 
