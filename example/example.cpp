@@ -81,8 +81,9 @@ int main()
 	 })
 	.GET("*", [](const Request &req, Response &res)
 	 {
+		 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
 		 String url = req.Url();
-		 if (url == "/example.cpp")
+		 if (url == "/example.cpp" || url == "/test.txt")
 			 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
 		 
 		 Object data;

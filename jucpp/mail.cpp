@@ -5,7 +5,6 @@
 //  Created by Igor Mladenovic on 01/09/15.
 //  Copyright (c) 2015 BeanOX UG. All rights reserved.
 //
-#define _CRT_SECURE_NO_WARNINGS
 
 #include "mail.h"
 
