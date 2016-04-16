@@ -261,11 +261,11 @@ namespace jucpp { namespace http {
 		String logText;
 
 		size_t n;
-		size_t size = 64;
+		size_t size = 1024;
 		char *p, *np;
 		va_list ap;
 
-		if ((p = (char*)malloc(size)) == NULL)
+		if ((p = (char*)malloc(size + 1)) == NULL)
 			return;
 
 		while (1)
@@ -274,7 +274,7 @@ namespace jucpp { namespace http {
 			n = vsnprintf(p, size, fmt, ap);
 			va_end(ap);
 
-			if (n < 0)
+			if (n == (size_t)-1) //NOTE: Under windows n will be -1 also if buffer is too small to store the result.
 			{
 				free(p);
 				return;

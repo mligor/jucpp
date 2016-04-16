@@ -79,6 +79,9 @@
     <ClInclude Include="angular.h">
       <Filter>headers</Filter>
     </ClInclude>
+    <ClInclude Include="sql.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\sqlite\sqlite3.c">
@@ -102,9 +105,6 @@
     <ClCompile Include="jucpp.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="sqlite.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
     <ClCompile Include="base64.cpp">
       <Filter>src</Filter>
     </ClCompile>
@@ -115,6 +115,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="angular.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="sql.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

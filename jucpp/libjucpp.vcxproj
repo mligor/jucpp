@@ -37,6 +37,7 @@
     <ClInclude Include="jucpp.h" />
     <ClInclude Include="mail.h" />
     <ClInclude Include="session.h" />
+    <ClInclude Include="sql.h" />
     <ClInclude Include="sqlite.h" />
   </ItemGroup>
   <ItemGroup>
@@ -51,7 +52,7 @@
     <ClCompile Include="jucpp.cpp" />
     <ClCompile Include="mail.cpp" />
     <ClCompile Include="session.cpp" />
-    <ClCompile Include="sqlite.cpp" />
+    <ClCompile Include="sql.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\libs\json\json_internalarray.inl" />
