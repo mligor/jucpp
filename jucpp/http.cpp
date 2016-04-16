@@ -6,8 +6,6 @@
 //  Copyright (c) 2015 BeanOX UG. All rights reserved.
 //
 
-#define _CRT_SECURE_NO_WARNINGS
-
 #include "http.h"
 
 #include <libs/mongoose/mongoose.h>
@@ -197,11 +195,11 @@ namespace jucpp { namespace http {
 					if (pattern.length() && pattern.at(pattern.length() - 1) == '*')
 					{
 						// normal or negative match 
-						bool normalMatch = (url.length() > 2 && pattern.at(pattern.length() - 2) != '!');
+						bool normalMatch = (pattern.at(pattern.length() - 2) != '!');
 
 						if (normalMatch)
 						{
-							if (url.length() >= pattern.length() && 
+							if (url.length() < pattern.length() - 1 || 
 								pattern.substr(0, pattern.length() - 1) != url.substr(0, pattern.length() - 1))
 								continue;
 						}

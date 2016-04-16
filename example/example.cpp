@@ -73,25 +73,25 @@ int main()
 		 res.write(sessionData["counter"]);
 		 return Server::Proceeded;
 	 })
-	.GET("/wait", [](const Request &req, Response &res)
+	 .GET("/wait", [](const Request &req, Response &res)
 	 {
 		 std::this_thread::sleep_for(std::chrono::seconds(15));
 		 res.write(".. after 15 sec");
 		 return Server::Proceeded;
 	 })
-	.GET("*", [](const Request &req, Response &res)
+	 .GET("/api/*", [](const Request &req, Response &res)
 	 {
-		 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
 		 String url = req.Url();
-		 if (url == "/example.cpp" || url == "/test.txt")
-			 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
-		 
 		 Object data;
 		 data["url"] = url;
 		 data["language"] = req.Header("Accept-Language");
 		 res.write(data);
-		 
+
 		 return Server::Proceeded; // inform jucpp framework that request is processed
+	 })
+	.GET("*", [](const Request &req, Response &res)
+	 {
+		 return Server::ServeStaticFile; // jucpp will try to serve example.cpp as a static file
 	 })
     .listen(port);   // wait for connections
 	
