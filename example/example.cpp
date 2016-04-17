@@ -26,7 +26,7 @@ int main()
 	 })
 	.GET("/dbtest", [](const Request &req, Response &res)
 	{
-		SQLDB db(SQLDB::SQLite, "test.sqlite");
+		SQLDB db(SQLDBSettings(SQLDBSettings::SQLite, "test.sqlite"));
 		if (db)
 			res.write("OK");
 		else

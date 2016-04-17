@@ -140,6 +140,7 @@ namespace jucpp { namespace http {
 		enum ResponseStatus { Skipped = 0, Proceeded = 1, ServeStaticFile = 2 };
 		
 		using Fn = std::function<ResponseStatus (const Request &req, Response &res)>;
+		using OnStartFn = std::function<bool()>;
 		
 		using FnList = std::vector<std::pair<String, Fn>>;
 		using FnListMap = std::map<String, FnList>;
@@ -170,6 +171,8 @@ namespace jucpp { namespace http {
 		Server& DELETE(String cp, Fn fn) { m_functions["DELETE"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& OPTIONS(String cp, Fn fn) { m_functions["OPTIONS"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
 		Server& HEAD(String cp, Fn fn) { m_functions["HEAD"].push_back(std::pair<String, Fn>(cp,fn)); return *this; }
+
+		Server& OnStart(OnStartFn fn) { m_onStart = fn; return *this; };
         
     public:
         static String jsonEncode(const Variant &v);
@@ -203,6 +206,7 @@ namespace jucpp { namespace http {
         void* m_mongoose = nullptr;
 		String m_documentRoot;
 		FnListMap m_functions;
+		OnStartFn m_onStart;
 		LogLevel m_logLevel = DEFAULT_LOG_LEVEL;
 	};
 	

@@ -82,6 +82,9 @@
     <ClInclude Include="sql.h">
       <Filter>src</Filter>
     </ClInclude>
+    <ClInclude Include="mysql.h">
+      <Filter>src</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\libs\sqlite\sqlite3.c">
@@ -118,6 +121,9 @@
       <Filter>src</Filter>
     </ClCompile>
     <ClCompile Include="sql.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="mysql.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

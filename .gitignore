@@ -243,3 +243,4 @@ example/example.dSYM
 /angularExample/angularObject.db
 /*.opendb
 .vscode
+/jucpp.VC.db

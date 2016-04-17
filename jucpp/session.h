@@ -10,6 +10,8 @@
 #define session_h
 
 #include "http.h"
+#include "sql.h"
+
 
 namespace jucpp { namespace http {
 	
@@ -51,8 +53,8 @@ namespace jucpp { namespace http {
 		
 		/// @brief Set session database path
 		/// Default database is jucpp.sessions.db in the current directory.
-		static void SetSessionDatabasePath(String dbName) { s_sessionDatabasePath = dbName; }
-		static String GetSessionDatabasePath() { return s_sessionDatabasePath; }
+		static void SetSessionStorageSettings(sql::SQLDBSettings const& storageSettings) { s_storageSettings = storageSettings; }
+		static sql::SQLDBSettings const& GetSessionStorageSettings() { return s_storageSettings; }
 		static void SetSessionCookieName(String name) { s_sessionCookieName = name; }
 		static String GetSessionCookieName() { return s_sessionCookieName; }
 		
@@ -61,7 +63,7 @@ namespace jucpp { namespace http {
 		const Request& m_request;
 		Response& m_response;
 		
-		static String s_sessionDatabasePath;
+		static sql::SQLDBSettings s_storageSettings;
 		static String s_sessionCookieName;
 	};
 	

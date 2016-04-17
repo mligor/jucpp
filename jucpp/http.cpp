@@ -352,13 +352,18 @@ namespace jucpp { namespace http {
         return v;
     }
 
-    String Server::jsonEncode(const Variant &v)
+	String Server::jsonEncode(const Variant &v)
     {
         return Json::FastWriter().write(v);
     }
 
     void Server::Execute()
 	{
+		if (m_onStart)
+		{
+			if (!m_onStart()) return;
+		}
+
 		for (;;)
 		{
 			if (shouldStop()) break;

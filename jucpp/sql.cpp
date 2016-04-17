@@ -1,14 +1,15 @@
 #include "sql.h"
 #include <libs/sqlite/sqlite3.h>
+#include "mysql.h"
 
 
 namespace jucpp { namespace sql {
 
 	// SQLDB
 	
-	SQLDB::SQLDB(DBType t, const char* dbName, bool readonly)
+	SQLDB::SQLDB(SQLDBSettings const& settings)
 	{
-		set(t, dbName, readonly);
+		set(settings);
 	}
 	
 	SQLDB::~SQLDB()
@@ -20,33 +21,70 @@ namespace jucpp { namespace sql {
 		}
 	}
 
-	void SQLDB::set(DBType t, const char* dbName, bool readonly)
+	void SQLDB::set(SQLDBSettings const& settings)
 	{
 		if (m_p)
 			throw SQLException("DB already initialized");
 		
-		switch (t)
+		switch (settings.t)
 		{
-			case Unknown:
-				throw SQLException("Unknown database type");
-				break;
-			case SQLite:
-				m_p = new class SQLite(dbName, readonly);
-				break;
-			case MySQL:
-				//m_p = new class SQLite(dbName, readonly);
-				throw SQLException("MySQL not implemented");
-				break;
+		case SQLDBSettings::DBType::Unknown:
+			throw SQLException("Unknown database type");
+			break;
+		case SQLDBSettings::DBType::SQLite:
+			m_p = new class SQLite(settings.dbName, settings.readonly);
+			break;
+		case SQLDBSettings::DBType::MySQL:
+#ifdef JUCPP_NO_MYSQL
+			throw SQLException("jucpplib is not compiled with Mysql support");
+#else
+			m_p = new class MySQL(settings.dbName, settings.host, settings.username, settings.password);
+#endif
+			break;
 		}
+	}
+
+	void SQLDB::set(SQLDBBase * p)
+	{
+		if (m_p)
+			throw SQLException("DB already initialized");
+
+		if (!p)
+			throw SQLException("Invalid DB pointer");
+
+		m_p = p;
 	}
 
 	
 	void SQLDB::open(const char* dbName, bool readonly) { m_p->open(dbName, readonly); }
 	void SQLDB::close() { m_p->close(); }
-	SQLDB::Result SQLDB::query(const char* q) { return m_p->query(q); }
-	String SQLDB::lastInsertRowId() { return m_p->lastInsertRowId(); };
-
 	
+	SQLDB::Result SQLDB::query(const char* q, ...) 
+	{ 
+		
+		String query;
+		va_list argptr;
+		va_start(argptr, q);
+		size_t n = vsnprintf(nullptr, 0, q, argptr);
+		if (n == (size_t)-1)
+			throw SQLException("Invalid Query formating");
+
+		if (n > 0)
+		{
+			char* buff = (char*)malloc(n + 1);
+			n = vsnprintf(buff, n, q, argptr);
+			query = String(buff, n);
+			free(buff);
+		}
+		va_end(argptr);
+
+		return m_p->query(query.c_str()); 
+	}
+
+	String SQLDB::lastInsertRowId() { return m_p->lastInsertRowId(); }
+	const char * SQLDB::AUTOINCREMENT() { if (!m_p) return nullptr; return m_p->AUTOINCREMENT(); }
+	const char * SQLDB::NOW() { if (!m_p) return nullptr; return m_p->NOW(); }
+
 	// SQLite
 	
 	void SQLite::open(const char* dbName, bool readonly)
@@ -66,7 +104,7 @@ namespace jucpp { namespace sql {
 	
 	void SQLite::close()
 	{
-		if (!																																								m_db)
+		if (!m_db)
 			return;
 		
 		int res = sqlite3_close((sqlite3*)m_db);
@@ -119,6 +157,43 @@ namespace jucpp { namespace sql {
 		return std::to_string(sqlite3_last_insert_rowid((sqlite3*)m_db));
 	}
 	
-	
+
+	// MySQL
+
+#ifndef JUCPP_NO_MYSQL
+	sql::MySQL::MySQL(String const& dbName, String const& host, String const& username, String const& password)
+	{
+		m_dbName = dbName;
+		m_host = host;
+		m_username = username;
+		m_password = password;
+
+		open(dbName.c_str(), false);
+	}
+
+	SQLDB::Result sql::MySQL::query(const char * q)
+	{
+		return mysql::jucpp_mysql_query(m_db, q);
+	}
+
+	void sql::MySQL::open(const char * dbName, bool readonly)
+	{
+		if (m_db != nullptr)
+			return; // already opened
+
+		m_db = mysql::jucpp_mysql_open(m_host.c_str(), m_username.c_str(), m_password.c_str(), m_dbName.c_str());
+	}
+
+	void sql::MySQL::close()
+	{
+		mysql::jucpp_mysql_close(m_db);
+	}
+
+	String sql::MySQL::lastInsertRowId()
+	{
+		return mysql::jucpp_mysql_last_inserted_row_id(m_db);
+	}
+
+#endif // JUCPP_NO_MYSQL
 	// namespace end
-}}
+} }

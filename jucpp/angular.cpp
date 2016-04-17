@@ -33,8 +33,8 @@ namespace jucpp { namespace angular {
         m_angularBinding[apiUrl] = abd;
         m_jsUrlMapping[jsUrl] = apiUrl;
         
-		SQLDB db(m_storageType, m_databaseName);
-        db.query("CREATE TABLE IF NOT EXISTS `" + abd.tableName + "` (id INTEGER UNIQUE PRIMARY KEY AUTOINCREMENT, data TEXT)");
+		SQLDB db(m_storageSettings);
+        db.query("CREATE TABLE IF NOT EXISTS `%s` (id INTEGER UNIQUE PRIMARY KEY %s, data TEXT)", abd.tableName.c_str(), db.AUTOINCREMENT());
         return *this;
     }
     
@@ -55,11 +55,11 @@ namespace jucpp { namespace angular {
 				return Proceeded;
 			}
 			
-			SQLDB db(m_storageType, m_databaseName);
+			SQLDB db(m_storageSettings);
 			String query = "SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "`";
 			if (filter != "")
 				query += " WHERE " + filter;
-            sql::SQLDB::Result r = db.query(query);
+            sql::SQLDB::Result r = db.query(query.c_str());
             res.write(r);
         }
         catch (std::exception& e)
@@ -93,8 +93,8 @@ namespace jucpp { namespace angular {
 				return Proceeded;
 			}
 
-			SQLDB db(m_storageType, m_databaseName);
-            sql::SQLDB::Result r = db.query("SELECT " + listOfRows + " FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
+			SQLDB db(m_storageSettings);
+            sql::SQLDB::Result r = db.query("SELECT %s FROM `%s` WHERE id='%s'", listOfRows.c_str(), (*it).second.tableName.c_str(), id.c_str());
             if (r.size() > 0)
                 res.write(r[(unsigned int)0]);
             
@@ -118,11 +118,11 @@ namespace jucpp { namespace angular {
         
         try
         {
-			SQLDB db(m_storageType, m_databaseName);
+			SQLDB db(m_storageSettings);
             String data = Server::jsonEncode(req.Data());
-            db.query("INSERT INTO `" + (*it).second.tableName + "` (data) VALUES ('" + data + "')");
+            db.query("INSERT INTO `%s` (data) VALUES ('%s')", (*it).second.tableName.c_str(), data.c_str());
             String id = db.lastInsertRowId();
-            SQLDB::Result r = db.query("SELECT * FROM `" + (*it).second.tableName + "` WHERE id='" + id + "'");
+            SQLDB::Result r = db.query("SELECT * FROM `%s` WHERE id='%s'", (*it).second.tableName.c_str(), id.c_str());
             if (r.size() > 0)
             {
                 auto row = r[(unsigned int)0];
@@ -155,8 +155,8 @@ namespace jucpp { namespace angular {
         try
         {
             String data = Server::jsonEncode(req.Data());
-			SQLDB db(m_storageType, m_databaseName);
-            db.query("INSERT OR REPLACE INTO `" + (*it).second.tableName + "` (id, data) VALUES ('" + id.asString() + "', '" + data + "')");
+			SQLDB db(m_storageSettings);
+            db.query("INSERT OR REPLACE INTO `%s` (id, data) VALUES ('%s', '%s')", (*it).second.tableName.c_str(), id.asString().c_str(), data.c_str());
         }
         catch (std::exception& e)
         {
@@ -181,8 +181,8 @@ namespace jucpp { namespace angular {
         
         try
         {
-			SQLDB db(m_storageType, m_databaseName);
-            SQLDB::Result r = db.query("DELETE FROM `" + (*it).second.tableName + "` WHERE id='" + req.PathParam("id") + "'");
+			SQLDB db(m_storageSettings);
+            SQLDB::Result r = db.query("DELETE FROM `%s` WHERE id='%s'", (*it).second.tableName.c_str(), req.PathParam("id").c_str());
         }
         catch (std::exception& e)
         {

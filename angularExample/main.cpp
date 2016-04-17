@@ -16,8 +16,9 @@ using namespace jucpp::angular;
 
 int main()
 {
-    AngularRestServer()
-    .setDatabaseName("angularObject.db")
+	sql::SQLDBSettings dbSettings(sql::SQLDBSettings::SQLite, "angularObject.db");
+
+    AngularRestServer(dbSettings)
     .AngularBinding("User", "/api/user", "/js/user.js", "user")
     .AngularBinding("Feed", "/api/feed", "/js/feed.js", "feed")
     .setDocumentRoot("./html")

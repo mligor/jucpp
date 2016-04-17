@@ -20,9 +20,9 @@ namespace jucpp { namespace angular {
     {
         
     public:
+		AngularRestServer(jucpp::sql::SQLDBSettings const& storage) : m_storageSettings(storage) {};
+
         AngularRestServer& AngularBinding(String name, String apiUrl, String jsUrl, String tableName);
-        AngularRestServer& setDatabaseName(String databaseName) { m_databaseName = databaseName; return *this; }
-		AngularRestServer& setDatabaseType(jucpp::sql::SQLDB::DBType databaseType) { m_storageType = databaseType; return *this; }
 		enum RequestType
 		{
 			RequestTypeUnknown,
@@ -58,8 +58,7 @@ namespace jucpp { namespace angular {
     private:
         AngularBindingList m_angularBinding;
         StringStringMap m_jsUrlMapping;
-        String m_databaseName;
-		jucpp::sql::SQLDB::DBType m_storageType = jucpp::sql::SQLDB::SQLite;
+		jucpp::sql::SQLDBSettings m_storageSettings;
     };
     
 }}
