@@ -63,18 +63,19 @@ namespace jucpp { namespace sql {
 	
 	SQLDB::Result SQLDB::query(const char* q, ...) 
 	{ 
-		
 		String query;
 		va_list argptr;
 		va_start(argptr, q);
 		size_t n = vsnprintf(nullptr, 0, q, argptr);
+		va_end(argptr);
 		if (n == (size_t)-1)
 			throw SQLException("Invalid Query formating");
-
+		
+		va_start(argptr, q);
 		if (n > 0)
 		{
 			char* buff = (char*)malloc(n + 1);
-			n = vsnprintf(buff, n, q, argptr);
+			n = vsnprintf(buff, n + 1, q, argptr);
 			query = String(buff, n);
 			free(buff);
 		}

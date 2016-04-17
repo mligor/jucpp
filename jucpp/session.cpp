@@ -31,11 +31,7 @@ namespace jucpp { namespace http {
 	SessionManager::SessionManager(sql::SQLDBSettings const& storageSettings)
 	{
 		m_db.set(storageSettings);
-
-		m_db.query("CREATE TABLE IF NOT EXISTS jucpp_session_info "
-			  "(id INTEGER UNIQUE PRIMARY KEY %s, "
-			  "c TEXT, t DATETIME, obj TEXT"
-			  ")", m_db.AUTOINCREMENT());
+		m_db.query("CREATE TABLE IF NOT EXISTS jucpp_session_info (id INTEGER UNIQUE PRIMARY KEY %s, c TEXT, t DATETIME, obj TEXT)", m_db.AUTOINCREMENT());
 	}
 	
 	String SessionManager::random_string(size_t length)
