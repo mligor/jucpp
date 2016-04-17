@@ -1,8 +1,8 @@
-#include "mysql.h"
+#include "jucpp_mysql.h"
 
 #ifndef JUCPP_NO_MYSQL
 
-#include "mysql\include\mysql.h"
+#include "mysql.h"
 
 namespace jucpp { namespace sql { namespace mysql {
 

@@ -1,10 +1,10 @@
 # Installation
 
-1) Copy and unpack mysql-connector-c-6.1.6-win32.zip and mysql-connector-c-6.1.6-winx64.zip into win32 and x64 directory.
+1) Copy and unpack mysql-connector-c-6.X.X-win32.zip and mysql-connector-c-6.X.X-winx64.zip into windows-win32 and windows-x64 directory.
 
 Directory structure should be
 
-mysql/win32
+mysql/windows-win32
  - bin
  - docs
  - include
@@ -12,12 +12,11 @@ mysql/win32
 
 or
 
-mysql/x64
+mysql/windows-x64
  - bin
  - docs
  - include
  - lib
  
- Include directory will be used from mysql/include
  
  2) Copy libmysql.dll into bin\Debug and bin\Release directory

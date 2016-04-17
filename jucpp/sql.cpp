@@ -1,6 +1,8 @@
 #include "sql.h"
 #include <libs/sqlite/sqlite3.h>
-#include "mysql.h"
+#include "jucpp_mysql.h"
+
+#include <stdlib.h>
 
 
 namespace jucpp { namespace sql {

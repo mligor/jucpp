@@ -1,5 +1,5 @@
 //
-//  mysql.h
+//  jucpp_mysql.h
 //  jucpp
 //
 //  Created by Igor Mladenovic on 17/04/16.

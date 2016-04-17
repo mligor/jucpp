@@ -82,7 +82,7 @@
     <ClInclude Include="sql.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="mysql.h">
+    <ClInclude Include="jucpp_mysql.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>
@@ -123,7 +123,7 @@
     <ClCompile Include="sql.cpp">
       <Filter>src</Filter>
     </ClCompile>
-    <ClCompile Include="mysql.cpp">
+    <ClCompile Include="jucpp_mysql.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>

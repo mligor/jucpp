@@ -108,7 +108,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\$(Platform)\lib;$(ProjectDir)..\libs\mysql\$(Platform)\lib\vs12</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib;$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib\vs12</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -126,7 +126,7 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\$(Platform)\lib;$(ProjectDir)..\libs\mysql\$(Platform)\lib\vs12</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib;$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib\vs12</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -148,7 +148,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>mysqlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\$(Platform)\lib;$(ProjectDir)..\libs\mysql\$(Platform)\lib\vs12</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib;$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib\vs12</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -170,7 +170,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalDependencies>mysqlclient.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\$(Platform)\lib;$(ProjectDir)..\libs\mysql\$(Platform)\lib\vs12</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(LibBinDir);$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib;$(ProjectDir)..\libs\mysql\windows-$(Platform)\lib\vs12</AdditionalLibraryDirectories>
     </Link>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

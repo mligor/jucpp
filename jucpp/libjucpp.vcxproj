@@ -52,7 +52,7 @@
     <ClInclude Include="http.h" />
     <ClInclude Include="jucpp.h" />
     <ClInclude Include="mail.h" />
-    <ClInclude Include="mysql.h" />
+    <ClInclude Include="jucpp_mysql.h" />
     <ClInclude Include="session.h" />
     <ClInclude Include="sql.h" />
     <ClInclude Include="sqlite.h" />
@@ -73,7 +73,7 @@
     <ClCompile Include="http.cpp" />
     <ClCompile Include="jucpp.cpp" />
     <ClCompile Include="mail.cpp" />
-    <ClCompile Include="mysql.cpp" />
+    <ClCompile Include="jucpp_mysql.cpp" />
     <ClCompile Include="session.cpp" />
     <ClCompile Include="sql.cpp" />
   </ItemGroup>
@@ -193,7 +193,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -209,7 +209,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;JUCPP_NO_MYSQL;JUCPP_NO_MYSQLWIN32;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -225,7 +225,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -241,7 +241,7 @@
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;JUCPP_NO_MYSQL;JUCPP_NO_MYSQL_DEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -259,7 +259,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;WIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -279,7 +279,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;JUCPP_NO_MYSQL;JUCPP_NO_MYSQLWIN32;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -299,7 +299,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;NDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
@@ -319,7 +319,7 @@
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>MG_ENABLE_THREADS;_CRT_SECURE_NO_WARNINGS;_CRT_NONSTDC_NO_DEPRECATE;JUCPP_NO_MYSQL;JUCPP_NO_MYSQLNDEBUG;_LIB;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <SDLCheck>true</SDLCheck>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\;$(ProjectDir)..\libs\;$(ProjectDir)..\libs\curl\curl-src\include;$(ProjectDir)..\libs\mysql\windows-$(Platform)\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
     </ClCompile>
     <Link>
