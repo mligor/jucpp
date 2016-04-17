@@ -72,26 +72,12 @@
 		8CD3DCCB1CC43CA20029360B /* libjucpp-NoMysql.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CC0D7501CC4348A00495E54 /* libjucpp-NoMysql.a */; };
 		8CD3DCCC1CC43CAF0029360B /* jucpp_mysql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0D7281CC433A500495E54 /* jucpp_mysql.cpp */; };
 		8CD3DCCD1CC43CB00029360B /* jucpp_mysql.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CC0D7281CC433A500495E54 /* jucpp_mysql.cpp */; };
+		8CD3DCDA1CC441EC0029360B /* mysql-example.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CD3DCD91CC441EC0029360B /* mysql-example.cpp */; };
+		8CD3DCDD1CC442270029360B /* libjucpp.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8C6EDF4F1B47C02200B92258 /* libjucpp.a */; };
+		8CD3DCE71CC444FA0029360B /* libmysqlclient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 8CD3DCE21CC4435B0029360B /* libmysqlclient.a */; };
 		8CEAAC571B9630A50073CB25 /* mail.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CEAAC551B9630A50073CB25 /* mail.h */; };
 		8CEAAC581B9630A50073CB25 /* mail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 8CEAAC561B9630A50073CB25 /* mail.cpp */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		8CD3DCC71CC435C50029360B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C6EDF1E1B47B90A00B92258 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8CC0D72B1CC4348A00495E54;
-			remoteInfo = "jucpp-NoMysql";
-		};
-		8CD3DCC91CC43C9E0029360B /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 8C6EDF1E1B47B90A00B92258 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 8CC0D72B1CC4348A00495E54;
-			remoteInfo = "jucpp-NoMysql";
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		8C6EDF321B47B93900B92258 /* CopyFiles */ = {
@@ -113,6 +99,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8CD3DCD01CC441B40029360B /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
@@ -121,7 +116,6 @@
 		8C1A1DE51B6967DC0083CBA3 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = sqlite3.c; sourceTree = "<group>"; };
 		8C1A1DE61B6967DC0083CBA3 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3.h; sourceTree = "<group>"; };
 		8C1A1DE71B6967DC0083CBA3 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = sqlite3ext.h; sourceTree = "<group>"; };
-		8C230A811B9E50E4009CFC04 /* libcurl.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libcurl.dylib; path = usr/lib/libcurl.dylib; sourceTree = SDKROOT; };
 		8C5B4E3A1BAC85F6009B01F0 /* session.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = session.cpp; path = jucpp/session.cpp; sourceTree = "<group>"; };
 		8C5B4E3B1BAC85F6009B01F0 /* session.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = session.h; path = jucpp/session.h; sourceTree = "<group>"; };
 		8C6E7BDA1B51A2FE00BA589C /* autolink.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = autolink.h; path = libs/json/autolink.h; sourceTree = "<group>"; };
@@ -158,6 +152,9 @@
 		8CC0D7281CC433A500495E54 /* jucpp_mysql.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = jucpp_mysql.cpp; path = jucpp/jucpp_mysql.cpp; sourceTree = "<group>"; };
 		8CC0D7291CC433A500495E54 /* jucpp_mysql.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = jucpp_mysql.h; path = jucpp/jucpp_mysql.h; sourceTree = "<group>"; };
 		8CC0D7501CC4348A00495E54 /* libjucpp-NoMysql.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libjucpp-NoMysql.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CD3DCD21CC441B40029360B /* mysql-example */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "mysql-example"; sourceTree = BUILT_PRODUCTS_DIR; };
+		8CD3DCD91CC441EC0029360B /* mysql-example.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = "mysql-example.cpp"; sourceTree = "<group>"; };
+		8CD3DCE21CC4435B0029360B /* libmysqlclient.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libmysqlclient.a; path = "libs/mysql/osx10.8-x86_64/lib/libmysqlclient.a"; sourceTree = "<group>"; };
 		8CEAAC551B9630A50073CB25 /* mail.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = mail.h; path = jucpp/mail.h; sourceTree = "<group>"; };
 		8CEAAC561B9630A50073CB25 /* mail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = mail.cpp; path = jucpp/mail.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -190,6 +187,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		8CD3DCCF1CC441B40029360B /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CD3DCDD1CC442270029360B /* libjucpp.a in Frameworks */,
+				8CD3DCE71CC444FA0029360B /* libmysqlclient.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -232,10 +238,11 @@
 		8C6EDF1D1B47B90A00B92258 = {
 			isa = PBXGroup;
 			children = (
-				8C230A811B9E50E4009CFC04 /* libcurl.dylib */,
+				8CD3DCE21CC4435B0029360B /* libmysqlclient.a */,
 				8C6EDF5B1B47C09D00B92258 /* jucpp */,
 				8C6EDF351B47B93900B92258 /* example */,
 				8C81B9131BB32FF4007EE5C0 /* angularExample */,
+				8CD3DCD31CC441B40029360B /* mysql-example */,
 				8C6EDF271B47B90A00B92258 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -247,6 +254,7 @@
 				8C6EDF4F1B47C02200B92258 /* libjucpp.a */,
 				8C81B9121BB32FF4007EE5C0 /* angularExample */,
 				8CC0D7501CC4348A00495E54 /* libjucpp-NoMysql.a */,
+				8CD3DCD21CC441B40029360B /* mysql-example */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -301,6 +309,14 @@
 				8C81B91C1BB331F2007EE5C0 /* html */,
 			);
 			path = angularExample;
+			sourceTree = "<group>";
+		};
+		8CD3DCD31CC441B40029360B /* mysql-example */ = {
+			isa = PBXGroup;
+			children = (
+				8CD3DCD91CC441EC0029360B /* mysql-example.cpp */,
+			);
+			path = "mysql-example";
 			sourceTree = "<group>";
 		};
 		8CEAAC591B9630B00073CB25 /* mail */ = {
@@ -379,7 +395,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8CD3DCCA1CC43C9E0029360B /* PBXTargetDependency */,
 			);
 			name = example;
 			productName = test1;
@@ -414,7 +429,6 @@
 			buildRules = (
 			);
 			dependencies = (
-				8CD3DCC81CC435C50029360B /* PBXTargetDependency */,
 			);
 			name = angularExample;
 			productName = angularExample;
@@ -438,6 +452,23 @@
 			productReference = 8CC0D7501CC4348A00495E54 /* libjucpp-NoMysql.a */;
 			productType = "com.apple.product-type.library.static";
 		};
+		8CD3DCD11CC441B40029360B /* mysql-example */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 8CD3DCD61CC441B50029360B /* Build configuration list for PBXNativeTarget "mysql-example" */;
+			buildPhases = (
+				8CD3DCCE1CC441B40029360B /* Sources */,
+				8CD3DCCF1CC441B40029360B /* Frameworks */,
+				8CD3DCD01CC441B40029360B /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "mysql-example";
+			productName = "mysql-example";
+			productReference = 8CD3DCD21CC441B40029360B /* mysql-example */;
+			productType = "com.apple.product-type.tool";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -455,6 +486,9 @@
 					};
 					8C81B9111BB32FF4007EE5C0 = {
 						CreatedOnToolsVersion = 7.0;
+					};
+					8CD3DCD11CC441B40029360B = {
+						CreatedOnToolsVersion = 7.3;
 					};
 				};
 			};
@@ -474,6 +508,7 @@
 				8C6EDF4E1B47C02200B92258 /* jucpp */,
 				8C81B9111BB32FF4007EE5C0 /* angularExample */,
 				8CC0D72B1CC4348A00495E54 /* jucpp-NoMysql */,
+				8CD3DCD11CC441B40029360B /* mysql-example */,
 			);
 		};
 /* End PBXProject section */
@@ -535,20 +570,15 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		8CD3DCCE1CC441B40029360B /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8CD3DCDA1CC441EC0029360B /* mysql-example.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		8CD3DCC81CC435C50029360B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8CC0D72B1CC4348A00495E54 /* jucpp-NoMysql */;
-			targetProxy = 8CD3DCC71CC435C50029360B /* PBXContainerItemProxy */;
-		};
-		8CD3DCCA1CC43C9E0029360B /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 8CC0D72B1CC4348A00495E54 /* jucpp-NoMysql */;
-			targetProxy = 8CD3DCC91CC43C9E0029360B /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		8C6EDF2B1B47B90A00B92258 /* Debug */ = {
@@ -592,7 +622,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)",
 					"$(SRCROOT)/libs",
-					"$(SRCROOT)/libs/mysql/osx10.8-x86/include",
+					"$(SRCROOT)/libs/mysql/osx10.8-x86_64/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = YES;
@@ -636,7 +666,7 @@
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)",
 					"$(SRCROOT)/libs",
-					"$(SRCROOT)/libs/mysql/osx10.8-x86/include",
+					"$(SRCROOT)/libs/mysql/osx10.8-x86_64/include",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				MTL_ENABLE_DEBUG_INFO = NO;
@@ -733,6 +763,44 @@
 			};
 			name = Release;
 		};
+		8CD3DCD71CC441B50029360B /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs/mysql/osx10.8-x86_64/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		8CD3DCD81CC441B50029360B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CODE_SIGN_IDENTITY = "-";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/libs/mysql/osx10.8-x86_64/lib",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -777,6 +845,15 @@
 			buildConfigurations = (
 				8CC0D74E1CC4348A00495E54 /* Debug */,
 				8CC0D74F1CC4348A00495E54 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		8CD3DCD61CC441B50029360B /* Build configuration list for PBXNativeTarget "mysql-example" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				8CD3DCD71CC441B50029360B /* Debug */,
+				8CD3DCD81CC441B50029360B /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

@@ -20,3 +20,9 @@ mysql/windows-x64
  
  
  2) Copy libmysql.dll into bin\Debug and bin\Release directory
+
+----
+
+Mac
+
+Unpack mysql-connector-c-6.X.X-osx10.8-x86_64.tar.gz into osx10.8-x86_64
