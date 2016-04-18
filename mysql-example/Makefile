@@ -4,7 +4,11 @@ CXXFLAGS = -v -g -O2 -Wall -std=gnu++11 -I$(CURDIR)/.. -I$(CURDIR)/../libs
 include ../jucpp/DetectArchitecture.mk
 
 
-LDFLAGS = -L$(CURDIR)/.. -L$(CURDIR)/../libs/mysql/$(PLATFORM)-$(ARCH)/lib  -ljucpp -lpthread -ldl -lmysqlclient -lrt
+LDFLAGS = -L$(CURDIR)/.. -L$(CURDIR)/../libs/mysql/$(PLATFORM)-$(ARCH)/lib  -ljucpp -lpthread -ldl -lmysqlclient
+
+ifeq ($(PLATFORM),linux)
+	LDFLAGS +=  -lrt
+endif
 
 OUT_NAME = $(CURDIR)/mysql-example
 BUILD_DIR = $(CURDIR)/../build/example
