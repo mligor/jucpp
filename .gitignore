@@ -223,6 +223,7 @@ FakesAssemblies/
 
 jucpp.a
 libjucpp.a
+libjucpp-nomysql.a
 hello_http.dSYM
 hello_http
 

@@ -6,7 +6,7 @@
 
 namespace jucpp { namespace sql { namespace mysql {
 
-	void * mysql::jucpp_mysql_open(const char * host, const char * username, const char * password, const char * dbName)
+	void * jucpp_mysql_open(const char * host, const char * username, const char * password, const char * dbName)
 	{
 		MYSQL* con = mysql_init(NULL);
 
