@@ -244,3 +244,5 @@ example/example.dSYM
 /*.opendb
 .vscode
 /jucpp.VC.db
+/mysql-example/mysql-example
+/mysql-example/mysql-example.dSYM/

@@ -25,4 +25,11 @@ mysql/windows-x64
 
 Mac
 
-Unpack mysql-connector-c-6.X.X-osx10.8-x86_64.tar.gz into osx10.8-x86_64
+Unpack mysql-connector-c-6.X.X-osx10.8-x86_64.tar.gz into osx-x86_64 or osx-x86
+
+----
+
+Linux
+
+Unpack mysql-connector-c-6.X.X-XXXX-x86_64.tar.gz into linux-x86_64 or linux-x86 or linux-arm
+
