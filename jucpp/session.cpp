@@ -28,9 +28,9 @@ namespace jucpp { namespace http {
 		sql::SQLDB m_db;
 	};
 
-	SessionManager::SessionManager(sql::SQLDBSettings const& storageSettings)
+	SessionManager::SessionManager(sql::SQLDBSettings const& storageSettings) : m_db(storageSettings)
 	{
-		m_db.set(storageSettings);
+		if (!storageSettings.autoopen) m_db.open();
 		m_db.query("CREATE TABLE IF NOT EXISTS jucpp_session_info (id INTEGER UNIQUE PRIMARY KEY %s, c TEXT, t DATETIME, obj TEXT)", m_db.AUTOINCREMENT());
 	}
 	

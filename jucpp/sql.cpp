@@ -44,6 +44,8 @@ namespace jucpp { namespace sql {
 #endif
 			break;
 		}
+		
+		if (settings.autoopen) m_p->open();
 	}
 
 	void SQLDB::set(SQLDBBase * p)
@@ -58,7 +60,7 @@ namespace jucpp { namespace sql {
 	}
 
 	
-	void SQLDB::open(const char* dbName, bool readonly) { m_p->open(dbName, readonly); }
+	void SQLDB::open() { m_p->open(); }
 	void SQLDB::close() { m_p->close(); }
 	
 	SQLDB::Result SQLDB::query(const char* q, ...) 
@@ -90,16 +92,16 @@ namespace jucpp { namespace sql {
 
 	// SQLite
 	
-	void SQLite::open(const char* dbName, bool readonly)
+	void SQLite::open()
 	{
 		if (m_db != nullptr)
 			return; // already opened
 		
 		int flags = SQLITE_OPEN_READWRITE | SQLITE_OPEN_CREATE;
-		if (readonly)
+		if (m_readonly)
 			flags |= SQLITE_OPEN_READONLY;
 		
-		int res = sqlite3_open_v2(dbName, (sqlite3**)&m_db, flags, NULL);
+		int res = sqlite3_open_v2(m_dbName.c_str(), (sqlite3**)&m_db, flags, NULL);
 		
 		if (res != SQLITE_OK)
 			throw SQLException(sqlite3_errmsg((sqlite3*)m_db));
@@ -145,7 +147,6 @@ namespace jucpp { namespace sql {
 					else
 						newRow[name] = value;
 				}
-				
 				ret.append(newRow);
 			}
 		}
@@ -170,8 +171,6 @@ namespace jucpp { namespace sql {
 		m_host = host;
 		m_username = username;
 		m_password = password;
-
-		open(dbName.c_str(), false);
 	}
 
 	SQLDB::Result sql::MySQL::query(const char * q)
@@ -179,7 +178,7 @@ namespace jucpp { namespace sql {
 		return mysql::jucpp_mysql_query(m_db, q);
 	}
 
-	void sql::MySQL::open(const char * dbName, bool readonly)
+	void sql::MySQL::open()
 	{
 		if (m_db != nullptr)
 			return; // already opened
