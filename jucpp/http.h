@@ -154,7 +154,18 @@ namespace jucpp { namespace http {
         virtual void Execute() override;
         
         Server& setDocumentRoot(String documentRoot) { m_documentRoot = documentRoot; return *this; }
-
+		Server& setPushState(String root = "", StringList ignores = {}, bool ignoreExistingStaticFiles = false)
+		{
+			m_pushStateEnabled = true;
+			m_pushStateRoot = root;
+			if (m_pushStateRoot.length() > 0 && m_pushStateRoot.at(m_pushStateRoot.length() - 1) == '/')
+				m_pushStateRoot = m_pushStateRoot.substr(0, m_pushStateRoot.length() - 1);
+			
+			m_pushStateIgnores = ignores;
+			m_pushStateIgnoreExistingStatics = ignoreExistingStaticFiles;
+			return *this;
+		}
+		
 		static void addCORSHeaders(const Request& req, Response& res);
         static void addCommonHeaders(const Request& req, Response& res);
 		
@@ -180,6 +191,7 @@ namespace jucpp { namespace http {
         
 	protected:
 		virtual ResponseStatus EventHandler(Request &req, Response &res);
+		bool checkMatch(String const& url, String const& pattern, StringStringMap& pathParams) const;
 
 	public:
 		/*
@@ -205,6 +217,10 @@ namespace jucpp { namespace http {
         
         void* m_mongoose = nullptr;
 		String m_documentRoot;
+		bool m_pushStateEnabled;
+		String m_pushStateRoot;
+		StringList m_pushStateIgnores;
+		bool m_pushStateIgnoreExistingStatics = false;
 		FnListMap m_functions;
 		OnStartFn m_onStart;
 		LogLevel m_logLevel = DEFAULT_LOG_LEVEL;

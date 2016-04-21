@@ -10,6 +10,7 @@
 
 // STL
 #include <thread>
+#include <algorithm>
 
 #ifdef _WIN32
 #include <windows.h>
@@ -22,6 +23,50 @@ namespace jucpp
 	
 	const String String::EmptyString = {};
 	const Variant EmptyVariant = {};
+	
+	StringList String::split(const String delimiter, int nMax) const
+	{
+		StringList strList;
+		
+		if (delimiter.empty())
+		{
+			strList.push_back(*this);
+			return strList;
+		}
+		
+		String::size_type i = 0;
+		String::size_type j = 0;
+		
+		for (;;)
+		{
+			j = find(delimiter, i);
+			if (j == String::npos || (nMax > 0 && ((int)strList.size() >= (nMax - 1))))
+			{
+				strList.push_back(substr(i));
+				break;
+			}
+			
+			strList.push_back(substr(i, j - i));
+			i = j + delimiter.size();
+			
+			if (i == size())
+			{
+				strList.push_back(String());
+				break;
+			}
+		}
+		return strList;
+	}
+	
+	String String::lowercase() const
+	{
+		String s(*this);
+		
+		std::transform(s.begin(), s.end(), s.begin(), ::tolower);
+		return s;
+	}
+
+
 	
 	// ThreadJob
 	
@@ -97,5 +142,4 @@ namespace jucpp
 #endif
 		}
 	}
-
 } // namespace end

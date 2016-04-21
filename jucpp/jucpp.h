@@ -21,7 +21,7 @@
 
 namespace jucpp
 {
-	
+	using StringList = std::vector<class String>;
 	class String : public std::string
 	{
 	public:
@@ -29,10 +29,13 @@ namespace jucpp
 		String(const char* chrValue, size_type len) : std::string(chrValue, len) {}
 		String(const char* chrVal) : std::string(chrVal) {}
 		String(const std::string& str) : std::string(str) {}
-		
-		static const String EmptyString;
-	};
 
+		static const String EmptyString;
+	
+		StringList split(const String delimiter, int nMax = -1) const;
+		String lowercase() const;
+	};
+	
 	using Variant = Json::Value;
 	
 	extern const Variant EmptyVariant;

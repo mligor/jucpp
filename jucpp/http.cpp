@@ -21,43 +21,7 @@
 
 
 namespace jucpp { namespace http {
-
-	using StringList = std::vector<String>;
-
-	static size_t SplitString(const String &strInput, const String delimiter, StringList &strList, int nMax = -1)
-	{
-		strList.clear();
-
-		if (delimiter.empty())
-		{
-			strList.push_back(strInput);
-			return 1;
-		}
-
-		String::size_type i = 0;
-		String::size_type j = 0;
-
-		for (;;)
-		{
-			j = strInput.find(delimiter, i);
-			if (j == String::npos || (nMax > 0 && ((int)strList.size() >= (nMax - 1))))
-			{
-				strList.push_back(strInput.substr(i));
-				break;
-			}
-
-			strList.push_back(strInput.substr(i, j - i));
-			i = j + delimiter.size();
-
-			if (i == strInput.size())
-			{
-				strList.push_back(String());
-				break;
-			}
-		}
-		return strList.size();
-	}
-    
+	
     void Server::send_status_result(void *conn, int status, const char *msg, const char* text)
     {
         mg_printf((mg_connection*)conn, "HTTP/1.1 %d %s\r\nContent-type: text/html\r\n\r\n<h2>%d %s</h2>", status, msg, status, msg);
@@ -134,10 +98,43 @@ namespace jucpp { namespace http {
                 }
                 else if (s == Server::ServeStaticFile)
                 {
-                    mg_serve_http_opts opts = {};
-                    if (m_documentRoot.size())
-                        opts.document_root = m_documentRoot.c_str();
-
+					String rewrites;
+					mg_serve_http_opts opts = {};
+					if (m_documentRoot.size())
+						opts.document_root = m_documentRoot.c_str();
+					
+					if (m_pushStateEnabled)
+					{
+						String url = req.Url();
+						bool pushState = true;
+						
+						cs_stat_t st;
+						// root is exlcuded from push state
+						if (pushState && url == m_pushStateRoot)
+							pushState = false;
+						
+						if (pushState && m_pushStateIgnores.size())
+						{
+							for (String const& ignore: m_pushStateIgnores)
+							{
+								StringStringMap tmp;
+								if (checkMatch(url, ignore, tmp))
+								{
+									pushState = false;
+									break;
+								}
+							}
+						}
+						
+						// if static file exists, disable push state
+						if (pushState && m_pushStateIgnoreExistingStatics && mg_stat(String(m_documentRoot + url).c_str(), &st) == 0)
+							pushState = false;
+						
+						if (pushState)
+							rewrites = url + "=" + m_documentRoot + m_pushStateRoot;
+					}
+					if (rewrites.size())
+						opts.url_rewrites = rewrites.c_str();
                     mg_serve_http(conn, hm, opts);
                 }
                 else if (s == Server::Skipped)
@@ -163,7 +160,68 @@ namespace jucpp { namespace http {
     {
         mg_mgr_free((mg_mgr *)m_mongoose);
     }
-    
+	
+	bool Server::checkMatch(String const& url, String const& pattern, StringStringMap& pathParams) const
+	{
+		pathParams.clear();
+
+		if (pattern == "*" || pattern == url) // direct and * (all) match
+			return true;
+		
+		
+		// check if pattern has * at the end (e.g. /api/*)
+		if (pattern.length() && pattern.at(pattern.length() - 1) == '*')
+		{
+			// normal or negative match
+			bool normalMatch = (pattern.at(pattern.length() - 2) != '!');
+			
+			if (normalMatch)
+			{
+				if (url.length() >= pattern.length() - 1 &&
+					pattern.substr(0, pattern.length() - 1) == url.substr(0, pattern.length() - 1))
+					return true;
+			}
+			else
+			{
+				// negative match
+				if (url.length() < pattern.length() - 1 ||
+					pattern.substr(0, pattern.length() - 2) != url.substr(0, pattern.length() - 2))
+					return true;
+			}
+			return false;
+		}
+		else
+		{
+			// match pattersn
+			StringList urlParts = url.split("/");
+
+			StringList patternList = pattern.split("/");
+			
+			if (urlParts.size() != patternList.size()) return false;
+			
+			bool matched = true;
+			
+			for (size_t i = 0; i != urlParts.size(); ++i)
+			{
+				const String& a = urlParts[i];
+				const String& b = patternList[i];
+				
+				if (b.length() && b.at(0) == ':')
+					pathParams[b.substr(1)] = a;
+				else if (b == "*")
+					;
+				else if (b != a)
+				{
+					matched = false;
+					break;
+				}
+			}
+			if (!matched) pathParams.clear();
+			
+			return matched;
+		}
+	}
+	
 	Server::ResponseStatus Server::EventHandler(Request &req, Response &res)
 	{
 		if (m_logLevel <= LogDebug)
@@ -176,77 +234,22 @@ namespace jucpp { namespace http {
 		}
 		const auto& l = m_functions.find(req.Method());
 		String url = req.Url();
-		if (url.length() > 0 && url.at(url.length() - 1) == '/')
-			url = url.substr(0, url.length() - 1);
 
 		if (l != m_functions.end())
 		{
-			StringList urlParts;
-			SplitString(url, "/", urlParts);
-
+			StringStringMap pathParams;
 			// find in param
 			for (const auto &f : (*l).second)
 			{
-				const String& pattern = f.first;
-				
-				if (pattern != "*" && pattern != url) // direct and * (all) match
+				if (checkMatch(url, f.first, pathParams))
 				{
-					// check if pattern has * at the end (e.g. /api/*)
-					if (pattern.length() && pattern.at(pattern.length() - 1) == '*')
-					{
-						// normal or negative match 
-						bool normalMatch = (pattern.at(pattern.length() - 2) != '!');
-
-						if (normalMatch)
-						{
-							if (url.length() < pattern.length() - 1 || 
-								pattern.substr(0, pattern.length() - 1) != url.substr(0, pattern.length() - 1))
-								continue;
-						}
-						else
-						{
-							// negative match
-							if (url.length() >= pattern.length() - 1 &&
-								pattern.substr(0, pattern.length() - 2) == url.substr(0, pattern.length() - 2))
-								continue;
-						}
-					}
-					else
-					{
-						StringList patternList;
-						SplitString(pattern, "/", patternList);
-
-						if (urlParts.size() != patternList.size()) continue;
-
-						bool matched = true;
-						StringStringMap pathParams;
-
-						for (size_t i = 0; i != urlParts.size(); ++i)
-						{
-							const String& a = urlParts[i];
-							const String& b = patternList[i];
-							Log(LogTrace, "URL PART: url=%s pattern=%s", a.c_str(), b.c_str());
-
-							if (b.length() && b.at(0) == ':')
-								pathParams[b.substr(1)] = a;
-							else if (b == "*")
-								;
-							else if (b != a)
-							{
-								matched = false;
-								break;
-							}
-						}
-						if (!matched) continue;
-
-						for (StringStringMap::const_iterator it = pathParams.begin(); it != pathParams.end(); ++it)
-							req.setPathParam(it->first, it->second);
-
-					}
+					for (StringStringMap::const_iterator it = pathParams.begin(); it != pathParams.end(); ++it)
+						req.setPathParam(it->first, it->second);
+					
+					ResponseStatus s = f.second(req, res);
+					if (s != Skipped)
+						return s;
 				}
-				ResponseStatus s = f.second(req, res);
-				if (s != Skipped)
-					return s;
 			}
 		}
 		return Skipped;
@@ -322,7 +325,6 @@ namespace jucpp { namespace http {
         return *this;
 	}
 	
-	
 	void Server::addCORSHeaders(const Request &req, Response &res)
 	{
 		//TODO: add configuration to allow just specific Origins
@@ -375,10 +377,8 @@ namespace jucpp { namespace http {
 	Request::Request(void* _msg)
 	{
         http_message* msg = (http_message*)_msg;
-        
 		m_method = String(msg->method.p, msg->method.len);
-		m_url = String(msg->uri.p, msg->uri.len);
-        
+		
 		if (msg->uri.p)
         {
             char* buff = new char[msg->uri.len + 1];
@@ -386,7 +386,10 @@ namespace jucpp { namespace http {
             m_url = buff;
             delete [] buff;
         }
-        
+		if (m_url.length() > 0 && m_url.at(m_url.length() - 1) == '/')
+			m_url = m_url.substr(0, m_url.length() - 1);
+
+		
 		if (msg->query_string.p)
 		{
 			char* buff = new char[msg->query_string.len + 1];
