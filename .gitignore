@@ -247,3 +247,5 @@ example/example.dSYM
 /mysql-example/mysql-example
 /mysql-example/mysql-example.dSYM/
 jucpp.sessions.db
+
+.vscode/.browse.VC.db*
