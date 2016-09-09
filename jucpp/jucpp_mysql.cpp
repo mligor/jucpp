@@ -1,6 +1,6 @@
 #include "jucpp_mysql.h"
 
-#ifndef JUCPP_NO_MYSQL
+#ifdef JUCPP_MYSQL
 
 #include "mysql.h"
 

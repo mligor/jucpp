@@ -1,19 +1,25 @@
-CC = g++
-CXXFLAGS = -v -g -O2 -Wall -std=gnu++11 -I$(CURDIR)/.. -I$(CURDIR)/../libs
-LDFLAGS = -L$(CURDIR)/.. -ljucpp-nomysql -lpthread -ldl
+include ../prepare.mk
 
-OUT_NAME = $(CURDIR)/example
-BUILD_DIR = $(CURDIR)/../build/example
+CC = g++
+LD = g++
+CXXFLAGS = $(EXTRA_CFLAGS) -Wall -std=gnu++11
+LDFLAGS = -lpthread -ldl $(BUILD_DIR)libjucpp.a
+
+OUT_NAME = $(BIN_DIR)example
 
 all: $(OUT_NAME)
 
-$(OUT_NAME): example.cpp Makefile
-	$(CC) $(CXXFLAGS) example.cpp $(LDFLAGS) -o $@
+$(BUILD_DIR)example.obj: example.cpp Makefile
+	$(CC) $(CXXFLAGS) example.cpp -c -o $@
+
+$(OUT_NAME): $(BUILD_DIR)example.obj
+	mkdir -p $(dir $@)
+	$(LD) $(LDFLAGS) $(BUILD_DIR)example.obj -o $@
 
 clean:
-	rm -f $(OUT_NAME)
+	rm -f $(OUT_NAME) $(OUT_NAME_DEBUG)
 
 distclean:
-	rm -f $(OUT_NAME)
+	rm -f $(OUT_NAME) $(OUT_NAME_DEBUG)
 
 

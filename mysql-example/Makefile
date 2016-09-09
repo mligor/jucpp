@@ -1,22 +1,24 @@
+include ../prepare.mk
+
 CC = g++
-CXXFLAGS = -v -g -O2 -Wall -std=gnu++11 -I$(CURDIR)/.. -I$(CURDIR)/../libs
-
-include ../jucpp/DetectArchitecture.mk
-
-
-LDFLAGS = -L$(CURDIR)/.. -L$(CURDIR)/../libs/mysql/$(PLATFORM)-$(ARCH)/lib  -ljucpp -lpthread -ldl -lmysqlclient
+LD = g++
+CXXFLAGS = $(EXTRA_CFLAGS) -std=gnu++11
+LDFLAGS = -lpthread -ldl $(BUILD_DIR)libjucpp-mysql.a $(ROOT_DIR)libs/mysql/$(PLATFORM)-$(ARCH)/lib/libmysqlclient.a
 
 ifeq ($(PLATFORM),linux)
 	LDFLAGS +=  -lrt
 endif
 
-OUT_NAME = $(CURDIR)/mysql-example
-BUILD_DIR = $(CURDIR)/../build/example
+OUT_NAME = $(BIN_DIR)mysql-example
 
 all: $(OUT_NAME)
 
-$(OUT_NAME): mysql-example.cpp Makefile
-	$(CC) $(CXXFLAGS) mysql-example.cpp $(LDFLAGS) -o $@
+$(BUILD_DIR)mysql-example.obj: mysql-example.cpp Makefile
+	$(CC) $(CXXFLAGS) mysql-example.cpp -c -o $@
+
+$(OUT_NAME): $(BUILD_DIR)mysql-example.obj
+	mkdir -p $(dir $@)
+	$(LD) $(LDFLAGS) $(BUILD_DIR)mysql-example.obj -o $@
 
 clean:
 	rm -f $(OUT_NAME)

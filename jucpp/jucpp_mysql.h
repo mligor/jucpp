@@ -11,7 +11,7 @@
 
 #include "sql.h"
 
-#ifndef JUCPP_NO_MYSQL
+#ifdef JUCPP_MYSQL
 
 namespace jucpp { namespace sql { namespace mysql {
 
@@ -24,6 +24,6 @@ namespace jucpp { namespace sql { namespace mysql {
 // namespace end
 } } }
 
-#endif // JUCPP_NO_MYSQL
+#endif // JUCPP_MYSQL
 
 #endif // JUCPP_MYSQL_H

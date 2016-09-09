@@ -37,10 +37,10 @@ namespace jucpp { namespace sql {
 			m_p = new class SQLite(settings.dbName, settings.readonly);
 			break;
 		case SQLDBSettings::DBType::MySQL:
-#ifdef JUCPP_NO_MYSQL
-			throw SQLException("jucpplib is not compiled with Mysql support");
-#else
+#ifdef JUCPP_MYSQL
 			m_p = new class MySQL(settings.dbName, settings.host, settings.username, settings.password);
+#else
+			throw SQLException("jucpplib is not compiled with Mysql support");
 #endif
 			break;
 		}
@@ -163,7 +163,7 @@ namespace jucpp { namespace sql {
 
 	// MySQL
 
-#ifndef JUCPP_NO_MYSQL
+#ifdef JUCPP_MYSQL
 	sql::MySQL::MySQL(String const& dbName, String const& host, String const& username, String const& password)
 	{
 		m_dbName = dbName;
@@ -197,6 +197,6 @@ namespace jucpp { namespace sql {
 		return mysql::jucpp_mysql_last_inserted_row_id(m_db);
 	}
 
-#endif // JUCPP_NO_MYSQL
+#endif // JUCPP_MYSQL
 	// namespace end
 } }

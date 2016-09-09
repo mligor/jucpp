@@ -1,0 +1,70 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "example",
+            "type": "cppdbg",
+            "request": "launch",    
+            "program": "${workspaceRoot}/bin/example",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}",
+            "preLaunchTask": "build",
+            "environment": [
+                { "name": "mode", "value": "debug" } // this is not working!! default value is debug
+            ],
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        },
+        {
+            "name": "angular-example",
+            "type": "cppdbg",
+            "request": "launch",    
+            "program": "${workspaceRoot}/bin/angular-example",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceRoot}/angular-example",
+            "preLaunchTask": "build-angular-example",
+            "environment": [
+                { "name": "mode", "value": "debug" }
+            ],
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        },        
+        {
+            "name": "mysql-example",
+            "type": "cppdbg",
+            "request": "launch",    
+            "program": "${workspaceRoot}/bin/mysql-example",
+            "args": [],
+            "stopAtEntry": false,
+            "preLaunchTask": "build-mysql-example",
+            "environment": [
+                { "name": "mode", "value": "debug" }
+            ],
+            "linux": {
+                "MIMode": "gdb"
+            },
+            "osx": {
+                "MIMode": "lldb"
+            },
+            "windows": {
+                "MIMode": "gdb"
+            }
+        }
+    ]
+}

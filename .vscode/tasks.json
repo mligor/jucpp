@@ -1,0 +1,89 @@
+{
+    "version": "0.1.0",
+    "command": "make",
+    "isShellCommand": true,
+    "options": {
+        "cwd": "${workspaceRoot}"
+    },
+    "suppressTaskName": true,
+    "tasks": [
+        {
+            "taskName": "build",
+            "isBuildCommand": true,
+            "showOutput": "always",
+            "args": ["jucpp", "example"],
+
+            "echoCommand": true,
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }, 
+        {
+            "taskName": "build-angular-example",
+            "isBuildCommand": true,
+            "showOutput": "always",
+            "args": ["jucpp", "angular-example"],
+
+            "echoCommand": true,
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }, 
+        {
+            "taskName": "build-mysql-example",
+            "isBuildCommand": true,
+            "showOutput": "always",
+            "args": ["jucpp-mysql", "mysql-example"],
+
+            "echoCommand": true,
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }, 
+        {
+            "taskName": "clean all",
+            "showOutput": "always",
+            "args": ["clean"],
+
+            "problemMatcher": {
+                "owner": "cpp",
+                "fileLocation": ["relative", "${workspaceRoot}"],
+                "pattern": {
+                    "regexp": "^(.*):(\\d+):(\\d+):\\s+(warning|error):\\s+(.*)$",
+                    "file": 1,
+                    "line": 2,
+                    "column": 3,
+                    "severity": 4,
+                    "message": 5
+                }
+            }
+        }
+    ]
+}

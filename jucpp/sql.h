@@ -105,7 +105,7 @@ namespace jucpp { namespace sql {
 		void* m_db = nullptr;
 	};
 
-#ifndef JUCPP_NO_MYSQL
+#ifdef JUCPP_MYSQL
 	class MySQL : public SQLDBBase
 	{
 	public:

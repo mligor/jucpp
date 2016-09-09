@@ -239,11 +239,11 @@ libs/curl/curl-src
 example/example
 example/example.dSYM
 
-/angularExample/angularExample
-/angularExample/angularExample.dSYM/
-/angularExample/angularObject.db
+/angular-example/angular-example
+/angular-example/angular-example.dSYM/
+/angular-example/angularObject.db
 /*.opendb
-.vscode
 /jucpp.VC.db
 /mysql-example/mysql-example
 /mysql-example/mysql-example.dSYM/
+jucpp.sessions.db
