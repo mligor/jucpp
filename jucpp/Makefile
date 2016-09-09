@@ -1,4 +1,4 @@
-include ../prepare.mk
+include ../setenv.mk
 
 .PHONY:all jucpp jucpp_mysql
 

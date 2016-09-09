@@ -1,4 +1,4 @@
-include ../prepare.mk
+include ../../setenv.mk
 
 CC = g++
 LD = g++

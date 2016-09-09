@@ -236,16 +236,15 @@ libs/curl/Debug
 libs/curl/Release
 libs/curl/x64
 libs/curl/curl-src
-example/example
-example/example.dSYM
+/examples/example/example
+/examples/example/example.dSYM
 
-/angular-example/angular-example
-/angular-example/angular-example.dSYM/
-/angular-example/angularObject.db
+/examples/angular-example/angular-example
+/examples/angular-example/angular-example.dSYM/
+/examples/angular-example/angularObject.db
 /*.opendb
-/jucpp.VC.db
-/mysql-example/mysql-example
-/mysql-example/mysql-example.dSYM/
+/examples/mysql-example/mysql-example
+/examples/mysql-example/mysql-example.dSYM/
 jucpp.sessions.db
 
 .vscode/.browse.VC.db*
