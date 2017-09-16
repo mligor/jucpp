@@ -1,0 +1,24 @@
+env:
+  - PACKAGE_VERSION=0.1
+
+language: c++
+
+compiler:
+  - gcc++
+  - clang
+
+services:
+  - docker
+
+install:
+  # Need to add other repos for e.g. libsodium
+
+before_script:
+
+script:
+  - make all
+
+after_success:
+  - cd ${TRAVIS_BUILD_DIR}
+  - bin/example
+
