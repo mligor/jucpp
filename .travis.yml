@@ -6,10 +6,8 @@ language: c++
 
 compiler:
   - gcc++
-  - clang
 
 install:
-  make get-deps
 
 before_script:
 
