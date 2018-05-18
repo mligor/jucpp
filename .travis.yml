@@ -1,17 +1,15 @@
 env:
   - PACKAGE_VERSION=0.1
 
+
 language: c++
 
 compiler:
   - gcc++
   - clang
 
-services:
-  - docker
-
 install:
-  # Need to add other repos for e.g. libsodium
+  make get-deps
 
 before_script:
 
